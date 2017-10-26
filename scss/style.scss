@@ -1,0 +1,39 @@
+@import '_reset.scss';
+@import '_colors.scss';
+
+html {
+  font-size: 16px;
+  font-family: 'Roboto', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+header { text-align: center; }
+
+textarea {
+  border-width: 0;
+  width: 100%;
+  height: 70vh;
+  padding: 10px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+}
+
+textarea, input { font-size: 20px; }
+textarea:focus, input:focus {
+  outline: none;
+}
+
+button {
+  border-width: 0;
+}
+.btn {
+  width: 100%;
+  font-size: 16px;
+  background-color: $blue;
+  color: $white;
+  padding: 20px;
+}
