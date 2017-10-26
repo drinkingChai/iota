@@ -3,6 +3,7 @@ const path = require('path')
 const bodyParser = require('body-parser')
 const sessions = require('client-sessions')
 const db = require('./db')
+const machine = require('./machine')
 const env = require('./env')
 
 const app = express()
@@ -29,4 +30,13 @@ app.use((err, req, res, next) => {
 const port = process.env.PORT || 3000
 
 db.sync()
+  .then(() => {
+    return db.models.MachineData.findAll()
+      .then(samples => {
+        samples.forEach(data => {
+          machine.addDocument(data.phrase, data.category)
+        })
+        machine.train()
+      })
+  })
   .then(() => app.listen(port, () => console.log(`listening on port ${port}`)))
