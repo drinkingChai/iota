@@ -7,7 +7,8 @@ import axios from 'axios'
 
 
 // ACTION CREATORS
-
+export const trainMachine = content => dispatch =>
+  axios.post('/api/train', content)
 
 // THUNK
 

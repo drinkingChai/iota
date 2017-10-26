@@ -25,8 +25,13 @@ class Jot extends Component {
 
     return (
       <form onSubmit={ onSubmit }>
-        <textarea name='thought' value={ thought } onChange={ onChange }></textarea>
-        <button>Submit</button>
+        <textarea
+          autoFocus
+          name='thought'
+          value={ thought }
+          onChange={ onChange }
+          style={{ resize: 'none' }}></textarea>
+        <button className='btn'>Submit</button>
       </form>
     )
   }

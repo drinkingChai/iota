@@ -11,8 +11,9 @@ export default class Root extends Component {
   render() {
     return (
       <div>
-        <Route component={ Nav }/>
+        
         <Routes />
+        <Route component={ Nav }/>
       </div>
     )
   }

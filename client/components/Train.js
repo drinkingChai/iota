@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { trainMachine } from '../store'
 
 class Train extends Component {
   constructor() {
     super()
-    this.state = { thought: '', cats: '' }
+    this.state = { phrase: '', category: '' }
     this.onChange = this.onChange.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
   }
@@ -16,21 +17,26 @@ class Train extends Component {
 
   onSubmit(ev) {
     ev.preventDefault()
-    this.setState({ thought: '', cats: '' })
+    this.props.trainMachine(this.state)
+      .then(() => this.setState({ phrase: '', category: '' }))
   }
 
   render() {
-    const { thought, cats } = this.state
+    const { phrase, category } = this.state
     const { onChange, onSubmit } = this
 
     return (
       <form onSubmit={ onSubmit }>
-        <textarea name='thought' value={ thought } onChange={ onChange }></textarea>
-        <input name='cats' value={ cats } onChange={ onChange }/>
-        <button>Submit</button>
+        <label htmlFor='phrase'>Phrase</label>
+        <input name='phrase' value={ phrase } onChange={ onChange }/>
+        <label htmlFor='category'>Categories</label>
+        <input name='category' value={ category } onChange={ onChange }/>
+        <button className='btn'>Train</button>
       </form>
     )
   }
 }
 
-export default connect()(Train)
+const mapDispatch = { trainMachine }
+
+export default connect(null, mapDispatch)(Train)
