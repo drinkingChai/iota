@@ -14,7 +14,10 @@ export default class Root extends Component {
     return (
       <div>
         <Route component={ Nav }/>
-        <Routes />
+
+        <main>
+          <Routes />
+        </main>
       </div>
     )
   }

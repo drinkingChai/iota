@@ -5,11 +5,49 @@ html {
   font-size: 16px;
   font-family: 'Roboto', sans-serif;
 }
+a { text-decoration: none; color: initial; }
 h3 { font-size: 1.5em; }
 
 * { box-sizing: border-box; }
 
-header { text-align: center; }
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10vh;
+  width: 100%;
+  position: fixed;
+  background-color: $white;
+}
+
+nav {
+  display: grid;
+  grid-auto-flow: column;
+  grid-gap: 5px;
+  position: fixed;
+  width: 100%;
+  padding-bottom: 10px;
+  background-color: $white;
+  z-index: 1;
+  
+  & a {
+    display: block;
+    text-align: center;
+    padding: 10px;
+    background-color: $blue;
+    color: $white;
+  }
+}
+
+// svg z-index
+svg { z-index: -1; }
+
+#main {
+  padding-top: 10vh;
+}
+main {
+  padding-top: 7vh;
+}
 
 textarea {
   border-width: 0;

@@ -9,6 +9,10 @@ import { VictoryPie, VictoryBar, VictoryChart,
 */
 
 class Statistics extends Component {
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  }
+
   render() {
     console.log(catFrequency(this.props.thoughts))
     const pieDataTopFive = catFrequency(this.props.thoughts).slice(0, 5)
