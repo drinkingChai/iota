@@ -1,16 +1,43 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { Component } from 'react'
+import { withRouter, Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { displayMenu } from '../store'
 
-const Nav = () => {
-  return (
-    <nav>
-      <Link to='/jot'>Jot</Link>
-      <Link to='/train'>Train</Link>
-      <Link to='/stats'>Analyze</Link>
-      <Link to='/thoughts'>ThoughtStream</Link>
-    </nav>
-  )
+class Nav extends Component {
+  constructor() {
+    super()
+    this.state = { menuActive: false }
+    this.displayMenu = this.displayMenu.bind(this)
+  }
+
+  displayMenu() {
+    this.setState({ menuActive: !this.state.menuActive })
+  }
+
+  render() {
+    const { menuActive } = this.state
+    const { displayMenu } = this
+
+    return (
+      <nav className={ menuActive ? 'nav-visible' : 'nav-hidden' }>
+        <div className={ menuActive ? 'burger-container-active' : 'burger-container-inactive' }>
+          <button onClick={ displayMenu }>
+            { menuActive ?
+              <i className="im im-x-mark"></i> :
+              <i className="im im-menu"></i> }
+          </button>
+        </div>
+
+        <div className='link-group'>
+          <Link to='/thoughts' onClick={ displayMenu }>ThoughtStream</Link>
+          <Link to='/jot' onClick={ displayMenu }>Jot</Link>
+          <Link to='/stats' onClick={ displayMenu }>Analyze</Link>
+          <Link to='/train' onClick={ displayMenu }>Train</Link>
+          <Link to='/login' onClick={ displayMenu }>Login</Link>
+        </div>
+      </nav>
+    )
+  }
 }
 
-export default connect()(Nav)
+export default withRouter(connect()(Nav))
