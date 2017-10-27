@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { postThought } from '../store'
 
 class Jot extends Component {
   constructor() {
     super()
-    this.state = { thought: '' }
+    this.state = { text: '' }
     this.onChange = this.onChange.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
   }
@@ -16,19 +17,23 @@ class Jot extends Component {
 
   onSubmit(ev) {
     ev.preventDefault()
-    this.setState({ thought: '' })
+    this.props.postThought(this.state)
+      .then(classification => {
+        console.log(classification)
+        this.setState({ text: '' })
+      })
   }
 
   render() {
-    const { thought } = this.state
+    const { text } = this.state
     const { onChange, onSubmit } = this
 
     return (
       <form onSubmit={ onSubmit }>
         <textarea
           autoFocus
-          name='thought'
-          value={ thought }
+          name='text'
+          value={ text }
           onChange={ onChange }
           style={{ resize: 'none' }}></textarea>
         <button className='btn'>Submit</button>
@@ -37,4 +42,6 @@ class Jot extends Component {
   }
 }
 
-export default connect()(Jot)
+const mapDispatch = { postThought }
+
+export default connect(null, mapDispatch)(Jot)
