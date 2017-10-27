@@ -19,6 +19,7 @@ Thought.getThoughtsAndClassify = function() {
   return this.findAll()
     .then(thoughts =>
       thoughts.map(thought => ({
+        id: thought.id,
         text: thought.text,
         classifications: machine.getClassifications(thought.text).slice(0,5)
       }))

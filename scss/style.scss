@@ -5,6 +5,7 @@ html {
   font-size: 16px;
   font-family: 'Roboto', sans-serif;
 }
+h3 { font-size: 1.5em; }
 
 * { box-sizing: border-box; }
 
@@ -23,7 +24,7 @@ input {
 }
 
 textarea, input { font-size: 20px; }
-textarea:focus, input:focus {
+textarea:focus, input:focus, button:focus {
   outline: none;
 }
 
