@@ -8,12 +8,15 @@ button {
   border-width: 0;
   background-color: transparent;
 }
+button:disabled {
+  border-color: $gray;
+}
 
 textarea {
   border-width: 0;
   height: 30vh;
-  margin-top: 20vh;
-  text-align: center;
+  //margin-top: 20vh;
+  //text-align: center;
 }
 
 input {

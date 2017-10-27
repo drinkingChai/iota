@@ -27,6 +27,7 @@ class Train extends Component {
 
     return (
       <form onSubmit={ onSubmit }>
+        <h3>Train</h3>
         <label htmlFor='phrase'>Phrase</label>
         <input name='phrase' value={ phrase } onChange={ onChange }/>
         <label htmlFor='category'>Categories</label>

@@ -1,0 +1,23 @@
+.btn {
+  font-size: 16px;
+  border: solid 2px $black;
+  padding: 10px;
+  border-radius: 5px;
+
+  &-red {
+    background-color: $red;
+    color: $white;
+    border-color: $red;
+  }
+  
+  &-blue {
+    background-color: $blue;
+    color: $white;
+    border-color: $blue;
+  }
+}
+
+.btn-group {
+  display: grid;
+  grid-gap: 20px;
+}

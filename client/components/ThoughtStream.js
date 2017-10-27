@@ -17,7 +17,12 @@ class ThoughtStream extends Component {
               <div key={ thought.id } className='thought'>
                 <div>
                   <p>{ thought.text }</p>
-                  <p>{ thought.classifications.map(c => c.label).slice(0, 5).join(',') }</p>
+                  <div className='categories'>
+                    {
+                      thought.classifications.map(c => c.label).slice(0, 5).map(cat =>
+                        <span key={ cat } className='category'>{ cat }</span> )
+                    }
+                  </div>
                 </div>
 
                 <div className='subheader'>

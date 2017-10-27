@@ -18,6 +18,7 @@ class Statistics extends Component {
     const pieDataTopFive = catFrequency(this.props.thoughts).slice(0, 5)
     return (
       <div className='charts'>
+        <h3>Analysis</h3>
         <VictoryChart
           polar
           theme={ VictoryTheme.material } >

@@ -24,6 +24,7 @@ class UserLogin extends Component {
 
     return (
       <div>
+        <h3>Login</h3>
         <form>
           <label htmlFor='email'>Email</label>
           <input name='email' value={ email } onChange={ onChange } />

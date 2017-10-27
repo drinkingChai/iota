@@ -5,6 +5,8 @@ nav {
   transition: all 0.2s ease-out;
   background-color: $white;
 
+  box-shadow: 0 1px 20px rgba(0,0,0,0.19), 0 1px 6px rgba(0,0,0,0.23);
+
   z-index: 1;
   
   & a {
@@ -13,7 +15,7 @@ nav {
   }
   
   &.nav-hidden {
-    left: 100%;
+    left: 110%;
   }
   &.nav-visible {
     left: 30%;
@@ -22,8 +24,8 @@ nav {
   & .burger-container-inactive,
   & .burger-container-active {
     position: absolute;
-    left: -50px;
-    top: -20px;
+    left: -90px;
+    top: 20px;
     transition: all 0.1s;
   }
 
@@ -33,7 +35,7 @@ nav {
     display: grid;
     grid-gap: 10px;
     padding: 10px;
-    padding-top: 20px;
+    padding-top: 70px;
     background-color: $white;
   }
 }
