@@ -9,14 +9,19 @@ button {
   background-color: transparent;
 }
 button:disabled {
-  border-color: $gray;
+  color: $gray;
+}
+
+textarea, input {
+  color: $black;
+  background-color: $white;
 }
 
 textarea {
   border-width: 0;
   height: 30vh;
-  //margin-top: 20vh;
-  //text-align: center;
+  padding: 15px;
+  border-radius: 5px;
 }
 
 input {
