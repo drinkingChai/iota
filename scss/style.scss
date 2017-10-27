@@ -6,23 +6,34 @@ html {
   font-family: 'Roboto', sans-serif;
 }
 
-body { background-color: lighten($navy, 5%); }
+//body { background-color: lighten($navy, 5%); }
 //body { background-color: darken(#526187, 10%); }
+body { background-color: #0D3B66; }
 
 a { text-decoration: none; color: initial; }
+h2 { font-size: 2em; }
 h3 { font-size: 1.7em; line-height: 2em; }
 
 * { box-sizing: border-box; color: $white; }
 
 @import '_header.scss';
-@import '_nav.scss';
 @import '_forms.scss';
-@import '_thoughts.scss';
 @import '_buttons.scss';
+@import '_loader.scss';
+
+// pages
+@import '_nav.scss';
+@import '_thoughts.scss';
+@import '_welcome.scss';
+@import '_messages.scss';
+
 
 // svg z-index
 svg { z-index: -1; }
 
 main {
   padding: 50px 30px;
+  display: grid;
+  align-items: center;
+  height: 100%;
 }

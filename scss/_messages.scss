@@ -1,0 +1,26 @@
+.floating-message {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0%, 0%, 0%, 0.5);
+
+  display: grid;
+  align-items: center;
+  text-align: center;
+
+  & .floating-message-body {
+    background-color: $white;
+    line-height: 2.5em;
+    & * { color: $black; }
+    padding: 50px;
+    width: 100%;
+
+    & i {
+      font-size: 2em;
+      color: $blue;
+      padding-bottom: .5em;
+    }
+  }
+}

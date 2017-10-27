@@ -1,0 +1,19 @@
+.loader {
+  width: 3em;
+  height: 3em;
+  border-radius: 100%;
+  border: solid .5em #f3f3f3;
+  border-bottom: solid $fuschia;
+  border-right: none;
+  border-top: none;
+  border-left: none;
+  //border-right: solid .5em $teal;
+  //border-top: solid .5em $orange;
+  //border-left: solid .5em $aqua;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

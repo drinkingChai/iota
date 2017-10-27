@@ -16,6 +16,8 @@ class UserLogin extends Component {
 
   onSubmit(ev) {
     ev.preventDefault()
+    // on success
+    this.props.history.push('/welcome')
   }
 
   render() {
@@ -25,7 +27,7 @@ class UserLogin extends Component {
     return (
       <div>
         <h3>Login</h3>
-        <form>
+        <form onSubmit={ onSubmit }>
           <label htmlFor='email'>Email</label>
           <input name='email' value={ email } onChange={ onChange } />
 

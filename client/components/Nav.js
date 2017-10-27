@@ -35,6 +35,11 @@ class Nav extends Component {
           <Link to='/train' onClick={ displayMenu }>Train</Link>
           <Link to='/login' onClick={ displayMenu }>Login</Link>
         </div>
+
+        <div className='nav-footer'>
+          <p>Created with much <i className="im im-heart"></i> by</p>
+          <p>Wasif Zaman</p>
+        </div>
       </nav>
     )
   }
