@@ -1,0 +1,39 @@
+nav {
+  position: fixed;
+  width: 70%;
+  height: 100%;
+  transition: all 0.2s ease-out;
+  background-color: $white;
+
+  z-index: 1;
+  
+  & a {
+    display: block;
+    padding: 10px;
+  }
+  
+  &.nav-hidden {
+    left: 100%;
+  }
+  &.nav-visible {
+    left: 30%;
+  }
+
+  & .burger-container-inactive,
+  & .burger-container-active {
+    position: absolute;
+    left: -50px;
+    top: -20px;
+    transition: all 0.1s;
+  }
+
+  & .burger-container-active { left: 10px; }
+
+  & .link-group {
+    display: grid;
+    grid-gap: 10px;
+    padding: 10px;
+    padding-top: 20px;
+    background-color: $white;
+  }
+}

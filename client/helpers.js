@@ -12,3 +12,8 @@ export function catFrequency (thoughts) {
   frequencyMap.sort((a, b) => b.count - a.count)
   return frequencyMap
 }
+
+export function formatDate (_date) {
+  const date = new Date(_date)
+  return `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`
+}

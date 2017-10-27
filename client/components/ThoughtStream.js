@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { formatDate } from '../helpers'
 
 class ThoughtStream extends Component {
   componentDidMount() {
@@ -10,20 +11,26 @@ class ThoughtStream extends Component {
     return (
       <div>
         <h3>Thought stream here!</h3>
-        <ul>
+        <div className='thought-list'>
           { 
             this.props.thoughts.map(thought => (
-              <li key={ thought.id }>
-                <p>{ thought.text }</p>
-                <br/>
-                <p>{ thought.classifications.map(c => c.label).slice(0, 5).join(',') }</p>
-                <hr/>
-                <button>Edit</button>
-                <button>Classify</button>
-              </li>
+              <div key={ thought.id } className='thought'>
+                <div>
+                  <p>{ thought.text }</p>
+                  <p>{ thought.classifications.map(c => c.label).slice(0, 5).join(',') }</p>
+                </div>
+
+                <div className='subheader'>
+                  <span className='date'>{ formatDate(thought.created) }</span>
+                  <div className='horiz-buttons'>
+                    <button><i className="im im-edit"></i></button>
+                    <button><i className="im im-network"></i></button>
+                  </div>
+                </div>
+              </div>
             ))
           }
-        </ul>
+        </div>
       </div>
     )
   }

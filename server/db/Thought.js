@@ -21,6 +21,8 @@ Thought.getThoughtsAndClassify = function() {
       thoughts.map(thought => ({
         id: thought.id,
         text: thought.text,
+        created: thought.createdAt,
+        updated: thought.updatedAt,
         classifications: machine.getClassifications(thought.text).slice(0,5)
       }))
     )

@@ -10,69 +10,75 @@ h3 { font-size: 1.5em; }
 
 * { box-sizing: border-box; }
 
-header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 10vh;
-  width: 100%;
-  position: fixed;
-  background-color: $white;
-}
-
-nav {
-  display: grid;
-  grid-auto-flow: column;
-  grid-gap: 5px;
-  position: fixed;
-  width: 100%;
-  padding-bottom: 10px;
-  background-color: $white;
-  z-index: 1;
-  
-  & a {
-    display: block;
-    text-align: center;
-    padding: 10px;
-    background-color: $blue;
-    color: $white;
-  }
-}
+@import '_header.scss';
+@import '_nav.scss';
+@import '_forms.scss';
 
 // svg z-index
 svg { z-index: -1; }
 
 #main {
-  padding-top: 10vh;
+  padding-top: 5vh;
 }
+
 main {
-  padding-top: 7vh;
+  padding: 30px;
 }
 
-textarea {
-  border-width: 0;
-  width: 100%;
-  height: 70vh;
-  padding: 10px;
-}
-
-input {
-  width: 100%;
-  padding: 10px;
-}
-
-textarea, input { font-size: 20px; }
-textarea:focus, input:focus, button:focus {
-  outline: none;
-}
-
-button {
-  border-width: 0;
-}
 .btn {
-  width: 100%;
   font-size: 16px;
-  background-color: $blue;
-  color: $white;
-  padding: 20px;
+  border: solid 2px $black;
+  padding: 10px;
+  border-radius: 5px;
+
+  &-red {
+    background-color: $red;
+    color: $white;
+    border-color: $red;
+  }
+  
+  &-blue {
+    background-color: $blue;
+    color: $white;
+    border-color: $blue;
+  }
+}
+
+.btn-group {
+  display: grid;
+  grid-gap: 20px;
+}
+
+.subheader {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: 3fr 1fr;
+
+  & > div {
+    display: grid;
+    grid-auto-flow: column;
+    align-items: center;
+    justify-items: end;
+  }
+}
+
+.thought-list {
+  display: grid;
+  grid-gap: 5px;
+}
+
+.thought {
+  display: grid;
+  grid-gap: 5px;
+
+  & p {
+    padding-bottom: 5px;
+  }
+}
+
+.date {
+  display: grid;
+  align-items: center;
+  font-size: 14px;
+  color: $gray;
 }

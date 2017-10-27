@@ -9,11 +9,11 @@ export default class Root extends Component {
   componentDidMount() {
     store.dispatch(fetchThoughts())
   }
-
   render() {
+
     return (
       <div>
-        <Route component={ Nav }/>
+        <Nav />
 
         <main>
           <Routes />
