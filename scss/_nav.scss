@@ -29,7 +29,11 @@ nav {
     transition: all 0.1s;
   }
 
-  & .burger-container-active { left: 10px; }
+  & .burger-container-active {
+    left: 10px;
+
+    & .im.im-x-mark { color: $black; }
+  }
 
   & .link-group {
     display: grid;

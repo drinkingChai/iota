@@ -27,6 +27,7 @@ class Jot extends Component {
   render() {
     const { text } = this.state
     const { onChange, onSubmit } = this
+    const inputDisabled = text.length < 5 || text.length > 100 ? true : false
 
     return (
       <form onSubmit={ onSubmit }>
@@ -36,10 +37,10 @@ class Jot extends Component {
           name='text'
           value={ text }
           onChange={ onChange }
-          style={{ resize: 'none' }}></textarea>
+          className={ inputDisabled ? 'red' : null }></textarea>
         <button
           className='btn'
-          disabled={ text.length < 5 || text.length > 100 ? true : false }>Submit</button>
+          disabled={ inputDisabled }>Submit</button>
       </form>
     )
   }

@@ -11,6 +11,15 @@ class ThoughtStream extends Component {
     return (
       <div>
         <h3>Thought stream here!</h3>
+
+        <div>
+          <label htmlFor='search'>Search</label>
+          <div className='search'>
+            <input name='search' />
+            <i className="im im-magnifier"></i>
+          </div>
+        </div>
+
         <div className='thought-list'>
           { 
             this.props.thoughts.map(thought => (

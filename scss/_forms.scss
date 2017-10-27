@@ -22,6 +22,9 @@ textarea {
   height: 30vh;
   padding: 15px;
   border-radius: 5px;
+  resize: none;
+
+  &.red { color: $red; }
 }
 
 input {
@@ -34,4 +37,23 @@ input {
 textarea, input { font-size: 20px; }
 textarea:focus, input:focus, button:focus {
   outline: none;
+}
+
+.search {
+  border-bottom: solid 1px $white;
+  display: grid;
+  grid-template-columns: 9fr 1fr;
+  align-items: center;
+  margin-bottom: 1em;
+
+  & input {
+    border-width: 0;
+    background-color: inherit;
+    color: $white;
+    border-radius: 0;
+  }
+  
+  & i {
+    padding-right: 10px;
+  }
 }
