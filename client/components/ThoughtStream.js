@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { formatDate } from '../helpers'
 
@@ -37,7 +38,7 @@ class ThoughtStream extends Component {
                 <div className='subheader'>
                   <span className='date'>{ formatDate(thought.created) }</span>
                   <div className='horiz-buttons'>
-                    <button><i className="im im-edit"></i></button>
+                    <Link to={ `/thoughts/${thought.id}` }><i className="im im-edit"></i></Link>
                     <button><i className="im im-network"></i></button>
                   </div>
                 </div>
