@@ -50,15 +50,17 @@ class ViewEditJot extends Component {
         { updatedDisplayed ? <JotSubmit /> : null }
 
         <h3>Edit a thought</h3>
+        <label htmlFor='text'>Thought</label>
         <textarea
           name='text'
           value={ text }
           onChange={ onChange }
           className={ inputDisabled ? 'red' : null }></textarea>
-        <input
+        <label htmlFor='categories'>Categories</label>
+        <textarea
           name='categories'
           value={ categories }
-          onChange={ onChange } />
+          onChange={ onChange }></textarea>
         <button
           className='btn'
           disabled={ inputDisabled }>Update</button>

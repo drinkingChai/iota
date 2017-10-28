@@ -37,8 +37,6 @@ class UserLogin extends Component {
           <button className='btn'>Login</button>
         </form>
 
-        <br/>
-        <br/>
         <h3>Register</h3>
 
         <div className='btn-group'>
