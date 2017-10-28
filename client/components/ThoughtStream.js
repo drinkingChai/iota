@@ -36,7 +36,7 @@ class ThoughtStream extends Component {
                 </div>
 
                 <div className='subheader'>
-                  <span className='date'>{ formatDate(thought.created) }</span>
+                  <span className='date'>{ formatDate(thought.updated) }</span>
                   <div className='horiz-buttons'>
                     <Link to={ `/thoughts/${thought.id}` }><i className="im im-edit"></i></Link>
                     <Link to='/'><i className="im im-share"></i></Link>

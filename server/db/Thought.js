@@ -16,7 +16,7 @@ Thought.storeAndGetClassification = function(content) {
 }
 
 Thought.getThoughtsAndClassify = function() {
-  return this.findAll()
+  return this.findAll({ order: [[ 'updatedAt', 'DESC' ]] })
     .then(thoughts =>
       thoughts.map(thought => ({
         id: thought.id,

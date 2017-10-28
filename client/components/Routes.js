@@ -3,7 +3,7 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 import Jot from './Jot'
 import ViewEditJot from './ViewEditJot'
 import Train from './Train'
-import Statistics from './Statistics'
+import Analysis from './Analysis'
 import ThoughtStream from './ThoughtStream'
 import Login from './Login'
 import Welcome from './messages/Welcome'
@@ -13,7 +13,7 @@ export default function Routes () {
     <Switch>
       <Route exact path='/jot' component={ Jot } />
       <Route exact path='/train' component={ Train } />
-      <Route exact path='/stats' component={ Statistics } />
+      <Route exact path='/stats' component={ Analysis } />
       <Route exact path='/thoughts' component={ ThoughtStream } />
       <Route exact path='/thoughts/:id' component={ ViewEditJot } />
       <Route exact path='/login' component={ Login } />

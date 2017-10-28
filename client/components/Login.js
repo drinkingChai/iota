@@ -29,7 +29,7 @@ class UserLogin extends Component {
         <h3>Login</h3>
         <form onSubmit={ onSubmit }>
           <label htmlFor='email'>Email</label>
-          <input name='email' value={ email } onChange={ onChange } />
+          <input name='email' type='email' value={ email } onChange={ onChange } />
 
           <label htmlFor='password'>Password</label>
           <input name='password' type='password' value={ password } onChange={ onChange } />
