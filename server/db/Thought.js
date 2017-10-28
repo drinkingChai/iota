@@ -28,4 +28,19 @@ Thought.getThoughtsAndClassify = function() {
     )
 }
 
+Thought.updateThoughtAndClassify = function(id, content) {
+  return this.findById(id)
+    .then(thought => {
+      Object.assign(thought, content)
+      return thought.save()
+    })
+    .then(thought => {
+      const categories = content.categories.split(', ').filter(c => c)
+      return Promise.all(
+        categories.map(cat =>
+          conn.models.machinedata.storeAndTrain({ phrase: thought.text, category: cat })
+        ))
+    })
+}
+
 module.exports = Thought

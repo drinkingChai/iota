@@ -39,7 +39,8 @@ class ThoughtStream extends Component {
                   <span className='date'>{ formatDate(thought.created) }</span>
                   <div className='horiz-buttons'>
                     <Link to={ `/thoughts/${thought.id}` }><i className="im im-edit"></i></Link>
-                    <button><i className="im im-network"></i></button>
+                    <Link to='/'><i className="im im-share"></i></Link>
+                    {/* <button><i className="im im-network"></i></button> */}
                   </div>
                 </div>
               </div>

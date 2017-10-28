@@ -22,6 +22,10 @@ export const postThought = content => dispatch =>
   axios.post('/api/thoughts', content)
     .then(res => res.data)
 
+export const updateThought = (id, content) => dispatch =>
+  axios.put(`/api/thoughts/${id}`, content)
+    .then(res => res.data)
+
 // INITIAL STATE
 const initialState = {
   thoughts: []

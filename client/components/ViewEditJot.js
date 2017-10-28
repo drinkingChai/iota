@@ -29,11 +29,11 @@ class ViewEditJot extends Component {
 
   onSubmit(ev) {
     ev.preventDefault()
-    this.props.updateThought(this.state)
+    this.props.updateThought(this.props.match.params.id, this.state)
       .then(classification => {
         this.setState({ updatedDisplayed: true })
         setTimeout(() => {
-          this.setState({ text: '', updatedDisplayed: false })
+          this.setState({ updatedDisplayed: false })
         }, 2000)
         //console.log(classification)
         //this.setState({ text: '' })
@@ -44,8 +44,6 @@ class ViewEditJot extends Component {
     const { text, categories, updatedDisplayed } = this.state
     const { onChange, onSubmit } = this
     const inputDisabled = text.length < 5 || text.length > 100 ? true : false
-
-    //if (!this.props.thought) return <div></div>
 
     return (
       <form onSubmit={ onSubmit }>

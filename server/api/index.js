@@ -17,4 +17,9 @@ router.get('/thoughts', (req, res, next) => {
     .then(thoughts => res.send(thoughts))
 })
 
+router.put('/thoughts/:id', (req, res, next) => {
+  Thought.updateThoughtAndClassify(req.params.id, req.body)
+    .then(classification => res.send(classification))
+})
+
 module.exports = router
