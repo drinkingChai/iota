@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { postThought } from '../store'
+import JotSubmit from './messages/JotSubmit'
 
 class Jot extends Component {
   constructor() {
     super()
-    this.state = { text: '' }
+    this.state = { text: '', submittedDisplayed: false }
     this.onChange = this.onChange.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
   }
@@ -19,18 +20,24 @@ class Jot extends Component {
     ev.preventDefault()
     this.props.postThought(this.state)
       .then(classification => {
-        console.log(classification)
-        this.setState({ text: '' })
+        this.setState({ submittedDisplayed: true })
+        setTimeout(() => {
+          this.setState({ text: '', submittedDisplayed: false })
+        }, 2000)
+        //console.log(classification)
+        //this.setState({ text: '' })
       })
   }
 
   render() {
-    const { text } = this.state
+    const { text, submittedDisplayed } = this.state
     const { onChange, onSubmit } = this
     const inputDisabled = text.length < 5 || text.length > 100 ? true : false
 
     return (
       <form onSubmit={ onSubmit }>
+        { submittedDisplayed ? <JotSubmit /> : null }
+
         <h3>Jot it down</h3>
         <textarea
           autoFocus

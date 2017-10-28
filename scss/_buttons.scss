@@ -16,8 +16,14 @@
   
   &-blue {
     background-color: $blue;
-    color: $white;
+    color: $white !important;
     border-color: $blue;
+  }
+  
+  &-inverse {
+    background-color: $black;
+    color: $white !important;
+    border-color: $black;
   }
 }
 
