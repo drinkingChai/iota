@@ -76,9 +76,11 @@
 }
 
 .category {
+  display: grid;
+  align-items: center;
   font-size: 12px;
   text-align: center;
-  padding: 2px;
+  padding: 5px;
   background-color: $teal;
   color: $white;
   border-radius: 2px;

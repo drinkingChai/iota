@@ -29,14 +29,10 @@ class ViewEditJot extends Component {
 
   onSubmit(ev) {
     ev.preventDefault()
+    this.setState({ updatedDisplayed: true })
     this.props.updateThought(this.props.match.params.id, this.state)
       .then(classification => {
-        this.setState({ updatedDisplayed: true })
-        setTimeout(() => {
-          this.setState({ updatedDisplayed: false })
-        }, 2000)
-        //console.log(classification)
-        //this.setState({ text: '' })
+        this.setState({ updatedDisplayed: false })
       })
   }
 
@@ -57,10 +53,6 @@ class ViewEditJot extends Component {
           onChange={ onChange }
           className={ inputDisabled ? 'red' : null }></textarea>
         <label htmlFor='categories'>Categories</label>
-        <textarea
-          name='categories'
-          value={ categories }
-          onChange={ onChange }></textarea>
         <button
           className='btn'
           disabled={ inputDisabled }>Update</button>

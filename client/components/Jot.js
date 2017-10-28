@@ -18,14 +18,10 @@ class Jot extends Component {
 
   onSubmit(ev) {
     ev.preventDefault()
+    this.setState({ submittedDisplayed: true })
     this.props.postThought(this.state)
       .then(classification => {
-        this.setState({ submittedDisplayed: true })
-        setTimeout(() => {
-          this.setState({ text: '', submittedDisplayed: false })
-        }, 2000)
-        //console.log(classification)
-        //this.setState({ text: '' })
+        this.setState({ text: '', submittedDisplayed: false })
       })
   }
 

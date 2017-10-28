@@ -32,7 +32,6 @@ class Nav extends Component {
           <Link to='/jot' onClick={ displayMenu }>Jot</Link>
           <Link to='/thoughts' onClick={ displayMenu }>ThoughtStream</Link>
           <Link to='/stats' onClick={ displayMenu }>Analyze</Link>
-          <Link to='/train' onClick={ displayMenu }>Train</Link>
           <Link to='/login' onClick={ displayMenu }>Login</Link>
         </div>
 

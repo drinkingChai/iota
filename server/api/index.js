@@ -20,8 +20,8 @@ router.get('/thoughts', (req, res, next) => {
     .catch(next)
 })
 
-router.delete('/thoughts/:id/remove-cluster', (req, res, next) => {
-  Thought.removeFromCluster(req.params.id)
+router.delete('/thoughts/:id/remove-cluster/:clusterId', (req, res, next) => {
+  Thought.removeFromCluster(req.params.id, req.params.clusterId)
     .then(() => res.sendStatus(200))
     .catch(next)
 })

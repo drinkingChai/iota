@@ -14,47 +14,30 @@ Thought.createAndClassify = function(content) {
     .then(thought => conn.models.category.classifyThought(thought))
 }
 
-// for now classify in real time
 Thought.storeAndGetClassification = function(content) {
   const date = new Date()
-  return this.findAll({ order: [[ 'updatedAt', 'ASC' ]] })
+  return this.findAll({ order: [[ 'updatedAt', 'DESC' ]] })
     .then(function(thoughts) {
-      let clusterExists = thoughts.find(t => {
+      let createdWithinLimit = thoughts.find(t => {
         return (date - (new Date(t.createdAt))) / 1000 / 60 < 5
       })
 
-      if (clusterExists && clusterExists.clusterId) {
-        Object.assign(content, { clusterId: clusterExists.clusterId })
-        return Thought.createAndClassify(content)
-      } else if (clusterExists) {
+      if (createdWithinLimit && createdWithinLimit.clusterId) {
+        Object.assign(content, { clusterId: createdWithinLimit.clusterId })
+      } else if (createdWithinLimit) {
         return conn.models.cluster.create()
           .then(function(cluster) {
-            Object.assign(clusterExists, { clusterId: cluster.id })
+            Object.assign(createdWithinLimit, { clusterId: cluster.id })
             Object.assign(content, { clusterId: cluster.id })
             return Promise.all([
-              clusterExists.save(),
+              createdWithinLimit.save(),
               Thought.createAndClassify(content)
             ])
           })
-      } else {
-        return Thought.createAndClassify(content)
       }
+      return Thought.createAndClassify(content)
     })
 }
-
-//Thought.getThoughtsAndClassify = function() {
-  //return this.findAll({ order: [[ 'updatedAt', 'DESC' ]] })
-    //.then(thoughts =>
-      //thoughts.map(thought => ({
-        //id: thought.id,
-        //text: thought.text,
-        //created: thought.createdAt,
-        //updated: thought.updatedAt,
-        //clusterId: thought.clusterId,
-        //classifications: machine.getClassifications(thought.text).slice(0,5)
-      //}))
-    //)
-//}
 
 Thought.getThoughtsAndClassify = function() {
   return this.findAll({ order: [[ 'updatedAt', 'DESC' ]], include: [ conn.models.category ] })
@@ -76,20 +59,20 @@ Thought.updateThoughtAndClassify = function(id, content) {
       Object.assign(thought, content)
       return thought.save()
     })
-    .then(thought => {
-      const categories = content.categories.split(', ').filter(c => c)
-      return Promise.all(
-        categories.map(cat =>
-          conn.models.machinedata.storeAndTrain({ phrase: thought.text, category: cat })
-        ))
-    })
+    .then(thought => conn.models.category.classifyThought(thought))
 }
 
-Thought.removeFromCluster = function(id) {
+Thought.removeFromCluster = function(id, clusterId) {
   return Thought.findById(id)
     .then(thought => {
       Object.assign(thought, { clusterId: null })
       return thought.save()
+    })
+    .then(() => {
+      return Thought.findAll({ where: { clusterId } })
+        .then(thoughts => {
+          if (thoughts.length == 1) return Thought.removeFromCluster(thoughts[0].id, clusterId)
+        })
     })
 }
 

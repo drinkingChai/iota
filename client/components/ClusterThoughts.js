@@ -12,7 +12,7 @@ function ClusterThoughts ({ thoughts, unlinkThought }) {
       <div className='thought-list linked'>
         { thoughts.map(thought => (
           <div key={ thought.id } className='thought thought-linked'>
-            <button className='cluster-link unlink' onClick={ () => unlinkThought(thought.id) }><i className='im im-unlink'></i></button>
+            <button className='cluster-link unlink' onClick={ () => unlinkThought(thought) }><i className='im im-unlink'></i></button>
             <div>
               <p>{ thought.text }</p>
             </div>

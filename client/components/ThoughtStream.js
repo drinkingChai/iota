@@ -43,8 +43,6 @@ class ThoughtStream extends Component {
                   <span className='date'>{ formatDate(thought.updated) }</span>
                   <div className='horiz-buttons'>
                     <Link to={ `/thoughts/${thought.id}` }><i className="im im-pencil"></i></Link>
-                    {/*<Link to='/'><i className="im im-share"></i></Link>*/}
-                    {/* <button><i className="im im-network"></i></button> */}
                   </div>
                 </div>
               </div>
@@ -58,13 +56,16 @@ class ThoughtStream extends Component {
 
 const mapState = ({ thoughts }) => {
   let inCluster = []
+  let _thoughts = thoughts.filter(t => {
+    if (t.clusterId && !inCluster.find(c => c == t.clusterId)) {
+      inCluster.push(t.clusterId)
+      return t
+    } else if (!t.clusterId) return t;
+  })
+  _thoughts.sort((a, b) => (new Date(b.updated) - new Date(a.updated)))
+  
   return {
-    thoughts: thoughts.filter(t => {
-      if (t.clusterId && !inCluster.find(c => c == t.clusterId)) {
-        inCluster.push(t.clusterId)
-        return t
-      } else if (!t.clusterId) return t;
-    })
+    thoughts: _thoughts
   }
 }
 
