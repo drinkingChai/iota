@@ -19,6 +19,12 @@
     display: grid;
     grid-gap: 15px;
 
+    & .horiz-loader {
+      margin-top: 20px;
+    }
+
+    & h3 { line-height: 1.3em; }
+
     & i {
       font-size: 2em;
       color: $blue;

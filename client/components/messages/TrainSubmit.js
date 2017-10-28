@@ -4,8 +4,8 @@ export default function TrainSubmit () {
   return (
     <div className='floating-message'>
       <div className='floating-message-body'>
-        <i className="im im-book"></i>
-        <h2>Thank you for helping the bot learn!</h2>
+        <h3>Thank you for helping the bot learn!</h3>
+        <div className='horiz-loader'></div>
       </div>
     </div>
   )
