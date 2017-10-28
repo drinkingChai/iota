@@ -11,8 +11,30 @@ const Thought = conn.define('thought', {
 
 // for now classify in real time
 Thought.storeAndGetClassification = function(content) {
-  return this.create(content)
-    .then(data => machine.getClassifications(data.text))
+  const date = new Date()
+  return this.findAll({ order: [[ 'updatedAt', 'ASC' ]] })
+    .then(function(thoughts) {
+      let clusterExists = thoughts.find(t => {
+        return (date - (new Date(t.createdAt))) / 1000 / 60 < 5
+      })
+
+      if (clusterExists && clusterExists.clusterId) {
+        Object.assign(content, { clusterId: clusterExists.clusterId })
+        return Thought.create(content)
+      } else if (clusterExists) {
+        return conn.models.cluster.create()
+          .then(function(cluster) {
+            Object.assign(clusterExists, { clusterId: cluster.id })
+            Object.assign(content, { clusterId: cluster.id })
+            return Promise.all([
+              clusterExists.save(),
+              Thought.create(content)
+            ])
+          })
+      } else {
+        return Thought.create(content)
+      }
+    })
 }
 
 Thought.getThoughtsAndClassify = function() {

@@ -12,6 +12,7 @@ files.forEach(file => {
     const split = line.split('-')
     const category = split[0].trim()
     const phrase = split.slice(1).join(' ').trim()
+    if (!phrase || !category) return
     documents.push({ category, phrase })
   })
 })
