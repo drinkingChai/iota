@@ -9,6 +9,11 @@ const Thought = conn.define('thought', {
   }
 })
 
+Thought.createAndClassify = function(content) {
+  return this.create(content)
+    .then(thought => conn.models.category.classifyThought(thought))
+}
+
 // for now classify in real time
 Thought.storeAndGetClassification = function(content) {
   const date = new Date()
@@ -20,7 +25,7 @@ Thought.storeAndGetClassification = function(content) {
 
       if (clusterExists && clusterExists.clusterId) {
         Object.assign(content, { clusterId: clusterExists.clusterId })
-        return Thought.create(content)
+        return Thought.createAndClassify(content)
       } else if (clusterExists) {
         return conn.models.cluster.create()
           .then(function(cluster) {
@@ -28,17 +33,31 @@ Thought.storeAndGetClassification = function(content) {
             Object.assign(content, { clusterId: cluster.id })
             return Promise.all([
               clusterExists.save(),
-              Thought.create(content)
+              Thought.createAndClassify(content)
             ])
           })
       } else {
-        return Thought.create(content)
+        return Thought.createAndClassify(content)
       }
     })
 }
 
+//Thought.getThoughtsAndClassify = function() {
+  //return this.findAll({ order: [[ 'updatedAt', 'DESC' ]] })
+    //.then(thoughts =>
+      //thoughts.map(thought => ({
+        //id: thought.id,
+        //text: thought.text,
+        //created: thought.createdAt,
+        //updated: thought.updatedAt,
+        //clusterId: thought.clusterId,
+        //classifications: machine.getClassifications(thought.text).slice(0,5)
+      //}))
+    //)
+//}
+
 Thought.getThoughtsAndClassify = function() {
-  return this.findAll({ order: [[ 'updatedAt', 'DESC' ]] })
+  return this.findAll({ order: [[ 'updatedAt', 'DESC' ]], include: [ conn.models.category ] })
     .then(thoughts =>
       thoughts.map(thought => ({
         id: thought.id,
@@ -46,7 +65,7 @@ Thought.getThoughtsAndClassify = function() {
         created: thought.createdAt,
         updated: thought.updatedAt,
         clusterId: thought.clusterId,
-        classifications: machine.getClassifications(thought.text).slice(0,5)
+        classifications: thought.categories
       }))
     )
 }
