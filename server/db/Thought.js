@@ -45,6 +45,7 @@ Thought.getThoughtsAndClassify = function() {
         text: thought.text,
         created: thought.createdAt,
         updated: thought.updatedAt,
+        clusterId: thought.clusterId,
         classifications: machine.getClassifications(thought.text).slice(0,5)
       }))
     )
@@ -62,6 +63,25 @@ Thought.updateThoughtAndClassify = function(id, content) {
         categories.map(cat =>
           conn.models.machinedata.storeAndTrain({ phrase: thought.text, category: cat })
         ))
+    })
+}
+
+Thought.removeFromCluster = function(id) {
+  return Thought.findById(id)
+    .then(thought => {
+      Object.assign(thought, { clusterId: null })
+      return thought.save()
+    })
+}
+
+Thought.addToCluster = function(id, clusterId) {
+  return conn.models.cluster.findById(clusterId)
+    .then(cluster => {
+      return Thought.findById(id)
+        .then(thought => {
+          Object.assign(thought, { clusterId: cluster.id })
+          return thought.save()
+        })
     })
 }
 

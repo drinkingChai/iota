@@ -26,6 +26,10 @@ export const updateThought = (id, content) => dispatch =>
   axios.put(`/api/thoughts/${id}`, content)
     .then(res => res.data)
 
+export const unlinkThought = id => dispatch =>
+  axios.delete(`/api/thoughts/${id}/remove-cluster`)
+    .then(res => res.data)
+
 // INITIAL STATE
 const initialState = {
   thoughts: []

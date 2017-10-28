@@ -4,22 +4,38 @@ const { MachineData } = require('../db').models
 router.post('/train', (req, res, next) => {
   MachineData.storeAndTrain(req.body)
     .then(() => res.sendStatus(201))
+    .catch(next)
 })
 
 const { Thought } = require('../db').models
 router.post('/thoughts', (req, res, next) => {
   Thought.storeAndGetClassification(req.body)
     .then(classification => res.send(classification))
+    .catch(next)
 })
 
 router.get('/thoughts', (req, res, next) => {
   Thought.getThoughtsAndClassify()
     .then(thoughts => res.send(thoughts))
+    .catch(next)
+})
+
+router.delete('/thoughts/:id/remove-cluster', (req, res, next) => {
+  Thought.removeFromCluster(req.params.id)
+    .then(() => res.sendStatus(200))
+    .catch(next)
+})
+
+router.put('/thoughts/:id/add-to-cluster/:clusterId', (req, res, next) => {
+  Thought.addToCluster(req.params.id, req.params.clusterId)
+    .then(() => res.sendStatus(200))
+    .catch(next)
 })
 
 router.put('/thoughts/:id', (req, res, next) => {
   Thought.updateThoughtAndClassify(req.params.id, req.body)
     .then(classification => res.send(classification))
+    .catch(next)
 })
 
 module.exports = router

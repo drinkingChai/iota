@@ -5,6 +5,7 @@ import ViewEditJot from './ViewEditJot'
 import Train from './Train'
 import Analysis from './Analysis'
 import ThoughtStream from './ThoughtStream'
+import ClusterThoughts from './ClusterThoughts'
 import Login from './Login'
 import Welcome from './messages/Welcome'
 
@@ -16,6 +17,7 @@ export default function Routes () {
       <Route exact path='/stats' component={ Analysis } />
       <Route exact path='/thoughts' component={ ThoughtStream } />
       <Route exact path='/thoughts/:id' component={ ViewEditJot } />
+      <Route exact path='/clusters/:id' component={ ClusterThoughts } />
       <Route exact path='/login' component={ Login } />
       <Route exact path='/welcome' component={ Welcome } />
       <Redirect to='/jot' />

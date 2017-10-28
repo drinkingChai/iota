@@ -24,7 +24,11 @@ class ThoughtStream extends Component {
         <div className='thought-list'>
           { 
             this.props.thoughts.map(thought => (
-              <div key={ thought.id } className='thought'>
+              <div key={ thought.id } className={ thought.clusterId ? 'thought thought-cluster' : 'thought' }>
+                { thought.clusterId ?
+                    <Link
+                      to={ `/clusters/${thought.clusterId}` }
+                      className='cluster-link'>cluster</Link> : null }
                 <div>
                   <p>{ thought.text }</p>
                   <div className='categories'>
@@ -38,8 +42,8 @@ class ThoughtStream extends Component {
                 <div className='subheader'>
                   <span className='date'>{ formatDate(thought.updated) }</span>
                   <div className='horiz-buttons'>
-                    <Link to={ `/thoughts/${thought.id}` }><i className="im im-edit"></i></Link>
-                    <Link to='/'><i className="im im-share"></i></Link>
+                    <Link to={ `/thoughts/${thought.id}` }><i className="im im-pencil"></i></Link>
+                    {/*<Link to='/'><i className="im im-share"></i></Link>*/}
                     {/* <button><i className="im im-network"></i></button> */}
                   </div>
                 </div>
@@ -52,6 +56,16 @@ class ThoughtStream extends Component {
   }
 }
 
-const mapState = ({ thoughts }) => ({ thoughts })
+const mapState = ({ thoughts }) => {
+  let inCluster = []
+  return {
+    thoughts: thoughts.filter(t => {
+      if (t.clusterId && !inCluster.find(c => c == t.clusterId)) {
+        inCluster.push(t.clusterId)
+        return t
+      } else if (!t.clusterId) return t;
+    })
+  }
+}
 
 export default connect(mapState)(ThoughtStream)

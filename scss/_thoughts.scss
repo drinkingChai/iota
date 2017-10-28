@@ -2,6 +2,10 @@
   display: grid;
   grid-gap: 20px;
   padding: 10px 0 30px 0;
+
+  &.linked {
+    grid-gap: 0;
+  }
 }
 
 .thought {
@@ -11,12 +15,57 @@
   color: $black;
   border-radius: 3px;
 
+  position: relative;
+
   padding: 10px;
   //border: solid 1px $gray;
 
   & * { color: $black; }
   & p {
-    padding-bottom: 5px;
+    padding: 10px 0;
+  }
+
+  &.thought-cluster {
+    padding-top: 20px;
+    margin-top: 10px;
+  }
+
+  &.thought-cluster:after {
+    content: '';
+    width: 98%;
+    height: 10px;
+    position: absolute;
+    top: -5px;
+    left: 1%;
+    border-radius: 3px;
+    background-color: lighten($gray, 15%);
+    z-index: -1;
+  }
+  &.thought-cluster:before {
+    content: '';
+    width: 96%;
+    height: 10px;
+    position: absolute;
+    top: -10px;
+    left: 2%;
+    border-radius: 3px;
+    background-color: lighten($gray, 5%);
+    z-index: -1;
+  }
+
+  &.thought-linked {
+    padding-top: 25px;
+    border-radius: 0;
+    border-color: transparent;
+
+    &:first-of-type {
+      border-top-left-radius: 3px;
+      border-top-right-radius: 3px;
+    }
+    &:last-of-type {
+      border-bottom-left-radius: 3px;
+      border-bottom-right-radius: 3px;
+    }
   }
 }
 
@@ -48,10 +97,30 @@
     align-items: center;
     justify-items: end;
   }
+
+  & i {
+    font-size: 12px;
+    color: darken($gray, 30%);
+  }
 }
 
 .date {
   display: grid;
   align-items: center;
-  font-size: 14px;
+  font-size: 12px;
+}
+
+.cluster-link {
+  font-size: 12px;
+  background-color: lighten($purple, 50%);
+  color: $purple;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  padding: 2px 5px;
+  border-radius: 2px;
+
+  &.unlink i {
+    font-size: 12px;
+  }
 }
