@@ -87,4 +87,14 @@ Thought.addToCluster = function(id, clusterId) {
     })
 }
 
+Thought.removeCategory = function(id, categoryId) {
+  return Thought.findById(id)
+    .then(thought => {
+      return conn.models.category.findById(categoryId)
+        .then(category => {
+          return thought.removeCategories(category)
+        })
+    })
+}
+
 module.exports = Thought

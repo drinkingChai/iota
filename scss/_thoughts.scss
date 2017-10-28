@@ -84,6 +84,23 @@
   background-color: $teal;
   color: $white;
   border-radius: 2px;
+
+  
+
+  &.remove-category > div {
+    display: grid;
+    grid-auto-flow: column;
+    align-items: center;
+    grid-gap: 5px;
+
+    & i { font-size: 10px; padding-top: 2px; }
+  }
+}
+
+.remove-categories-container {
+  display: grid;
+  grid-auto-flow: column;
+  grid-gap: 10px;
 }
 
 .subheader {

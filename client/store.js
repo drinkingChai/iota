@@ -30,6 +30,10 @@ export const unlinkThought = thought => dispatch =>
   axios.delete(`/api/thoughts/${thought.id}/remove-cluster/${thought.clusterId}`)
     .then(res => res.data)
 
+export const removeCategory = (thought, category) => dispatch =>
+  axios.delete(`/api/thoughts/${thought.id}/remove-category/${category.id}`)
+    .then(res => res.data)
+
 // INITIAL STATE
 const initialState = {
   thoughts: []

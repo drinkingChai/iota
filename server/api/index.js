@@ -20,6 +20,12 @@ router.get('/thoughts', (req, res, next) => {
     .catch(next)
 })
 
+router.delete('/thoughts/:id/remove-category/:categoryId', (req, res, next) => {
+  Thought.removeCategory(req.params.id, req.params.categoryId)
+    .then(() => res.sendStatus(200))
+    .catch(next)
+})
+
 router.delete('/thoughts/:id/remove-cluster/:clusterId', (req, res, next) => {
   Thought.removeFromCluster(req.params.id, req.params.clusterId)
     .then(() => res.sendStatus(200))

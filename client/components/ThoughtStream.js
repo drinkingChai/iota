@@ -31,12 +31,12 @@ class ThoughtStream extends Component {
                       className='cluster-link'>cluster</Link> : null }
                 <div>
                   <p>{ thought.text }</p>
-                  <div className='categories'>
+                  {/*<div className='categories'>
                     {
                       thought.classifications.map(c => c.label).slice(0, 5).map(cat =>
                         <span key={ cat } className='category'>{ cat }</span> )
                     }
-                  </div>
+                  </div>*/}
                 </div>
 
                 <div className='subheader'>
