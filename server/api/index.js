@@ -44,4 +44,11 @@ router.put('/thoughts/:id', (req, res, next) => {
     .catch(next)
 })
 
+const { Cluster } = require('../db').models
+router.post('/clusters', (req, res, next) => {
+  Cluster.clusterThoughts(req.body)
+    .then(() => res.sendStatus(200))
+    .catch(next)
+})
+
 module.exports = router

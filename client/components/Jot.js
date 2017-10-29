@@ -28,7 +28,7 @@ class Jot extends Component {
   render() {
     const { text, submittedDisplayed } = this.state
     const { onChange, onSubmit } = this
-    const inputDisabled = text.length < 5 || text.length > 100 ? true : false
+    const inputDisabled = text.length < 5 || text.length > 200 ? true : false
 
     return (
       <form onSubmit={ onSubmit }>

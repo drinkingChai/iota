@@ -18,8 +18,10 @@
   position: relative;
 
   padding: 10px;
-  //border: solid 1px $gray;
+  border: solid 3px $white;
+  transition: border .5s;
 
+  &.selected { border-color: $teal; }
   & * { color: $black; }
   & p {
     padding: 10px 0;
@@ -27,7 +29,7 @@
 
   &.thought-cluster {
     padding-top: 20px;
-    margin-top: 10px;
+    margin-top: 16px;
   }
 
   &.thought-cluster:after {
@@ -35,22 +37,31 @@
     width: 98%;
     height: 10px;
     position: absolute;
-    top: -5px;
+    top: -8px;
     left: 1%;
     border-radius: 3px;
     background-color: lighten($gray, 15%);
     z-index: -1;
+    transition: background-color 0.5s;
   }
   &.thought-cluster:before {
     content: '';
     width: 96%;
     height: 10px;
     position: absolute;
-    top: -10px;
+    top: -13px;
     left: 2%;
     border-radius: 3px;
     background-color: lighten($gray, 5%);
     z-index: -1;
+    transition: background-color 0.5s;
+  }
+
+  &.thought-cluster.selected:after {
+    background-color: darken($teal, 20%);
+  }
+  &.thought-cluster.selected:before {
+    background-color: darken($teal, 30%);
   }
 
   &.thought-linked {
@@ -70,9 +81,13 @@
 }
 
 .categories {
-  display: grid;
-  grid-auto-flow: column;
-  grid-gap: 5px;
+  display: flex;
+  flex-wrap: wrap;
+
+  & > button, & > span {
+    margin-right: 5px;
+    margin-bottom: 5px;
+  }
 }
 
 .category {
@@ -80,27 +95,23 @@
   align-items: center;
   font-size: 12px;
   text-align: center;
-  padding: 5px;
+  padding: 5px 7px;
   background-color: $teal;
   color: $white;
   border-radius: 2px;
 
-  
+  &.remove-category {
+    & > span {
+      display: flex;
+    }
 
-  &.remove-category > div {
-    display: grid;
-    grid-auto-flow: column;
-    align-items: center;
-    grid-gap: 5px;
-
-    & i { font-size: 10px; padding-top: 2px; }
+    & i {
+      font-size: 10px;
+      align-self: flex-end;
+      margin-left: 5px;
+      margin-bottom: 1px;
+    }
   }
-}
-
-.remove-categories-container {
-  display: grid;
-  grid-auto-flow: column;
-  grid-gap: 10px;
 }
 
 .subheader {

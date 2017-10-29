@@ -26,6 +26,10 @@ export const updateThought = (id, content) => dispatch =>
   axios.put(`/api/thoughts/${id}`, content)
     .then(res => res.data)
 
+export const linkThoughts = thoughts => dispatch =>
+  axios.post(`/api/clusters`, thoughts)
+    .then(res => res.data)
+
 export const unlinkThought = thought => dispatch =>
   axios.delete(`/api/thoughts/${thought.id}/remove-cluster/${thought.clusterId}`)
     .then(res => res.data)

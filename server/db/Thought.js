@@ -97,4 +97,8 @@ Thought.removeCategory = function(id, categoryId) {
     })
 }
 
+Thought.clusterThoughts = function(thoughts) {
+
+}
+
 module.exports = Thought

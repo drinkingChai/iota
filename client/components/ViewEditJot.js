@@ -6,10 +6,11 @@ import JotSubmit from './messages/JotSubmit'
 class ViewEditJot extends Component {
   constructor() {
     super()
-    this.state = { text: '', categories: '', updatedDisplayed: false }
+    this.state = { text: '', newcategory: '', categories: '', updatedDisplayed: false }
     this.onChange = this.onChange.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
     this.onRemoveCategory = this.onRemoveCategory.bind(this)
+    this.onAddCategory = this.onAddCategory.bind(this)
   }
 
   componentDidMount() {
@@ -42,9 +43,13 @@ class ViewEditJot extends Component {
     this.props.removeCategory(this.props.thought, category)
   }
 
+  onAddCategory(ev) {
+    ev.preventDefault()
+  }
+
   render() {
-    const { text, classifications, updatedDisplayed } = this.state
-    const { onChange, onSubmit, onRemoveCategory } = this
+    const { text, newcategory, classifications, updatedDisplayed } = this.state
+    const { onChange, onSubmit, onRemoveCategory, onAddCategory } = this
     const inputDisabled = text.length < 5 || text.length > 100 ? true : false
 
     return (
@@ -58,21 +63,30 @@ class ViewEditJot extends Component {
           value={ text }
           onChange={ onChange }
           className={ inputDisabled ? 'red' : null }></textarea>
+
         <label htmlFor='categories'>Categories</label>
-        <div className='remove-categories-container'>
+        <div className='categories'>
           { 
             classifications && classifications.map(cat => (
               <button
                 key={ cat.id }
                 onClick={ (ev) => onRemoveCategory(ev, cat) }
                 className='category remove-category'>
-                <div>
-                  <span>{ cat.label }</span>
-                  <i className='im im-x-mark'></i>
-                </div>
+                <span>{ cat.label } <i className='im im-x-mark'></i></span>
               </button>))
           }
         </div>
+
+        <label htmlFor='newcategory'>Thought</label>
+        {/* have this autocomplete to existing cats */}
+        <input
+          name='newcategory'
+          value={ newcategory }
+          onChange={ onChange } />
+        <button
+          className='btn btn-blue'
+          onClick={ onAddCategory }>Add category</button>
+
         <button
           className='btn'
           disabled={ inputDisabled }>Update</button>

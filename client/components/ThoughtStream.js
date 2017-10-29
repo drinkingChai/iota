@@ -2,13 +2,37 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { formatDate } from '../helpers'
+import { linkThoughts } from '../store'
 
 class ThoughtStream extends Component {
+  constructor() {
+    super()
+    this.state = { selected: [] }
+    this.onToggleSelect = this.onToggleSelect.bind(this)
+    this.onCluster = this.onCluster.bind(this)
+  }
+
   componentDidMount() {
     window.scrollTo(0, 0);
   }
 
+  onToggleSelect(thought) {
+    const { selected } = this.state
+    if (selected.find(t => t.id == thought.id)) return this.setState({ selected: selected.filter(t => t.id != thought.id) })
+    else return this.setState({ selected: [ ...selected, thought ] })
+  }
+
+  onDelete(ev) {
+  }
+
+  onCluster(ev) {
+    this.props.linkThoughts(this.state.selected)
+  }
+
   render() {
+    const { selected } = this.state
+    const { onToggleSelect, onCluster } = this
+
     return (
       <div>
         <h3>Thought stream here!</h3>
@@ -24,31 +48,38 @@ class ThoughtStream extends Component {
         <div className='thought-list'>
           { 
             this.props.thoughts.map(thought => (
-              <div key={ thought.id } className={ thought.clusterId ? 'thought thought-cluster' : 'thought' }>
-                { thought.clusterId ?
+              <div
+                key={ thought.id } 
+                className={ `${thought.clusterId ? 'thought thought-cluster' : 'thought'}
+                  ${selected.find(t=> t.id == thought.id) ? 'selected' : ''}` }
+                onClick={ () => onToggleSelect(thought) }>
+                  { thought.clusterId ?
                     <Link
                       to={ `/clusters/${thought.clusterId}` }
                       className='cluster-link'>cluster</Link> : null }
-                <div>
-                  <p>{ thought.text }</p>
-                  {/*<div className='categories'>
-                    {
-                      thought.classifications.map(c => c.label).slice(0, 5).map(cat =>
-                        <span key={ cat } className='category'>{ cat }</span> )
-                    }
-                  </div>*/}
-                </div>
+                  <div>
+                    <p>{ thought.text }</p>
+                    <div className='categories'>
+                      {
+                        thought.classifications.map(c => c.label).slice(0, 5).map(cat =>
+                          <span key={ cat } className='category remove-category'>{ cat }</span> )
+                      }
+                    </div>
+                  </div>
 
-                <div className='subheader'>
-                  <span className='date'>{ formatDate(thought.updated) }</span>
-                  <div className='horiz-buttons'>
-                    <Link to={ `/thoughts/${thought.id}` }><i className="im im-pencil"></i></Link>
+                  <div className='subheader'>
+                    <span className='date'>{ formatDate(thought.updated) }</span>
+                    <div className='horiz-buttons'>
+                      <Link to={ `/thoughts/${thought.id}` }><i className="im im-pencil"></i></Link>
+                    </div>
                   </div>
                 </div>
-              </div>
             ))
           }
+
+          <button onClick={ onCluster } className='btn'>Cluster</button>
         </div>
+
       </div>
     )
   }
@@ -69,4 +100,6 @@ const mapState = ({ thoughts }) => {
   }
 }
 
-export default connect(mapState)(ThoughtStream)
+const mapDispatch = { linkThoughts }
+
+export default connect(mapState, mapDispatch)(ThoughtStream)
