@@ -17,8 +17,6 @@ class Analysis extends Component {
     const pieDataTopFive = catFrequency(this.props.thoughts).slice(0, 5)
     const lineDataTopFive = catFrequencyOverTime(this.props.thoughts).slice(0, 5)
 
-    console.log(lineDataTopFive)
-
     return (
       <div className='charts'>
         <h3>Analysis</h3>
