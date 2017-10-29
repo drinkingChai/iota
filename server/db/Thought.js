@@ -5,7 +5,8 @@ const Thought = conn.define('thought', {
   text: {
     type: conn.Sequelize.STRING,
     allowNull: false,
-    validate: { notEmpty: true }
+    validate: { notEmpty: true },
+    unique: true
   }
 })
 
@@ -97,8 +98,14 @@ Thought.removeCategory = function(id, categoryId) {
     })
 }
 
-Thought.clusterThoughts = function(thoughts) {
-
+Thought.addCategory = function(id, category) {
+  return Thought.findById(id)
+    .then(thought => {
+      return conn.models.category._findOrCreate(category)
+        .then(category => {
+          return thought.addCategories(category)
+        })
+    })
 }
 
 module.exports = Thought

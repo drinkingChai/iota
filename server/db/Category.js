@@ -5,16 +5,17 @@ const env = require('../env')
 var MonkeyLearn = require('monkeylearn');
 
 var ml = new MonkeyLearn(process.env.ML_API_KEY || env.ML_API_KEY);
-var module_id = 'cl_b7qAkDMz';
+//var module_id = 'cl_b7qAkDMz';
+var module_id = 'cl_5icAVzKR';
 
 const Category = conn.define('category', {
   label: {
     type: conn.Sequelize.STRING,
-  },
-  category_id: {
-    type: conn.Sequelize.INTEGER,
     allowNull: false,
     validate: { notEmpty: true }
+  },
+  category_id: {
+    type: conn.Sequelize.INTEGER
   }
 })
 

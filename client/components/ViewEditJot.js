@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { updateThought, removeCategory } from '../store'
+import { updateThought, removeCategory, addCategory } from '../store'
 import JotSubmit from './messages/JotSubmit'
 
 class ViewEditJot extends Component {
@@ -45,6 +45,7 @@ class ViewEditJot extends Component {
 
   onAddCategory(ev) {
     ev.preventDefault()
+    this.props.addCategory(this.props.thought, { label: this.state.newcategory })
   }
 
   render() {
@@ -77,7 +78,7 @@ class ViewEditJot extends Component {
           }
         </div>
 
-        <label htmlFor='newcategory'>Thought</label>
+        <label htmlFor='newcategory'>Add category</label>
         {/* have this autocomplete to existing cats */}
         <input
           name='newcategory'
@@ -100,7 +101,8 @@ const mapState = ({ thoughts }, ownProps) => ({
 })
 const mapDispatch = {
   updateThought,
-  removeCategory
+  removeCategory,
+  addCategory
 }
 
 export default connect(mapState, mapDispatch)(ViewEditJot)

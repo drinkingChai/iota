@@ -38,6 +38,10 @@ export const removeCategory = (thought, category) => dispatch =>
   axios.delete(`/api/thoughts/${thought.id}/remove-category/${category.id}`)
     .then(res => res.data)
 
+export const addCategory = (thought, category) => dispatch =>
+  axios.put(`/api/thoughts/${thought.id}/add-category`, category)
+    .then(res => res.data)
+
 // INITIAL STATE
 const initialState = {
   thoughts: []

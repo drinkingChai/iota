@@ -17,6 +17,7 @@ class ThoughtStream extends Component {
   }
 
   onToggleSelect(thought) {
+    if (thought.clusterId) return
     const { selected } = this.state
     if (selected.find(t => t.id == thought.id)) return this.setState({ selected: selected.filter(t => t.id != thought.id) })
     else return this.setState({ selected: [ ...selected, thought ] })
