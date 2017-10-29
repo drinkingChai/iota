@@ -9,7 +9,7 @@ router.post('/train', (req, res, next) => {
 
 const { Thought } = require('../db').models
 router.post('/thoughts', (req, res, next) => {
-  Thought.storeAndGetClassification(req.body)
+  Thought.storeAndCluster(req.body)
     .then(classification => res.send(classification))
     .catch(next)
 })
@@ -38,11 +38,11 @@ router.delete('/thoughts/:id/remove-cluster/:clusterId', (req, res, next) => {
     .catch(next)
 })
 
-router.put('/thoughts/:id/add-to-cluster/:clusterId', (req, res, next) => {
-  Thought.addToCluster(req.params.id, req.params.clusterId)
-    .then(() => res.sendStatus(200))
-    .catch(next)
-})
+//router.put('/thoughts/:id/add-to-cluster/:clusterId', (req, res, next) => {
+  //Thought.addToCluster(req.params.id, req.params.clusterId)
+    //.then(() => res.sendStatus(200))
+    //.catch(next)
+//})
 
 router.put('/thoughts/:id', (req, res, next) => {
   Thought.updateThoughtAndClassify(req.params.id, req.body)

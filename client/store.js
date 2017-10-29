@@ -16,31 +16,38 @@ export const fetchThoughts = () => dispatch =>
 
 export const trainMachine = content => dispatch =>
   axios.post('/api/train', content)
-    .then(res => res.data)
+    .then(() => dispatch(fetchThoughts()))
+    //.then(res => res.data)
 
 export const postThought = content => dispatch =>
   axios.post('/api/thoughts', content)
-    .then(res => res.data)
+    .then(() => dispatch(fetchThoughts()))
+    //.then(res => res.data)
 
 export const updateThought = (id, content) => dispatch =>
   axios.put(`/api/thoughts/${id}`, content)
-    .then(res => res.data)
+    .then(() => dispatch(fetchThoughts()))
+    //.then(res => res.data)
 
 export const linkThoughts = thoughts => dispatch =>
   axios.post(`/api/clusters`, thoughts)
-    .then(res => res.data)
+    .then(() => dispatch(fetchThoughts()))
+    //.then(res => res.data)
 
 export const unlinkThought = thought => dispatch =>
   axios.delete(`/api/thoughts/${thought.id}/remove-cluster/${thought.clusterId}`)
-    .then(res => res.data)
+    .then(() => dispatch(fetchThoughts()))
+    //.then(res => res.data)
 
 export const removeCategory = (thought, category) => dispatch =>
   axios.delete(`/api/thoughts/${thought.id}/remove-category/${category.id}`)
-    .then(res => res.data)
+    .then(() => dispatch(fetchThoughts()))
+    //.then(res => res.data)
 
 export const addCategory = (thought, category) => dispatch =>
   axios.put(`/api/thoughts/${thought.id}/add-category`, category)
-    .then(res => res.data)
+    .then(() => dispatch(fetchThoughts()))
+    //.then(res => res.data)
 
 // INITIAL STATE
 const initialState = {

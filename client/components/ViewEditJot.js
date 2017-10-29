@@ -2,11 +2,12 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { updateThought, removeCategory, addCategory } from '../store'
 import JotSubmit from './messages/JotSubmit'
+import PleaseWait from './messages/PleaseWait'
 
 class ViewEditJot extends Component {
   constructor() {
     super()
-    this.state = { text: '', newcategory: '', categories: '', updatedDisplayed: false }
+    this.state = { text: '', newcategory: '', categories: '', updatedDisplayed: false, waitDisplayed: false }
     this.onChange = this.onChange.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
     this.onRemoveCategory = this.onRemoveCategory.bind(this)
@@ -45,17 +46,24 @@ class ViewEditJot extends Component {
 
   onAddCategory(ev) {
     ev.preventDefault()
-    this.props.addCategory(this.props.thought, { label: this.state.newcategory })
+    const newCategories = this.state.newcategory.split(',').filter(c => c.length)
+
+    this.setState({ waitDisplayed: true })
+    Promise.all(newCategories.map(label =>
+      this.props.addCategory(this.props.thought, { label: label.trim() })
+    ))
+      .then(() => this.setState({ newcategory: '', waitDisplayed: false }))
   }
 
   render() {
-    const { text, newcategory, classifications, updatedDisplayed } = this.state
+    const { text, newcategory, classifications, updatedDisplayed, waitDisplayed } = this.state
     const { onChange, onSubmit, onRemoveCategory, onAddCategory } = this
     const inputDisabled = text.length < 5 || text.length > 100 ? true : false
 
     return (
       <form onSubmit={ onSubmit }>
         { updatedDisplayed ? <JotSubmit /> : null }
+        { waitDisplayed ? <PleaseWait /> : null }
 
         <h3>Edit a thought</h3>
         <label htmlFor='text'>Thought</label>
@@ -67,18 +75,16 @@ class ViewEditJot extends Component {
 
         <label htmlFor='categories'>Categories</label>
         <div className='categories'>
-          { 
-            classifications && classifications.map(cat => (
+          { classifications && classifications.map(cat => (
               <button
                 key={ cat.id }
                 onClick={ (ev) => onRemoveCategory(ev, cat) }
                 className='category remove-category'>
                 <span>{ cat.label } <i className='im im-x-mark'></i></span>
-              </button>))
-          }
+              </button>)) }
         </div>
 
-        <label htmlFor='newcategory'>Add category</label>
+        <label htmlFor='newcategory'>Add categories</label>
         {/* have this autocomplete to existing cats */}
         <input
           name='newcategory'

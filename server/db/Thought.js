@@ -15,7 +15,7 @@ Thought.createAndClassify = function(content) {
     .then(thought => conn.models.category.classifyThought(thought))
 }
 
-Thought.storeAndGetClassification = function(content) {
+Thought.storeAndCluster = function(content) {
   const date = new Date()
   return this.findAll({ order: [[ 'updatedAt', 'DESC' ]] })
     .then(function(thoughts) {
@@ -77,16 +77,16 @@ Thought.removeFromCluster = function(id, clusterId) {
     })
 }
 
-Thought.addToCluster = function(id, clusterId) {
-  return conn.models.cluster.findById(clusterId)
-    .then(cluster => {
-      return Thought.findById(id)
-        .then(thought => {
-          Object.assign(thought, { clusterId: cluster.id })
-          return thought.save()
-        })
-    })
-}
+//Thought.addToCluster = function(id, clusterId) {
+  //return conn.models.cluster.findById(clusterId)
+    //.then(cluster => {
+      //return Thought.findById(id)
+        //.then(thought => {
+          //Object.assign(thought, { clusterId: cluster.id })
+          //return thought.save()
+        //})
+    //})
+//}
 
 Thought.removeCategory = function(id, categoryId) {
   return Thought.findById(id)

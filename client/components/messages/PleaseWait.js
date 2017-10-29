@@ -1,11 +1,11 @@
 import React from 'react'
 
-export default function JotSubmit () {
+export default function PleaseWait () {
   return (
     <div className='floating-message'>
       <div className='floating-message-body'>
-        <h3>Thought has been recorded!</h3>
-        <div className='horiz-loader'></div>
+        <h3>Please wait...</h3>
+        <div className='loader'></div>
       </div>
     </div>
   )

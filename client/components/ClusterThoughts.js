@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { formatDate } from '../helpers'
 import { unlinkThought } from '../store'
 
-function ClusterThoughts ({ thoughts, unlinkThought }) {
+function ClusterThoughts ({ thoughts, categories, unlinkThought }) {
   return (
     <div>
       <h3>A cluster of thoughts</h3>
@@ -26,22 +26,27 @@ function ClusterThoughts ({ thoughts, unlinkThought }) {
                 {/* <button><i className="im im-network"></i></button> */}
               </div>
             </div>
-          </div>))
-        }
+          </div>)) }
+      </div>
+      <div>
+        <h3>Categories in this cluster</h3>
+        <br/>
+        <div className='categories'>
+          { categories.map(cat =>
+              <span key={ cat } className='category'>{ cat }</span> ) }
+        </div>
       </div>
     </div>
   )
 }
 
-//<div className='categories'>
-              //{
-                //thought.classifications.map(c => c.label).slice(0, 5).map(cat =>
-                  //<span key={ cat } className='category'>{ cat }</span> )
-              //}
-            //</div>
 
 const mapState = ({ thoughts }, ownProps) => ({
-  thoughts: thoughts.filter(t => t.clusterId == ownProps.match.params.id)
+  thoughts: thoughts.filter(t => t.clusterId == ownProps.match.params.id),
+  categories: thoughts.reduce((allCats, t) => {
+    const newCats = t.classifications.map(c => c.label).slice(0, 5).filter(c => allCats.indexOf(c) == -1)
+    return allCats.concat(newCats)
+  }, [])
 })
 
 const mapDispatch = { unlinkThought }

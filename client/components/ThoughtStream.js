@@ -19,11 +19,11 @@ class ThoughtStream extends Component {
   onToggleSelect(thought) {
     if (thought.clusterId) return
     const { selected } = this.state
-    if (selected.find(t => t.id == thought.id)) return this.setState({ selected: selected.filter(t => t.id != thought.id) })
-    else return this.setState({ selected: [ ...selected, thought ] })
-  }
-
-  onDelete(ev) {
+    this.setState({
+      selected: selected.find(t => t.id == thought.id) ?
+        selected.filter(t => t.id != thought.id) :
+        [ ...selected, thought ]
+    })
   }
 
   onCluster(ev) {
@@ -47,24 +47,24 @@ class ThoughtStream extends Component {
         </div>
 
         <div className='thought-list'>
-          { 
-            this.props.thoughts.map(thought => (
+          { this.props.thoughts.map(thought => (
               <div
                 key={ thought.id } 
-                className={ `${thought.clusterId ? 'thought thought-cluster' : 'thought'}
-                  ${selected.find(t=> t.id == thought.id) ? 'selected' : ''}` }
-                onClick={ () => onToggleSelect(thought) }>
+                onClick={ () => onToggleSelect(thought) }
+                className={
+                  `${thought.clusterId ? 'thought thought-cluster' : 'thought'}
+                  ${selected.find(t=> t.id == thought.id) ? 'selected' : ''}`
+                }>
                   { thought.clusterId ?
                     <Link
                       to={ `/clusters/${thought.clusterId}` }
                       className='cluster-link'>cluster</Link> : null }
+
                   <div>
                     <p>{ thought.text }</p>
                     <div className='categories'>
-                      {
-                        thought.classifications.map(c => c.label).slice(0, 5).map(cat =>
-                          <span key={ cat } className='category remove-category'>{ cat }</span> )
-                      }
+                      { thought.classifications.map(c => c.label).slice(0, 5).map(cat =>
+                          <span key={ cat } className='category remove-category'>{ cat }</span> ) }
                     </div>
                   </div>
 
@@ -74,11 +74,12 @@ class ThoughtStream extends Component {
                       <Link to={ `/thoughts/${thought.id}` }><i className="im im-pencil"></i></Link>
                     </div>
                   </div>
-                </div>
-            ))
-          }
+                </div> )) }
 
-          <button onClick={ onCluster } className='btn'>Cluster</button>
+          <button
+            onClick={ onCluster }
+            className='btn'
+            disabled={ selected.length <= 1 ? true : false }>Cluster</button>
         </div>
 
       </div>
