@@ -3,8 +3,12 @@ const MachineData = require('./MachineData')
 const Thought = require('./Thought')
 const Category = require('./Category')
 const Cluster = require('./Cluster')
+const User = require('./User')
 
 // associations
+User.hasMany(Thought)
+Thought.belongsTo(User)
+
 Cluster.hasMany(Thought)
 Thought.belongsTo(Cluster)
 
@@ -18,6 +22,7 @@ module.exports = {
   models: {
     MachineData,
     Thought,
-    Cluster
+    Cluster,
+    User
   }
 }

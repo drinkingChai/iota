@@ -1,0 +1,33 @@
+.chart {
+  background-color: $white;
+  border-radius: 5px;
+}
+
+.chart-container {
+}
+
+.svg-bar {
+  fill: steelblue;
+
+  transition: all 0.3s ease-out;
+}
+
+.fade-in {
+  animation: fadein 1.7s ease-in;
+}
+
+.pack-node text {
+  font-size: .7em;
+  text-anchor: middle;
+  fill: $white;
+
+  &.active {
+    font-size: 1em;
+    animation: fadein .7s ease-out;
+  }
+}
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

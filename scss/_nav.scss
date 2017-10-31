@@ -21,15 +21,23 @@ nav {
     left: 110%;
   }
   &.nav-visible {
-    left: 30%;
+    left: 32%;
+
+    @media only screen and (min-width: 700px) {
+      left: 60%;
+    }
   }
 
   & .burger-container-inactive,
   & .burger-container-active {
     position: absolute;
-    left: -90px;
+    left: -33%;
     top: 20px;
     transition: all 0.1s;
+
+    @media only screen and (min-width: 700px) {
+      left: -26%;
+    }
   }
 
   & .burger-container-active {

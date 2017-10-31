@@ -17,7 +17,6 @@ class ThoughtStream extends Component {
   }
 
   onToggleSelect(thought) {
-    if (thought.clusterId) return
     const { selected } = this.state
     this.setState({
       selected: selected.find(t => t.id == thought.id) ?
@@ -28,6 +27,7 @@ class ThoughtStream extends Component {
 
   onCluster(ev) {
     this.props.linkThoughts(this.state.selected)
+      .then(() => this.setState({ selected: [] }))
   }
 
   render() {

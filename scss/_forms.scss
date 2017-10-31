@@ -13,9 +13,10 @@ button:disabled {
   color: $gray;
 }
 
-textarea, input {
+textarea, input, select, option {
   color: $black;
   background-color: $white;
+  font-size: inherit;
 }
 
 textarea {
@@ -57,4 +58,40 @@ textarea:focus, input:focus, button:focus {
   & i {
     padding-right: 10px;
   }
+}
+
+
+span.select {
+  //https://codepen.io/hougasian/pen/EVPWeq/
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+  &:before, &:after {
+    content: "";
+    position: absolute;
+  }
+  &:after {
+    color: white;
+    font-family: "Fontawesome";
+    font-size: inherit;
+    content: "\f107";
+    padding: 0.5em;
+    pointer-events: none;
+    right: 0.3em; 
+    top: 10%;
+    vertical-align: middle;
+  }
+}
+select {
+  color: white;
+  cursor: pointer;
+  // Sass specific RGBA mixin
+  background: rgba(white,0.3); 
+  border: 2px solid white;
+  width: 100%;
+  padding: 0.5em;
+  padding-right: 2em;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }

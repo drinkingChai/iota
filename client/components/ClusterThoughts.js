@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { formatDate } from '../helpers'
 import { unlinkThought } from '../store'
 
-function ClusterThoughts ({ thoughts, categories, unlinkThought }) {
+function ClusterThoughts ({ thoughts, categories, unlink }) {
   return (
     <div>
       <h3>A cluster of thoughts</h3>
@@ -12,7 +12,7 @@ function ClusterThoughts ({ thoughts, categories, unlinkThought }) {
       <div className='thought-list linked'>
         { thoughts.map(thought => (
           <div key={ thought.id } className='thought thought-linked'>
-            <button className='cluster-link unlink' onClick={ () => unlinkThought(thought) }><i className='im im-unlink'></i></button>
+            <button className='cluster-link unlink' onClick={ () => unlink(thought) }><i className='im im-unlink'></i></button>
             <div>
               <p>{ thought.text }</p>
             </div>
@@ -49,6 +49,10 @@ const mapState = ({ thoughts }, ownProps) => ({
   }, [])
 })
 
-const mapDispatch = { unlinkThought }
+const mapDispatch = (dispatch, ownProps) => ({ 
+  unlink(thought) {
+    dispatch(unlinkThought(thought))
+  }
+})
 
 export default connect(mapState, mapDispatch)(ClusterThoughts)

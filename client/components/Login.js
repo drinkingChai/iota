@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { signIn } from '../store'
 
 class UserLogin extends Component {
   constructor() {
@@ -17,7 +18,8 @@ class UserLogin extends Component {
   onSubmit(ev) {
     ev.preventDefault()
     // on success
-    this.props.history.push('/welcome')
+    this.props.signIn(this.state)
+      .then(() => this.props.history.push('/welcome'))
   }
 
   render() {
@@ -49,6 +51,6 @@ class UserLogin extends Component {
   }
 }
 
-const mapDispatch = { }
+const mapDispatch = { signIn }
 
-export default connect()(UserLogin)
+export default connect(null, mapDispatch)(UserLogin)
