@@ -1,13 +1,9 @@
 .chart {
-  background-color: #fdfdfd;
-
-  &.pie-chart {
-    border-radius: 100%;
-  }
+  background-color: $white;
+  border-radius: 5px;
 }
 
 .chart-container {
-  fill: #fff;
 }
 
 .svg-bar {
@@ -18,6 +14,17 @@
 
 .fade-in {
   animation: fadein 1.7s ease-in;
+}
+
+.pack-node text {
+  font-size: .7em;
+  text-anchor: middle;
+  fill: $white;
+
+  &.active {
+    font-size: 1em;
+    animation: fadein .7s ease-out;
+  }
 }
 
 @keyframes fadein {
