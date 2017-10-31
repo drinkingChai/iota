@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 
 const conn = require('./conn')
-const { MachineData } = require('./index').models
+const { User, MachineData } = require('./index').models
 
 const files = [ 'diary1.txt', 'diary2.txt', 'diary3.txt', 'blogs.txt' ]
 const documents = []
@@ -19,6 +19,7 @@ files.forEach(file => {
 
 conn.sync({ force: true })
   .then(() => Promise.all(documents.map(doc => MachineData.create(doc))))
+  .then(() => User.create({ email: 'teatocode@gmail.com', password: 'jot' }))
   .then(() => {
     console.log('db seeded')
     conn.close()

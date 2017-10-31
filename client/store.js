@@ -5,9 +5,13 @@ import axios from 'axios'
 
 // ACTION NAMES
 const GET_THOUGHTS = 'GET_THOUGHTS'
+const GET_USER = 'GET_USER'
+const DELETE_USER = 'DELETE_USER'
 
 // ACTION CREATORS
 const getThoughts = thoughts => ({ type: GET_THOUGHTS, thoughts })
+const getUser = user => ({ type: GET_USER, user })
+const deleteUser = () => ({ type: DELETE_USER })
 
 // THUNK
 export const fetchThoughts = () => dispatch =>
@@ -49,9 +53,22 @@ export const addCategory = (thought, category) => dispatch =>
     .then(() => dispatch(fetchThoughts()))
     //.then(res => res.data)
 
+export const fetchUser = () => dispatch =>
+  axios.get('/api/auth')
+    .then(user => dispatch(getUser(user)))
+
+export const signIn = authInfo => dispatch =>
+  axios.post('/api/auth', authInfo)
+    .then(() => dispatch(fetchUser()))
+
+export const signOut = () => dispatch =>
+  axios.delete('/api/auth')
+    .then(() => dispatch(deleteUser()))
+
 // INITIAL STATE
 const initialState = {
-  thoughts: []
+  thoughts: [],
+  user: {}
 }
 
 // REDUCER
@@ -59,6 +76,10 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_THOUGHTS:
       return { ...state, thoughts: action.thoughts }
+    case GET_USER:
+      return { ...state, user: action.user }
+    case DELETE_USER:
+      return { ...state,  user: {} }
     default:
       return state
   }

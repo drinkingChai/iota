@@ -1,5 +1,7 @@
 const router = require('express').Router()
 
+router.use('/auth', require('./auth'))
+
 const { MachineData } = require('../db').models
 router.post('/train', (req, res, next) => {
   MachineData.storeAndTrain(req.body)
