@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { catFrequency, catFrequencyOverTime } from '../helpers'
+import { singleCatOverTime, catFrequencyOverTime } from '../helpers'
 import { responsivefy } from '../svghelpers'
 import * as d3 from 'd3'
 import Pack from './charts/Pack'
+import Line from './charts/Line'
 
 /* flatten data on frontend or backend?
  * if on front end, I can manipulate and see relations?
@@ -27,6 +28,7 @@ class Analysis extends Component {
 
   componentWillReceiveProps(nextProps) {
     Pack(catFrequencyOverTime(nextProps.thoughts).slice(0, 5), '.pie-chart')
+    Line(singleCatOverTime(nextProps.thoughts, nextProps.topics[1]), '.line-chart')
   }
 
   selectPackView(ev) {
@@ -37,13 +39,15 @@ class Analysis extends Component {
   }
 
   selectLineView(ev) {
+    const { name, value } = ev.target
+    this.setState({ [name]: value })
+    Line(singleCatOverTime(this.props.thoughts, this.props.topics.find(t => t.label == value), '.line-chart'))
   }
 
   render() {
     const { packSelect, lineSelect } = this.state
     const { selectPackView, selectLineView } = this
-
-    console.log(this.props.thoughts)
+    const { thoughts, topics } = this.props
 
     return (
       <div className='charts'>
@@ -61,9 +65,9 @@ class Analysis extends Component {
 
         <h4>Topics over time</h4>
         <span className='select'>
-          <select name='packSelect' value={ lineSelect } onChange={ selectLineView }>
-            <option value=''>Recent</option>
-            <option value='all'>All</option>
+          <select name='lineSelect' value={ lineSelect } onChange={ selectLineView }>
+            { topics && topics.map(topic => (
+              <option key={ topic.id }>{ topic.label }</option>)) }
           </select>
         </span>
         <div className='chart line-chart'>
@@ -73,6 +77,14 @@ class Analysis extends Component {
   }
 }
 
-const mapState = ({ thoughts }) => ({ thoughts })
+const mapState = ({ thoughts }) => ({
+  thoughts,
+  topics: thoughts.reduce((_topics, thought) => {
+    thought.classifications.forEach(c => {
+      if (!_topics.find(t => t.label == c.label)) _topics.push(c)
+    })
+    return _topics
+  }, [])
+})
 
 export default connect(mapState)(Analysis)

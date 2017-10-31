@@ -45,6 +45,29 @@ export function catFrequencyOverTime (thoughts) {
   return frequencyMap
 }
 
+export function singleCatOverTime (thoughts, cat) {
+  const frequencyCount = thoughts.reduce((map, thought) => {
+    thought.classifications.forEach(c => {
+      if (c.label == cat.label) {
+        let date = dateOnly(c.thought_category.createdAt),
+          entry = map[date] || []
+        entry.push(thought)
+        map[date] = entry
+      }
+    })
+    return map
+  }, {})
+
+  const frequencyMap = Object.keys(frequencyCount).map(key => ({
+    key,
+    thoughts: frequencyCount[key]
+  }))
+
+  frequencyMap.sort((a, b) => a.date - b.date)
+
+  return frequencyMap
+}
+
 export function dateOnly (_date) {
   const date = new Date(_date)
   date.setHours(0, 0, 0, 0)

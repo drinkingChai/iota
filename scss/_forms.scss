@@ -37,7 +37,7 @@ input {
 }
 
 textarea, input { font-size: 20px; }
-textarea:focus, input:focus, button:focus {
+textarea:focus, input:focus, button:focus, select:focus {
   outline: none;
 }
 
