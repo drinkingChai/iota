@@ -1,0 +1,16 @@
+.chart {
+  background-color: #fdfdfd;
+}
+
+.chart-container {
+  fill: #fff;
+}
+
+.svg-bar {
+  fill: $orange;
+  stroke: $black;
+  stroke-width: 0;
+  height: 30px;
+
+  transition: all 0.3s ease-out;
+}
