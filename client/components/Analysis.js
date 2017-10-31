@@ -8,81 +8,6 @@ import * as d3 from 'd3'
  * if on front end, I can manipulate and see relations?
 */
 
-function drawBars (data, container) {
-  const margin = { top: 10, right: 10, bottom: 90, left: 30 }
-  const fullWidth = 675
-  const fullHeight = 300
-  const width = fullWidth - margin.right - margin.left
-  const height = fullHeight - margin.top - margin.bottom
-
-  const yMax = d3.max(data, d => d.count)
-  const bandData = data.map(d => d.key)
-  
-  // axis scales
-  const yScale = d3.scaleLinear()
-    .domain([0, yMax])
-    .range([height, 0])
-  const yAxis = d3.axisLeft(yScale).ticks(yMax)
-
-  const xScale = d3.scaleBand()
-    .padding(0.1)
-    .domain(bandData)
-    .range([0, width])
-  const xAxis = d3.axisBottom(xScale).ticks(data.length)
-
-  // container
-  const svg = d3.select(container)
-    .append('svg')
-      .attr('height', fullHeight) // total height and width
-      .attr('width', fullWidth)
-      .call(responsivefy)
-    .append('g')
-      .attr('transform', `translate(${margin.left}, ${margin.top})`)
-
-  // axes
-  svg.call(yAxis)
-  svg.append('g')
-    .attr('transform', `translate(0, ${height})`)
-    .call(xAxis)
-    .selectAll('text')
-    .style('text-anchor', 'end')
-    .attr('transform', 'rotate(-45)')
-
-  // bars
-  const bar = svg.selectAll('rect')
-    .data(data)
-    .enter()
-      .append('rect')
-      .transition()
-      .attr('x', d => xScale(d.key))
-      .attr('y', d => yScale(d.count))
-      .attr('width', d => xScale.bandwidth())
-      .attr('height', d => height - yScale(d.count))
-      .attr('class', 'svg-bar')
-
-  //bar.append('rect')
-    //.style('width', d => d.count * 70)
-    //.on('mouseover', function (d, i, elements) {
-      //d3.select(this).style('transform', 'scaleX(2)')
-      //d3.selectAll(elements)
-        //.filter(':not(:hover)')
-        //.style('fill-opacity', 0.5)
-    //})
-    //.on('mouseout', function (d, i, elements) {
-      //d3.select(this).style('transform', 'scaleX(1)')
-      //d3.selectAll(elements)
-        //.style('fill-opacity', 1)
-    //})
-  
-  
-  //bar.append('text')
-    ////.text(d => d.key)
-    //.attr('y', 20)
-    //.attr('x', 10)
-
-  return svg
-}
-
 class Analysis extends Component {
   componentDidMount() {
     window.scrollTo(0, 0);
@@ -90,18 +15,72 @@ class Analysis extends Component {
 
   componentWillReceiveProps(nextProps) {
     const data = catFrequencyOverTime(nextProps.thoughts).slice(0, 5)
-    drawBars(data, '.bar-chart')
+    const max = d3.max(data, d => d.count)
+    const color = d3.scaleLinear()
+      .domain([0, 1])
+      .range(['#80deea', '#f44336'])
+
+    const width = 300,
+      height = 300
+
+    const pack = d3.pack()
+      .size([width, height])
+      .padding(5)
+      (d3.hierarchy({ children: data })
+        .sum(d => d.count))
+
+    console.log(pack)
+
+    const svg = d3.select('.pie-chart')
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height)
+      .call(responsivefy)
+
+    const packNode = svg.selectAll('.pack-node')
+      .data(pack.leaves())
+      .enter()
+      .append('g')
+      .attr('class', 'pack-node')
+      .attr('transform', d => `translate(${d.x}, ${d.y})`)
+
+    packNode
+      .append('circle')
+      .transition()
+      .duration(700)
+      .attr('r', d => d.r)
+      .style('fill', d => color(d.value / max))
+
+    packNode
+      .append('text')
+      .attr('font-size', 14)
+      .attr('class', 'fade-in')
+      .attr('text-anchor', 'middle')
+      .attr("dominant-baseline", "central")
+      .selectAll('tspan')
+      .data(d => d.data.key.split(' '))
+      .enter()
+      .append('tspan')
+        .attr('x', 0)
+        .attr('y', (d, i) => i * -14)
+        .attr('dy', (d, i, nodes) => nodes.length > 1 ? 14 : 0)
+        .text(t => t)
+  
+
+
+
+
+      //.call(responsivefy)
+
+    console.log(data)
   }
 
   render() {
-    const pieDataTopFive = catFrequency(this.props.thoughts).slice(0, 5)
-    const lineDataTopFive = catFrequencyOverTime(this.props.thoughts).slice(0, 5)
-
     return (
       <div className='charts'>
         <h3>Analysis</h3>
         
-        <div className='chart bar-chart'>
+        <div className='chart pie-chart'>
         </div>
         
       </div>

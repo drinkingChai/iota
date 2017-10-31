@@ -1,5 +1,9 @@
 .chart {
   background-color: #fdfdfd;
+
+  &.pie-chart {
+    border-radius: 100%;
+  }
 }
 
 .chart-container {
@@ -10,4 +14,13 @@
   fill: steelblue;
 
   transition: all 0.3s ease-out;
+}
+
+.fade-in {
+  animation: fadein 1.7s ease-in;
+}
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }

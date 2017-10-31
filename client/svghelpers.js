@@ -8,13 +8,12 @@ export function responsivefy (svg) {
     aspect = width / height
 
   svg.attr('viewBox', `0 0 ${width} ${height}`)
-    .attr('preserveAspectRation', 'xMinyMin')
+    .attr('preserveAspectRatio', 'xMinYMid')
     .call(resize)
 
   d3.select(window).on('resize', resize)
 
   function resize () {
-    console.log('firing')
     const targetWidth = parseInt(container.style('width'))
     svg.attr('width', targetWidth)
     svg.attr('height', Math.round(targetWidth / aspect))
