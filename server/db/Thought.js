@@ -6,7 +6,9 @@ const Thought = conn.define('thought', {
     type: conn.Sequelize.STRING,
     allowNull: false,
     validate: { notEmpty: true },
-    unique: true
+  },
+  created_at: {
+    type: conn.Sequelize.DATE
   }
 })
 
@@ -40,13 +42,13 @@ Thought.storeAndCluster = function(content) {
     })
 }
 
-Thought.getThoughtsAndClassify = function() {
+Thought.getThoughtsAndClassify = function(userId) {
   return this.findAll({ order: [[ 'updatedAt', 'DESC' ]], include: [ conn.models.category ] })
     .then(thoughts =>
       thoughts.map(thought => ({
         id: thought.id,
         text: thought.text,
-        created: thought.createdAt,
+        created: thought.created_at || thought.createdAt,
         updated: thought.updatedAt,
         clusterId: thought.clusterId,
         classifications: thought.categories

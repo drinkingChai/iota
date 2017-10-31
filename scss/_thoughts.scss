@@ -156,3 +156,19 @@
     font-size: 12px;
   }
 }
+
+.cluster-button-fixed {
+  position: fixed;
+  bottom: -80px;
+  left: 0;
+  background-color: $navy;
+  width: 100%;
+  padding: 15px 30px;
+  transition: all 0.2s;
+  
+  display: grid;
+
+  &.active {
+    bottom: 0;
+  }
+}

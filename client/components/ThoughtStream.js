@@ -76,12 +76,14 @@ class ThoughtStream extends Component {
                   </div>
                 </div> )) }
 
+        </div>
+
+        <div className={ `cluster-button-fixed ${selected.length ? 'active' : '' }` }>
           <button
             onClick={ onCluster }
             className='btn'
             disabled={ selected.length <= 1 ? true : false }>Cluster</button>
         </div>
-
       </div>
     )
   }

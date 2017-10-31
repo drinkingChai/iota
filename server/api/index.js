@@ -1,4 +1,5 @@
 const router = require('express').Router()
+const { requireLogin } = require('./middlewares')
 
 router.use('/auth', require('./auth'))
 
@@ -17,7 +18,7 @@ router.post('/thoughts', (req, res, next) => {
 })
 
 router.get('/thoughts', (req, res, next) => {
-  Thought.getThoughtsAndClassify()
+  Thought.getThoughtsAndClassify(req.session.id)
     .then(thoughts => res.send(thoughts))
     .catch(next)
 })
