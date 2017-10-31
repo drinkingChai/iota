@@ -14,6 +14,7 @@ export function responsivefy (svg) {
   d3.select(window).on('resize', resize)
 
   function resize () {
+    console.log('firing')
     const targetWidth = parseInt(container.style('width'))
     svg.attr('width', targetWidth)
     svg.attr('height', Math.round(targetWidth / aspect))
