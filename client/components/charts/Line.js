@@ -5,16 +5,6 @@ export default function Line (data, container) {
   // clear...
   d3.select(container).select('svg').remove()
 
-  console.log(data)
-
-  //const max = d3.max(data, d => d.count),
-    //color = d3.scaleLinear()
-      //.domain([0, 1])
-      //.range(['#80deea', '#f44336'])
-
-  //var colors = d3.scaleOrdinal(d3.schemeCategory10)
-    //.domain(d3.range(data.length));
-
   const margin = { top: 20, right: 20, bottom: 30, left: 30 },
     fullWidth = 300,
     fullHeight = 300,
@@ -28,18 +18,16 @@ export default function Line (data, container) {
       .call(responsivefy)
       .append('g')
         .attr('transform', `translate(${margin.left}, ${margin.top})`)
+  
+  const tuples = data.map(d => ({
+    date: new Date(d.key),
+    count: d.thoughts.length
+  }))
+    
+  tuples.sort((a, b) => a.date - b.date)
 
-  data.forEach(d => {
-    d.date = new Date(d.key)
-    d.count = d.thoughts.length
-  })
-
-  const today = new Date()
   const xScale = d3.scaleTime()
-    .domain([
-      data.length <= 1 ? new Date(today.setDate((today.getDate() - 1))) : d3.min(data, d => d.date),
-      d3.max(data, d => d.date)
-    ])
+    .domain(d3.extent(tuples, d => d.date))
     .range([0, width])
 
   svg
@@ -48,7 +36,7 @@ export default function Line (data, container) {
     .call(d3.axisBottom(xScale).ticks(4))
 
   const yScale = d3.scaleLinear()
-    .domain([0, d3.max(data, d => d.count)])
+    .domain([0, d3.max(tuples, d => d.count)])
     .range([height, 0])
 
   svg
@@ -56,15 +44,17 @@ export default function Line (data, container) {
     .call(d3.axisLeft(yScale).ticks(5))
 
   const line = d3.line()
-    .x(d => xScale(d.date))
-    .x(d => yScale(d.thoughts.count))
+    .x(d => xScale(d.date) + 1)
+    .y(d => yScale(d.count))
 
   svg
-    .selectAll('path')
+    .selectAll('.line')
     .data(data)
     .enter()
     .append('path')
-      .attr('d', d => line(d))
-
-  console.log(data)
+    .attr('class', 'line')
+    .attr('d', d => line(tuples))
+    .style('stroke', '#FF9900')
+    .style('stroke-width', 1)
+    .style('fill', 'none');
 }

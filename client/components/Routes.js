@@ -8,10 +8,12 @@ import ThoughtStream from './ThoughtStream'
 import ClusterThoughts from './ClusterThoughts'
 import Login from './Login'
 import Welcome from './messages/Welcome'
+import WelcomeSplash from './WelcomeSplash'
 
 export default function Routes () {
   return (
     <Switch>
+      <Route exact path='/welcomesplash' component={ WelcomeSplash } />
       <Route exact path='/jot' component={ Jot } />
       <Route exact path='/train' component={ Train } />
       <Route exact path='/stats' component={ Analysis } />

@@ -39,13 +39,16 @@ const fetchTwitterData = () => {
           .then(tweets => {
             return Promise.all(tweets.map(tweet => {
               const { text, created_at } = tweet
-              return Thought.storeAndCluster({ text, created_at, userId: user.id })
+              return new Promise(function(resolve) {
+                setTimeout(() => {
+                  resolve(Thought.storeAndCluster({ text, created_at, userId: user.id }))
+                }, 3500)
+              })
             }))
           })
       }))
     })
-}
-  
+} 
 
 conn.sync({ force: true })
   .then(() => Promise.all(documents.map(doc => MachineData.create(doc))))

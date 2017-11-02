@@ -97,7 +97,7 @@ const mapState = ({ thoughts }) => {
       return t
     } else if (!t.clusterId) return t;
   })
-  _thoughts.sort((a, b) => (new Date(b.updated) - new Date(a.updated)))
+  _thoughts.sort((a, b) => (new Date(b.created) - new Date(a.created)))
   
   return {
     thoughts: _thoughts

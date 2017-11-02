@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { singleCatOverTime, catFrequencyOverTime } from '../helpers'
+import { thoughtsOverTime, catFrequencyOverTime } from '../helpers'
 import { responsivefy } from '../svghelpers'
 import * as d3 from 'd3'
 import Pack from './charts/Pack'
 import Line from './charts/Line'
+import Scatter from './charts/Scatter'
 
 /* flatten data on frontend or backend?
  * if on front end, I can manipulate and see relations?
@@ -23,12 +24,15 @@ class Analysis extends Component {
 
   componentDidMount() {
     window.scrollTo(0, 0);
-    if (this.props.thoughts.length) Pack(catFrequencyOverTime(this.props.thoughts).slice(0, 5), '.pie-chart')
+    if (this.props.thoughts.length) {
+      Pack(catFrequencyOverTime(this.props.thoughts).slice(0, 5), '.pie-chart')
+      Scatter(thoughtsOverTime(this.props.thoughts), '.scatter-chart')
+    }
   }
 
   componentWillReceiveProps(nextProps) {
     Pack(catFrequencyOverTime(nextProps.thoughts).slice(0, 5), '.pie-chart')
-    Line(singleCatOverTime(nextProps.thoughts, nextProps.topics[1]), '.line-chart')
+    Scatter(thoughtsOverTime(nextProps.thoughts), '.scatter-chart')
   }
 
   selectPackView(ev) {
@@ -41,7 +45,6 @@ class Analysis extends Component {
   selectLineView(ev) {
     const { name, value } = ev.target
     this.setState({ [name]: value })
-    Line(singleCatOverTime(this.props.thoughts, this.props.topics.find(t => t.label == value), '.line-chart'))
   }
 
   render() {
@@ -66,11 +69,12 @@ class Analysis extends Component {
         <h4>Topics over time</h4>
         <span className='select'>
           <select name='lineSelect' value={ lineSelect } onChange={ selectLineView }>
+            <option>All</option>
             { topics && topics.map(topic => (
               <option key={ topic.id }>{ topic.label }</option>)) }
           </select>
         </span>
-        <div className='chart line-chart'>
+        <div className='chart scatter-chart'>
         </div>
       </div>
     )
