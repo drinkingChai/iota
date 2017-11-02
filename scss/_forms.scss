@@ -3,6 +3,11 @@ form {
   grid-gap: 20px;
   margin-bottom: 30px;
   //justify-items: center;
+
+  * {
+    -webkit-appearance: none;
+    border-radius: 0;
+  }
 }
 
 button {
@@ -23,8 +28,8 @@ textarea {
   border-width: 0;
   height: 30vh;
   padding: 15px;
-  border-radius: 5px;
   resize: none;
+  border: solid 1px $black;
 
   &.red { color: $red; }
 }
@@ -32,8 +37,13 @@ textarea {
 input {
   width: 100%;
   padding: 10px;
-  border: solid 2px lighten($blue, 30%);
-  border-radius: 5px;
+  // border: solid 1px lighten($blue, 30%);
+  border: solid 1px #d3dce6;
+  transition: border-color 0.5s;
+
+  &:focus {
+    border-color: lighten($blue, 30%);
+  }
 }
 
 textarea, input { font-size: 20px; }
@@ -42,7 +52,7 @@ textarea:focus, input:focus, button:focus, select:focus {
 }
 
 .search {
-  border-bottom: solid 1px $white;
+  border-bottom: solid 1px $black;
   display: grid;
   grid-template-columns: 9fr 1fr;
   align-items: center;
@@ -51,7 +61,6 @@ textarea:focus, input:focus, button:focus, select:focus {
   & input {
     border-width: 0;
     background-color: inherit;
-    color: $white;
     border-radius: 0;
   }
   
@@ -71,27 +80,27 @@ span.select {
     position: absolute;
   }
   &:after {
-    color: white;
+    color: $black;
     font-family: "Fontawesome";
     font-size: inherit;
     content: "\f107";
     padding: 0.5em;
     pointer-events: none;
     right: 0.3em; 
-    top: 10%;
+    top: -2px;
     vertical-align: middle;
   }
 }
 select {
-  color: white;
+  color: $black;
   cursor: pointer;
   // Sass specific RGBA mixin
-  background: rgba(white,0.3); 
-  border: 2px solid white;
+  border: 1px solid $black;
   width: 100%;
   padding: 0.5em;
   padding-right: 2em;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+  border-radius: 0;
 }

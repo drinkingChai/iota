@@ -1,29 +1,24 @@
 .btn {
   font-size: 16px;
-  border: solid 2px $black;
-  padding: 10px;
-  border-radius: 5px;
+  padding: 13px;
+  background-color: $black;
+  color: $white;
+  -webkit-appearance: none;
 
-  background-color: $white;
-  border-color: $white;
-  color: $black;
 
   &-red {
     background-color: $red;
     color: $white;
-    border-color: $red;
   }
   
   &-blue {
     background-color: $blue;
     color: $white !important;
-    border-color: $blue;
   }
   
   &-inverse {
     background-color: $black;
     color: $white !important;
-    border-color: $black;
   }
 }
 

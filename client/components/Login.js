@@ -27,7 +27,7 @@ class UserLogin extends Component {
     const { onChange, onSubmit } = this
 
     return (
-      <div>
+      <div className='login'>
         <h3>Login</h3>
         <form onSubmit={ onSubmit }>
           <label htmlFor='email'>Email</label>

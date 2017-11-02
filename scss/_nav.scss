@@ -31,7 +31,7 @@ nav {
   & .burger-container-inactive,
   & .burger-container-active {
     position: absolute;
-    left: -31%;
+    left: -90px;
     top: 12px;
     transition: all 0.1s;
 
@@ -58,6 +58,7 @@ nav {
     background-color: #526187;
     align-self: end;
     padding: 20px;
+    & * { color: $white; }
     & i { font-size: 12px; color: $red; }
     & p { line-height: 1.5em; }
   }
@@ -67,8 +68,13 @@ nav {
   position: fixed;
   height: 3em;
   width: 100%;
-  background-color: $navy;
+  background-color: #fdfdfd;
   z-index: 9;
+  font-family: 'Sofia', cursive;
+
+  & span {
+    font-size: 19px;
+  }
 
   padding-top: 15px;
   padding-left: 17px;
