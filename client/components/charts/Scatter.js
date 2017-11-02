@@ -1,7 +1,7 @@
 import * as d3 from 'd3'
 import { responsivefy } from '../../svghelpers'
 
-export default function Scatter (data, container) {
+export default function Scatter (data, container, plotOnly) {
   // clear...
   d3.select(container).select('svg').remove()
   console.log(data)
@@ -46,7 +46,9 @@ export default function Scatter (data, container) {
     .call(d3.axisLeft(yScale).ticks(5))
     .call(thinAxis)
 
-  const _data = data.map(d => ({ date: new Date(d), time: getTime(d) }))
+  const _data = plotOnly ?
+      plotOnly.map(d => ({ date: new Date(d), time: getTime(d) })) :
+      data.map(d => ({ date: new Date(d), time: getTime(d) }))
 
   svg
     .selectAll('.dot')
@@ -54,9 +56,10 @@ export default function Scatter (data, container) {
     .enter()
     .append('circle')
       .attr('class', 'dot')
-      .attr('r', 3.5)   
+      .attr('r', 5)
       .attr('cx', d => xScale(d.date))
       .attr('cy', d => yScale(d.time))
+      .attr('fill', '#9575cd')
 
   function thinAxis (g) {
     g

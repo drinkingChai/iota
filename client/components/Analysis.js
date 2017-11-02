@@ -19,7 +19,7 @@ class Analysis extends Component {
       packSelect: 'recent'
     }
     this.selectPackView = this.selectPackView.bind(this)
-    this.selectLineView = this.selectLineView.bind(this)
+    this.selectScatterView = this.selectScatterView.bind(this)
   }
 
   componentDidMount() {
@@ -42,15 +42,22 @@ class Analysis extends Component {
     return Pack(catFrequencyOverTime(this.props.thoughts), '.pie-chart')
   }
 
-  selectLineView(ev) {
+  selectScatterView(ev) {
     const { name, value } = ev.target
+    const { thoughts } = this.props
+
     this.setState({ [name]: value })
+
+    let filtered = value !== 'All' ? thoughts.filter(thought => (
+      thought.classifications.find(c => c.label == value)
+    )) : thoughts
+    Scatter(thoughtsOverTime(thoughts), '.scatter-chart', thoughtsOverTime(filtered))
   }
 
   render() {
     const { packSelect, lineSelect } = this.state
-    const { selectPackView, selectLineView } = this
-    const { thoughts, topics } = this.props
+    const { selectPackView, selectScatterView } = this
+    let { thoughts, topics } = this.props
 
     return (
       <div className='charts'>
@@ -68,10 +75,15 @@ class Analysis extends Component {
 
         <h4>Topics over time</h4>
         <span className='select'>
-          <select name='lineSelect' value={ lineSelect } onChange={ selectLineView }>
+          <select name='lineSelect' value={ lineSelect } onChange={ selectScatterView }>
             <option>All</option>
             { topics && topics.map(topic => (
               <option key={ topic.id }>{ topic.label }</option>)) }
+          </select>
+        </span>
+        <span className='select'>
+          <select>
+            <option>From -/-/- to -/-/-</option>
           </select>
         </span>
         <div className='chart scatter-chart'>

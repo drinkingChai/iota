@@ -7,7 +7,7 @@ nav {
 
   box-shadow: 0 1px 20px rgba(0,0,0,0.19), 0 1px 6px rgba(0,0,0,0.23);
 
-  z-index: 1;
+  z-index: 10;
 
   display: grid;
   grid-template-rows: 0;
@@ -31,8 +31,8 @@ nav {
   & .burger-container-inactive,
   & .burger-container-active {
     position: absolute;
-    left: -33%;
-    top: 20px;
+    left: -31%;
+    top: 12px;
     transition: all 0.1s;
 
     @media only screen and (min-width: 700px) {
@@ -64,8 +64,19 @@ nav {
 }
 
 .top-bar {
-  // position: fixed;
-  // height: 4em;
-  // width: 100%;
-  // background-color: $navy;
+  position: fixed;
+  height: 3em;
+  width: 100%;
+  background-color: $navy;
+  z-index: 9;
+
+  padding-top: 15px;
+  padding-left: 17px;
+
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+
+  display: flex;
+  & > * {
+    margin-right: 10px;
+  }
 }

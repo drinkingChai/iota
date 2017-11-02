@@ -20,7 +20,9 @@ class Nav extends Component {
 
     return (
       <div>
-        <div className='top-bar'></div>
+        <div className='top-bar'>
+          <i className="im im-book"></i> <span>jot</span>
+        </div>
         
         <nav className={ menuActive ? 'nav-visible' : 'nav-hidden' }>
           <div className={ menuActive ? 'burger-container-active' : 'burger-container-inactive' }>
