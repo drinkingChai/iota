@@ -17,7 +17,7 @@
   position: relative;
 
   padding: 10px;
-  border: solid 3px #d3dce6;
+  border: solid 2px #d3dce6;
   transition: border .5s;
 
   &.selected { border-color: $teal; }
@@ -33,25 +33,25 @@
 
   &.thought-cluster:after {
     content: '';
-    width: 98%;
+    width: 99.5%;
     height: 10px;
     position: absolute;
-    top: -8px;
-    left: 1%;
-    right: 1%;
-    background-color: lighten($gray, 15%);
+    top: -7px;
+    left: 0.25%;
+    right: 0.25%;
+    background-color: lighten($gray, 20%);
     z-index: -1;
     transition: background-color 0.5s;
   }
   &.thought-cluster:before {
     content: '';
-    width: 96%;
+    width: 98%;
     height: 10px;
     position: absolute;
-    top: -13px;
-    left: 2%;
-    right: 2%;
-    background-color: lighten($gray, 5%);
+    top: -12px;
+    left: 1%;
+    right: 1%;
+    background-color: lighten($gray, 15%);
     z-index: -1;
     transition: background-color 0.5s;
   }
@@ -60,7 +60,7 @@
     background-color: darken($teal, 20%);
   }
   &.thought-cluster.selected:before {
-    background-color: darken($teal, 30%);
+    background-color: darken($teal, 25%);
   }
 
   &.thought-linked {
@@ -100,6 +100,7 @@
   color: $white;
 
   &.remove-category {
+    & * { color: $white; }
 
     & > span {
       display: flex;
@@ -169,4 +170,8 @@
   &.active {
     bottom: 0;
   }
+}
+
+.cluster-categories {
+  margin-bottom: 30px;
 }

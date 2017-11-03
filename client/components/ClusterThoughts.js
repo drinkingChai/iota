@@ -28,7 +28,7 @@ function ClusterThoughts ({ thoughts, categories, unlink }) {
             </div>
           </div>)) }
       </div>
-      <div>
+      <div className='cluster-categories'>
         <h3>Categories in this cluster</h3>
         <br/>
         <div className='categories'>
@@ -41,13 +41,17 @@ function ClusterThoughts ({ thoughts, categories, unlink }) {
 }
 
 
-const mapState = ({ thoughts }, ownProps) => ({
-  thoughts: thoughts.filter(t => t.clusterId == ownProps.match.params.id),
-  categories: thoughts.reduce((allCats, t) => {
-    const newCats = t.classifications.map(c => c.label).slice(0, 5).filter(c => allCats.indexOf(c) == -1)
-    return allCats.concat(newCats)
-  }, [])
-})
+const mapState = ({ thoughts }, ownProps) => {
+  const filteredThoughts = thoughts.filter(t => t.clusterId == ownProps.match.params.id)
+
+  return {
+    thoughts: filteredThoughts,
+    categories: filteredThoughts.reduce((allCats, t) => {
+      const newCats = t.classifications.map(c => c.label).slice(0, 5).filter(c => allCats.indexOf(c) == -1)
+      return allCats.concat(newCats)
+    }, [])
+  }
+}
 
 const mapDispatch = (dispatch, ownProps) => ({ 
   unlink(thought) {

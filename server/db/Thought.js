@@ -65,6 +65,11 @@ Thought.updateThoughtAndClassify = function(id, content) {
     .then(thought => conn.models.category.classifyThought(thought))
 }
 
+Thought.deleteThought = function(id) {
+  return this.findById(id)
+    .then(thought => thought.destroy()) 
+}
+
 Thought.removeFromCluster = function(id, clusterId) {
   return Thought.findById(id)
     .then(thought => {
@@ -78,17 +83,6 @@ Thought.removeFromCluster = function(id, clusterId) {
         })
     })
 }
-
-//Thought.addToCluster = function(id, clusterId) {
-  //return conn.models.cluster.findById(clusterId)
-    //.then(cluster => {
-      //return Thought.findById(id)
-        //.then(thought => {
-          //Object.assign(thought, { clusterId: cluster.id })
-          //return thought.save()
-        //})
-    //})
-//}
 
 Thought.removeCategory = function(id, categoryId) {
   return Thought.findById(id)

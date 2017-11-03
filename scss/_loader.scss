@@ -19,11 +19,15 @@
 }
 
 .horiz-loader {
-  height: 4px;
+  $loaderheight: 5px;
+  height: $loaderheight;
   width: 100%;
   position: relative;
   overflow: hidden;
-  background-color: #ddd;
+  // background-color: $white;
+
+  position: absolute;
+  bottom: 0;
 
   &:before{
     display: block;
@@ -31,7 +35,7 @@
     position: absolute;
     left: -200px;
     width: 200px;
-    height: 4px;
+    height: $loaderheight;
     background-color: $fuschia;
     animation: flying 2s linear infinite;
   }

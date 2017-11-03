@@ -53,6 +53,12 @@ router.put('/thoughts/:id', (req, res, next) => {
     .catch(next)
 })
 
+router.delete('/thoughts/:id', (req, res, next) => {
+  Thought.deleteThought(req.params.id)
+    .then(() => res.sendStatus(200))
+    .catch(next)
+})
+
 const { Cluster } = require('../db').models
 router.post('/clusters', (req, res, next) => {
   Cluster.clusterThoughts(req.body)

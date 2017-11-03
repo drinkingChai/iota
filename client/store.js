@@ -33,6 +33,11 @@ export const updateThought = (id, content) => dispatch =>
     .then(() => dispatch(fetchThoughts()))
     //.then(res => res.data)
 
+export const deleteThought = id => dispatch =>
+  axios.delete(`/api/thoughts/${id}`)
+    // .then(() => dispatch(fetchThoughts()))
+    //.then(res => res.data)
+
 export const linkThoughts = thoughts => dispatch =>
   axios.post(`/api/clusters`, thoughts)
     .then(() => dispatch(fetchThoughts()))

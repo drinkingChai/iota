@@ -10,11 +10,15 @@
   align-items: center;
   text-align: center;
 
+  & button {
+    margin-right: 5px;
+  }
+
   & .floating-message-body {
     background-color: $white;
-    & * { color: $black; }
     padding: 50px;
     width: 100%;
+    position: relative;
 
     display: grid;
     grid-gap: 15px;

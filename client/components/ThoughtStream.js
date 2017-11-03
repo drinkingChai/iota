@@ -36,7 +36,7 @@ class ThoughtStream extends Component {
 
     return (
       <div>
-        <h3>Thought stream here!</h3>
+        <h3>Thought stream</h3>
 
         <div>
           <label htmlFor='search'>Search</label>

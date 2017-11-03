@@ -1,17 +1,24 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { updateThought, removeCategory, addCategory } from '../store'
+import { updateThought, removeCategory,
+  addCategory, deleteThought, fetchThoughts } from '../store'
 import JotSubmit from './messages/JotSubmit'
 import PleaseWait from './messages/PleaseWait'
+import DelConfirm from './messages/DelConfirm'
 
 class ViewEditJot extends Component {
   constructor() {
     super()
-    this.state = { text: '', newcategory: '', categories: '', updatedDisplayed: false, waitDisplayed: false }
+    this.state = {
+      text: '', newcategory: '', categories: '',
+      updatedDisplayed: false, waitDisplayed: false, delConfDisplayed: false }
     this.onChange = this.onChange.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
     this.onRemoveCategory = this.onRemoveCategory.bind(this)
     this.onAddCategory = this.onAddCategory.bind(this)
+    this.onDelete = this.onDelete.bind(this)
+    this.onCancelDelete = this.onCancelDelete.bind(this)
+    this.onConfirmDelete = this.onConfirmDelete.bind(this)
   }
 
   componentDidMount() {
@@ -49,21 +56,49 @@ class ViewEditJot extends Component {
     const newCategories = this.state.newcategory.split(',').filter(c => c.length)
 
     this.setState({ waitDisplayed: true })
-    Promise.all(newCategories.map(label =>
-      this.props.addCategory(this.props.thought, { label: label.trim() })
-    ))
+    setTimeout(() => {
+      Promise.all(newCategories.map(label =>
+        this.props.addCategory(this.props.thought, { label: label.trim() })
+      ))
       .then(() => this.setState({ newcategory: '', waitDisplayed: false }))
+    }, 1000)
+    
+  }
+
+  onDelete(ev) {
+    ev.preventDefault()
+    this.setState({ delConfDisplayed: true })
+  }
+
+  onCancelDelete(ev) {
+    ev.preventDefault()
+    this.setState({ delConfDisplayed: false })
+  }
+
+  onConfirmDelete(ev) {
+    ev.preventDefault()
+    const { deleteThought, thought, history, fetchThoughts } = this.props
+
+    deleteThought(thought.id)
+      .then(() => history.push('/thoughts'))
+      .then(() => fetchThoughts())
   }
 
   render() {
-    const { text, newcategory, classifications, updatedDisplayed, waitDisplayed } = this.state
-    const { onChange, onSubmit, onRemoveCategory, onAddCategory } = this
+    const { text, newcategory, classifications, updatedDisplayed, waitDisplayed, delConfDisplayed } = this.state
+    const { onChange, onSubmit, onDelete, onRemoveCategory, onAddCategory, onCancelDelete, onConfirmDelete } = this
     const inputDisabled = text.length < 5 || text.length > 100 ? true : false
 
     return (
       <form onSubmit={ onSubmit }>
         { updatedDisplayed ? <JotSubmit /> : null }
         { waitDisplayed ? <PleaseWait /> : null }
+        { delConfDisplayed ?
+          <DelConfirm
+            content={ this.props.thought }
+            cancel={ onCancelDelete }
+            confirm={ onConfirmDelete } /> :
+            null }
 
         <h3>Edit a thought</h3>
         <label htmlFor='text'>Thought</label>
@@ -97,6 +132,9 @@ class ViewEditJot extends Component {
         <button
           className='btn'
           disabled={ inputDisabled }>Update</button>
+        <button
+          className='btn btn-red'
+          onClick={ onDelete }>Delete</button>
       </form>
     )
   }
@@ -108,7 +146,9 @@ const mapState = ({ thoughts }, ownProps) => ({
 const mapDispatch = {
   updateThought,
   removeCategory,
-  addCategory
+  addCategory,
+  deleteThought,
+  fetchThoughts
 }
 
 export default connect(mapState, mapDispatch)(ViewEditJot)
