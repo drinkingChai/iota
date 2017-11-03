@@ -7,9 +7,10 @@ import { linkThoughts } from '../store'
 class ThoughtStream extends Component {
   constructor() {
     super()
-    this.state = { selected: [] }
+    this.state = { selected: [], search: '' }
     this.onToggleSelect = this.onToggleSelect.bind(this)
     this.onCluster = this.onCluster.bind(this)
+    this.onSearch = this.onSearch.bind(this)
   }
 
   componentDidMount() {
@@ -30,9 +31,24 @@ class ThoughtStream extends Component {
       .then(() => this.setState({ selected: [] }))
   }
 
+  onSearch(ev) {
+    const { value } = ev.target
+    this.setState({ search: value })
+  }
+
   render() {
-    const { selected } = this.state
-    const { onToggleSelect, onCluster } = this
+    const { selected, search } = this.state
+    const { onToggleSelect, onCluster, onSearch } = this
+    let { thoughts } = this.props
+
+    if (search.length) {
+      thoughts = thoughts.filter(thought => {
+        // flatten
+        const flatten = `${thought.text} ${thought.classifications.reduce((s, c) => (`${s} ${c.label}`), '')}`
+        const regex = new RegExp(search.split(' ').join('|'), 'gi')
+        if (regex.exec(flatten)) return thought
+      })
+    }
 
     return (
       <div>
@@ -41,13 +57,13 @@ class ThoughtStream extends Component {
         <div>
           <label htmlFor='search'>Search</label>
           <div className='search'>
-            <input name='search' />
+            <input name='search' value={ search } onChange={ onSearch }/>
             <i className="im im-magnifier"></i>
           </div>
         </div>
 
         <div className='thought-list'>
-          { this.props.thoughts.map(thought => (
+          { thoughts.map(thought => (
               <div
                 key={ thought.id } 
                 onClick={ () => onToggleSelect(thought) }
