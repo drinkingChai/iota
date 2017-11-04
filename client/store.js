@@ -1,22 +1,25 @@
 import { createStore, applyMiddleware } from 'redux'
 import loggerMiddleware from 'redux-logger'
 import thunkMiddleware from 'redux-thunk'
+import jwt from 'jsonwebtoken'
 import axios from 'axios'
+import _ from 'lodash'
 
 // ACTION NAMES
 const GET_THOUGHTS = 'GET_THOUGHTS'
-const GET_USER = 'GET_USER'
-const DELETE_USER = 'DELETE_USER'
+const SET_CURRENT_USER = 'SET_CURRENT_USER'
+const RESET_APP = 'RESET_APP'
 
 // ACTION CREATORS
 const getThoughts = thoughts => ({ type: GET_THOUGHTS, thoughts })
-const getUser = user => ({ type: GET_USER, user })
-const deleteUser = () => ({ type: DELETE_USER })
+const resetApp = () => ({ type: RESET_APP })
+export const setCurrentUser = user => ({ type: SET_CURRENT_USER, user })
 
 // THUNK
-export const fetchThoughts = () => dispatch =>
-  axios.get('/api/thoughts')
+export const fetchThoughts = () => dispatch => {
+  return axios.get('/api/thoughts')
     .then(res => dispatch(getThoughts(res.data)))
+}
 
 export const trainMachine = content => dispatch =>
   axios.post('/api/train', content)
@@ -58,21 +61,43 @@ export const addCategory = (thought, category) => dispatch =>
     .then(() => dispatch(fetchThoughts()))
     //.then(res => res.data)
 
-export const fetchUser = () => dispatch =>
-  axios.get('/api/auth')
-    .then(user => dispatch(getUser(user)))
+export const setAuthHeaderToken = token => {
+  // on the axios object, change the authorization header
+  // then everything that passes through axios will use that token
+  if (token) axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+  else delete axios.defaults.headers.common['Authorization']
+}
 
 export const signIn = authInfo => dispatch =>
   axios.post('/api/auth', authInfo)
-    .then(() => dispatch(fetchUser()))
+    .then(res => {
+      // set up the local storage
+      const token = res.data.jotKey
+      localStorage.setItem('jotKey', token)
 
-export const signOut = () => dispatch =>
-  axios.delete('/api/auth')
-    .then(() => dispatch(deleteUser()))
+      // start loading relevant data
+      return dispatch(loadUserData(token))   
+    })
+
+export const signOut = () => dispatch => {
+  localStorage.removeItem('jotKey')
+  dispatch(resetApp())
+}
+
+export const loadUserData = token => dispatch => {
+  setAuthHeaderToken(token)
+  dispatch(setCurrentUser(jwt.decode(token)))
+
+  // async op
+  return Promise.all([
+    dispatch(fetchThoughts())
+  ])
+}
 
 // INITIAL STATE
 const initialState = {
   thoughts: [],
+  isAuthenticated: false,
   user: {}
 }
 
@@ -81,13 +106,25 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_THOUGHTS:
       return { ...state, thoughts: action.thoughts }
-    case GET_USER:
-      return { ...state, user: action.user }
-    case DELETE_USER:
-      return { ...state,  user: {} }
+    case SET_CURRENT_USER:
+      return {
+        ...state,
+        isAuthenticated: !_.isEmpty(action.user),
+        user: action.user
+      }
+    case RESET_APP:
+      return initialState
     default:
       return state
   }
 }
 
-export default createStore(reducer, applyMiddleware(thunkMiddleware, loggerMiddleware))
+export default createStore(reducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+  applyMiddleware(thunkMiddleware, loggerMiddleware))
+
+// if we set a state after createStore, then it will be executed before the app renders
+// as this entire file will be exported before the app renders?
+// if (localStorage.getItem('jotKey')) {
+
+// }

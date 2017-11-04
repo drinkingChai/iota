@@ -17,10 +17,17 @@ Thought.createAndClassify = function(content) {
     .then(thought => conn.models.category.classifyThought(thought))
 }
 
-Thought.storeAndCluster = function(content) {
+Thought.storeAndCluster = function(content, userId) {
   const date = new Date()
-  return this.findAll({ order: [[ 'updatedAt', 'DESC' ]] })
+  Object.assign(content, { userId })
+
+  return this.findAll({ order: [[ 'updatedAt', 'DESC' ]], where: { userId } })
     .then(function(thoughts) {
+      if (!thoughts.length) {
+        // optimistic: assumes userId is valid
+        return Thought.createAndClassify(content)
+      }
+
       let createdWithinLimit = thoughts.find(t => {
         return (date - (new Date(t.createdAt))) / 1000 / 60 < 5
       })
@@ -34,7 +41,7 @@ Thought.storeAndCluster = function(content) {
             Object.assign(content, { clusterId: cluster.id })
             return Promise.all([
               createdWithinLimit.save(),
-              Thought.createAndClassify(content)
+              Thought.createAndClassify(content, userId)
             ])
           })
       }
@@ -43,7 +50,7 @@ Thought.storeAndCluster = function(content) {
 }
 
 Thought.getThoughtsAndClassify = function(userId) {
-  return this.findAll({ order: [[ 'updatedAt', 'DESC' ]], include: [ conn.models.category ] })
+  return this.findAll({ where: { userId }, order: [[ 'updatedAt', 'DESC' ]], include: [ conn.models.category ] })
     .then(thoughts =>
       thoughts.map(thought => ({
         id: thought.id,

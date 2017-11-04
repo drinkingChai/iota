@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { requireLogin } = require('./middlewares')
+const { verifyToken } = require('./authcheck')
 
 router.use('/auth', require('./auth'))
 
@@ -11,56 +11,56 @@ router.post('/train', (req, res, next) => {
 })
 
 const { Thought } = require('../db').models
-router.post('/thoughts', (req, res, next) => {
-  Thought.storeAndCluster(req.body)
+router.post('/thoughts', verifyToken, (req, res, next) => {
+  Thought.storeAndCluster(req.body, req.user.id)
     .then(classification => res.send(classification))
     .catch(next)
 })
 
-router.get('/thoughts', (req, res, next) => {
-  Thought.getThoughtsAndClassify(req.session.id)
+router.get('/thoughts', verifyToken, (req, res, next) => {
+  Thought.getThoughtsAndClassify(req.user.id)
     .then(thoughts => res.send(thoughts))
     .catch(next)
 })
 
-router.delete('/thoughts/:id/remove-category/:categoryId', (req, res, next) => {
+router.delete('/thoughts/:id/remove-category/:categoryId', verifyToken, (req, res, next) => {
+  // needs auth
   Thought.removeCategory(req.params.id, req.params.categoryId)
     .then(() => res.sendStatus(200))
     .catch(next)
 })
 
-router.put('/thoughts/:id/add-category', (req, res, next) => {
+router.put('/thoughts/:id/add-category', verifyToken, (req, res, next) => {
+  // needs auth
   Thought.addCategory(req.params.id, req.body)
     .then(() => res.sendStatus(200))
     .catch(next)
 })
 
-router.delete('/thoughts/:id/remove-cluster/:clusterId', (req, res, next) => {
+router.delete('/thoughts/:id/remove-cluster/:clusterId', verifyToken, (req, res, next) => {
+  // needs auth
   Thought.removeFromCluster(req.params.id, req.params.clusterId)
     .then(() => res.sendStatus(200))
     .catch(next)
 })
 
-//router.put('/thoughts/:id/add-to-cluster/:clusterId', (req, res, next) => {
-  //Thought.addToCluster(req.params.id, req.params.clusterId)
-    //.then(() => res.sendStatus(200))
-    //.catch(next)
-//})
-
-router.put('/thoughts/:id', (req, res, next) => {
+router.put('/thoughts/:id', verifyToken, (req, res, next) => {
+  // needs auth
   Thought.updateThoughtAndClassify(req.params.id, req.body)
     .then(classification => res.send(classification))
     .catch(next)
 })
 
-router.delete('/thoughts/:id', (req, res, next) => {
+router.delete('/thoughts/:id', verifyToken, (req, res, next) => {
+  // needs auth
   Thought.deleteThought(req.params.id)
     .then(() => res.sendStatus(200))
     .catch(next)
 })
 
 const { Cluster } = require('../db').models
-router.post('/clusters', (req, res, next) => {
+router.post('/clusters', verifyToken, (req, res, next) => {
+  // needs auth
   Cluster.clusterThoughts(req.body)
     .then(() => res.sendStatus(200))
     .catch(next)

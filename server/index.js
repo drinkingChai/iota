@@ -1,18 +1,12 @@
 const express = require('express')
 const path = require('path')
 const bodyParser = require('body-parser')
-const sessions = require('client-sessions')
 const db = require('./db')
 const machine = require('./machine')
 const env = require('./env')
 
 const app = express()
 app.use(require('morgan')('dev'))
-app.use(sessions({
-  cookieName: 'session',
-  secret: process.env.SESSIONSECRET || env.SESSIONSECRET,
-  maxAge: 30 * 60 * 1000
-}))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 

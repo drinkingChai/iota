@@ -1,10 +1,11 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
 function Welcome ({ text, history }) {
   setTimeout(() => {
     history.push('/jot')
-  }, 3000)
+  }, 1500)
 
   return (
     <div className='welcome'>
@@ -19,4 +20,5 @@ function Welcome ({ text, history }) {
   )
 }
 
-export default withRouter(Welcome)
+const mapState = ({ user }) => ({ text: user.email })
+export default withRouter(connect(mapState)(Welcome))

@@ -1,22 +1,29 @@
 import React, { Component } from 'react'
 import { withRouter, Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { displayMenu } from '../store'
+import { signOut } from '../store'
 
 class Nav extends Component {
   constructor() {
     super()
     this.state = { menuActive: false }
     this.displayMenu = this.displayMenu.bind(this)
+    this.logOut = this.logOut.bind(this)
   }
 
   displayMenu() {
     this.setState({ menuActive: !this.state.menuActive })
   }
 
+  logOut() {
+    this.props.signOut()
+    this.setState({ menuActive: false })
+  }
+
   render() {
     const { menuActive } = this.state
-    const { displayMenu } = this
+    const { displayMenu, logOut } = this
+    const { isAuthenticated } = this.props
 
     return (
       <div>
@@ -33,12 +40,16 @@ class Nav extends Component {
             </button>
           </div>
 
-          <div className='link-group'>
-            <Link to='/jot' onClick={ displayMenu }>Jot</Link>
-            <Link to='/thoughts' onClick={ displayMenu }>ThoughtStream</Link>
-            <Link to='/stats' onClick={ displayMenu }>Analyze</Link>
-            <Link to='/login' onClick={ displayMenu }>Login</Link>
-          </div>
+          { isAuthenticated ?
+            <div className='link-group'>
+              <Link to='/jot' onClick={ displayMenu }>Jot</Link>
+              <Link to='/thoughts' onClick={ displayMenu }>ThoughtStream</Link>
+              <Link to='/stats' onClick={ displayMenu }>Analyze</Link>
+              <Link to='/login' onClick={ logOut }>Logout</Link>
+            </div> :
+            <div className='link-group'>
+              <Link to='/login' onClick={ displayMenu }>Login</Link>
+            </div> }
 
           <div className='nav-footer'>
             <p>Created with much <i className="im im-heart"></i> by</p>
@@ -50,4 +61,6 @@ class Nav extends Component {
   }
 }
 
-export default withRouter(connect()(Nav))
+const mapState = ({ isAuthenticated }) => ({ isAuthenticated })
+const mapDispatch = { signOut }
+export default withRouter(connect(mapState, mapDispatch)(Nav))
