@@ -12,17 +12,12 @@ import Scatter from './charts/Scatter'
 */
 
 class Analysis extends Component {
-  constructor() {
-    super()
-    this.state = {
-      lineSelect: '',
-      packSelect: 'recent'
-    }
-    this.selectPackView = this.selectPackView.bind(this)
-    this.selectScatterView = this.selectScatterView.bind(this)
+  state = {
+    lineSelect: '',
+    packSelect: 'recent'
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
     window.scrollTo(0, 0);
     if (this.props.thoughts.length) {
       Pack(catFrequencyOverTime(this.props.thoughts).slice(0, 5), '.pie-chart')
@@ -30,19 +25,19 @@ class Analysis extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps = (nextProps) => {
     Pack(catFrequencyOverTime(nextProps.thoughts).slice(0, 5), '.pie-chart')
     Scatter(thoughtsOverTime(nextProps.thoughts), '.scatter-chart')
   }
 
-  selectPackView(ev) {
+  selectPackView = ev => {
     const { name, value } = ev.target
     this.setState({ [name]: value })
     if (value == 'recent') return Pack(catFrequencyOverTime(this.props.thoughts).slice(0, 5), '.pie-chart')
     return Pack(catFrequencyOverTime(this.props.thoughts), '.pie-chart')
   }
 
-  selectScatterView(ev) {
+  selectScatterView = ev => {
     const { name, value } = ev.target
     const { thoughts } = this.props
 
@@ -54,7 +49,7 @@ class Analysis extends Component {
     Scatter(thoughtsOverTime(thoughts), '.scatter-chart', thoughtsOverTime(filtered))
   }
 
-  render() {
+  render = () => {
     const { packSelect, lineSelect } = this.state
     const { selectPackView, selectScatterView } = this
     let { thoughts, topics } = this.props

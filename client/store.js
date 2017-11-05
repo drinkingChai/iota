@@ -80,6 +80,7 @@ export const signIn = authInfo => dispatch =>
     })
 
 export const signOut = () => dispatch => {
+  delete axios.defaults.headers.common['Authorization']
   localStorage.removeItem('jotKey')
   dispatch(resetApp())
 }
@@ -93,6 +94,9 @@ export const loadUserData = token => dispatch => {
     dispatch(fetchThoughts())
   ])
 }
+
+export const updatePassword = password => dispatch =>
+  axios.put('/api/auth/change-password', { password })
 
 // INITIAL STATE
 const initialState = {
@@ -120,11 +124,4 @@ const reducer = (state = initialState, action) => {
 }
 
 export default createStore(reducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
   applyMiddleware(thunkMiddleware, loggerMiddleware))
-
-// if we set a state after createStore, then it will be executed before the app renders
-// as this entire file will be exported before the app renders?
-// if (localStorage.getItem('jotKey')) {
-
-// }

@@ -1,18 +1,3 @@
-export function catFrequency (thoughts) {
-  const frequencyCount = {}
-  thoughts.forEach(thought => {
-    thought.classifications.forEach(c => {
-      const mapData = frequencyCount[c.label] ? frequencyCount[c.label] : []
-      mapData.push(thought)
-      frequencyCount[c.label] = mapData
-    })
-  })
-
-  const frequencyMap = Object.keys(frequencyCount).map(key => ({ key, count: frequencyCount[key].length }))
-  frequencyMap.sort((a, b) => b.count - a.count)
-  return frequencyMap
-}
-
 export function catFrequencyOverTime (thoughts) {
   const frequencyCount = {}
   thoughts.forEach(thought => {
@@ -46,22 +31,6 @@ export function catFrequencyOverTime (thoughts) {
 }
 
 export function thoughtsOverTime (thoughts) {
-  // const byDate = thoughts.reduce((days, thought) => {
-  //   const date = dateOnly(thought.created),
-  //     fullDate = new Date(thought.created),
-  //     onDate = days[date] || []
-
-  //   onDate.push(`${fullDate.getHours()}:${fullDate.getMinutes()}:${fullDate.getSeconds()}`)
-  //   days[date] = onDate
-  //   return days
-  // }, {})
-
-  // return Object.keys(byDate)
-  //   .map(k => ({
-  //    date: k,
-  //    times: byDate[k]
-  //  }))
-
   return thoughts.reduce((times, thought) => ([ ...times, new Date(thought.created)]), [])
 }
 

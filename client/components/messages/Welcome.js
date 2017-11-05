@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
-function Welcome ({ text, history }) {
+const Welcome = ({ text, history }) => {
   setTimeout(() => {
     history.push('/jot')
   }, 1500)

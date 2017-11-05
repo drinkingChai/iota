@@ -5,19 +5,16 @@ import { formatDate } from '../helpers'
 import { linkThoughts } from '../store'
 
 class ThoughtStream extends Component {
-  constructor() {
-    super()
-    this.state = { selected: [], search: '' }
-    this.onToggleSelect = this.onToggleSelect.bind(this)
-    this.onCluster = this.onCluster.bind(this)
-    this.onSearch = this.onSearch.bind(this)
+  state = {
+    selected: [],
+    search: ''
   }
 
-  componentDidMount() {
-    window.scrollTo(0, 0);
+  componentDidMount = () => {
+    window.scrollTo(0, 0)
   }
 
-  onToggleSelect(thought) {
+  onToggleSelect = thought => {
     const { selected } = this.state
     this.setState({
       selected: selected.find(t => t.id == thought.id) ?
@@ -26,17 +23,17 @@ class ThoughtStream extends Component {
     })
   }
 
-  onCluster(ev) {
+  onCluster = ev => {
     this.props.linkThoughts(this.state.selected)
       .then(() => this.setState({ selected: [] }))
   }
 
-  onSearch(ev) {
+  onSearch = ev => {
     const { value } = ev.target
     this.setState({ search: value })
   }
 
-  render() {
+  render = () => {
     const { selected, search } = this.state
     const { onToggleSelect, onCluster, onSearch } = this
     let { thoughts } = this.props

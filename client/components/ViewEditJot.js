@@ -4,40 +4,29 @@ import { updateThought, removeCategory,
   addCategory, deleteThought, fetchThoughts } from '../store'
 import JotSubmit from './messages/JotSubmit'
 import PleaseWait from './messages/PleaseWait'
-import DelConfirm from './messages/DelConfirm'
+import Confirm from './messages/Confirm'
 
 class ViewEditJot extends Component {
-  constructor() {
-    super()
-    this.state = {
-      text: '', newcategory: '', categories: '',
-      updatedDisplayed: false, waitDisplayed: false, delConfDisplayed: false }
-    this.onChange = this.onChange.bind(this)
-    this.onSubmit = this.onSubmit.bind(this)
-    this.onRemoveCategory = this.onRemoveCategory.bind(this)
-    this.onAddCategory = this.onAddCategory.bind(this)
-    this.onDelete = this.onDelete.bind(this)
-    this.onCancelDelete = this.onCancelDelete.bind(this)
-    this.onConfirmDelete = this.onConfirmDelete.bind(this)
+  state = {
+    text: '', newcategory: '', categories: '',
+    updatedDisplayed: false, waitDisplayed: false, delConfDisplayed: false
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
     if (!this.props.thought) return
     const { text, classifications } = this.props.thought
     this.setState({ text, classifications })
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps = (nextProps) => {
     const { text, classifications } = nextProps.thought
     this.setState({ text, classifications })
   }
 
-  onChange({ target }) {
-    const { name, value } = target
-    this.setState({ [name]: value })
-  }
+  onChange = name => ev =>
+    this.setState({ [name]: ev.target.value })
 
-  onSubmit(ev) {
+  onSubmit = ev => {
     ev.preventDefault()
     this.setState({ updatedDisplayed: true })
     this.props.updateThought(this.props.match.params.id, this.state)
@@ -46,12 +35,12 @@ class ViewEditJot extends Component {
       })
   }
 
-  onRemoveCategory(ev, category) {
+  onRemoveCategory = (ev, category) => {
     ev.preventDefault()
     this.props.removeCategory(this.props.thought, category)
   }
 
-  onAddCategory(ev) {
+  onAddCategory = ev => {
     ev.preventDefault()
     const newCategories = this.state.newcategory.split(',').filter(c => c.length)
 
@@ -65,17 +54,17 @@ class ViewEditJot extends Component {
     
   }
 
-  onDelete(ev) {
+  onDelete = ev => {
     ev.preventDefault()
     this.setState({ delConfDisplayed: true })
   }
 
-  onCancelDelete(ev) {
+  onCancelDelete = ev => {
     ev.preventDefault()
     this.setState({ delConfDisplayed: false })
   }
 
-  onConfirmDelete(ev) {
+  onConfirmDelete = ev => {
     ev.preventDefault()
     const { deleteThought, thought, history, fetchThoughts } = this.props
 
@@ -84,7 +73,7 @@ class ViewEditJot extends Component {
       .then(() => fetchThoughts())
   }
 
-  render() {
+  render = () => {
     const { text, newcategory, classifications, updatedDisplayed, waitDisplayed, delConfDisplayed } = this.state
     const { onChange, onSubmit, onDelete, onRemoveCategory, onAddCategory, onCancelDelete, onConfirmDelete } = this
     const inputDisabled = text.length < 5 || text.length > 100 ? true : false
@@ -94,8 +83,8 @@ class ViewEditJot extends Component {
         { updatedDisplayed ? <JotSubmit /> : null }
         { waitDisplayed ? <PleaseWait /> : null }
         { delConfDisplayed ?
-          <DelConfirm
-            content={ this.props.thought }
+          <Confirm
+            content='Confirm delete?'
             cancel={ onCancelDelete }
             confirm={ onConfirmDelete } /> :
             null }
@@ -103,9 +92,8 @@ class ViewEditJot extends Component {
         <h3>Edit a thought</h3>
         <label htmlFor='text'>Thought</label>
         <textarea
-          name='text'
           value={ text }
-          onChange={ onChange }
+          onChange={ onChange('text') }
           className={ inputDisabled ? 'red' : null }></textarea>
 
         <label htmlFor='categories'>Categories</label>
@@ -122,9 +110,8 @@ class ViewEditJot extends Component {
         <label htmlFor='newcategory'>Add categories</label>
         {/* have this autocomplete to existing cats */}
         <input
-          name='newcategory'
           value={ newcategory }
-          onChange={ onChange } />
+          onChange={ onChange('newcategory') } />
         <button
           className='btn btn-blue'
           onClick={ onAddCategory }>Add category</button>

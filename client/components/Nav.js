@@ -4,23 +4,18 @@ import { connect } from 'react-redux'
 import { signOut } from '../store'
 
 class Nav extends Component {
-  constructor() {
-    super()
-    this.state = { menuActive: false }
-    this.displayMenu = this.displayMenu.bind(this)
-    this.logOut = this.logOut.bind(this)
-  }
+  state = { menuActive: false }
 
-  displayMenu() {
+  displayMenu = () => {
     this.setState({ menuActive: !this.state.menuActive })
   }
 
-  logOut() {
+  logOut = () => {
     this.props.signOut()
     this.setState({ menuActive: false })
   }
 
-  render() {
+  render = () => {
     const { menuActive } = this.state
     const { displayMenu, logOut } = this
     const { isAuthenticated } = this.props
@@ -45,6 +40,7 @@ class Nav extends Component {
               <Link to='/jot' onClick={ displayMenu }>Jot</Link>
               <Link to='/thoughts' onClick={ displayMenu }>ThoughtStream</Link>
               <Link to='/stats' onClick={ displayMenu }>Analyze</Link>
+              <Link to='/profile' onClick={ displayMenu }>Profile</Link>
               <Link to='/login' onClick={ logOut }>Logout</Link>
             </div> :
             <div className='link-group'>
