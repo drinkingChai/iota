@@ -1,22 +1,16 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { trainMachine } from '../store'
-import TrainSubmit from './messages/TrainSubmit'
+import Loading from './messages/Loading'
 
 class Train extends Component {
-  constructor() {
-    super()
-    this.state = { phrase: '', category: '', thankYouDisplayed: false }
-    this.onChange = this.onChange.bind(this)
-    this.onSubmit = this.onSubmit.bind(this)
+  state = { phrase: '', category: '', thankYouDisplayed: false }
+
+  onChange = name => ev => {
+    this.setState({ [name]: ev.target.value })
   }
 
-  onChange({ target }) {
-    const { name, value } = target
-    this.setState({ [name]: value })
-  }
-
-  onSubmit(ev) {
+  onSubmit = ev => {
     ev.preventDefault()
     this.props.trainMachine(this.state)
       .then(() => {
@@ -27,20 +21,20 @@ class Train extends Component {
       })
   }
 
-  render() {
+  render = () => {
     const { phrase, category,
             thankYouDisplayed } = this.state
     const { onChange, onSubmit } = this
 
     return (
       <form onSubmit={ onSubmit }>
-        { thankYouDisplayed ? <TrainSubmit /> : null }
+        { thankYouDisplayed ? <Loading message='Thank you for helping the bot learn!' /> : null }
 
         <h3>Train</h3>
         <label htmlFor='phrase'>Phrase</label>
-        <input name='phrase' value={ phrase } onChange={ onChange }/>
+        <input value={ phrase } onChange={ onChange('phrase') }/>
         <label htmlFor='category'>Categories</label>
-        <input name='category' value={ category } onChange={ onChange }/>
+        <input value={ category } onChange={ onChange('category') }/>
         <button className='btn'>Train</button>
       </form>
     )
@@ -48,5 +42,4 @@ class Train extends Component {
 }
 
 const mapDispatch = { trainMachine }
-
 export default connect(null, mapDispatch)(Train)

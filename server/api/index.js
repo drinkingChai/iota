@@ -2,6 +2,7 @@ const router = require('express').Router()
 const { verifyToken } = require('./authcheck')
 
 router.use('/auth', require('./auth'))
+router.use('/users', require('./users'))
 
 const { MachineData } = require('../db').models
 router.post('/train', (req, res, next) => {

@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { updateThought, removeCategory,
   addCategory, deleteThought, fetchThoughts } from '../store'
-import JotSubmit from './messages/JotSubmit'
-import PleaseWait from './messages/PleaseWait'
+import Loading from './messages/Loading'
 import Confirm from './messages/Confirm'
 
 class ViewEditJot extends Component {
@@ -80,8 +79,8 @@ class ViewEditJot extends Component {
 
     return (
       <form onSubmit={ onSubmit }>
-        { updatedDisplayed ? <JotSubmit /> : null }
-        { waitDisplayed ? <PleaseWait /> : null }
+        { updatedDisplayed ? <Loading message='Your jot has been updated.' /> : null }
+        { waitDisplayed ? <Loading message='Loading...' /> : null }
         { delConfDisplayed ?
           <Confirm
             content='Confirm delete?'

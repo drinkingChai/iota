@@ -45,6 +45,7 @@ class Nav extends Component {
             </div> :
             <div className='link-group'>
               <Link to='/login' onClick={ displayMenu }>Login</Link>
+              <Link to='/register' onClick={ displayMenu }>Register</Link>
             </div> }
 
           <div className='nav-footer'>

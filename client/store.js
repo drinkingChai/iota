@@ -97,6 +97,10 @@ export const updateProfile = profileData => dispatch =>
   axios.put('/api/auth/update-profile', profileData)
     .then(res => dispatch(loadUserData(res.data.jotKey)))
 
+export const register = userData => dispatch =>
+  axios.post('/api/users', userData)
+    .then(res => dispatch(loadUserData(res.data.jotKey)))
+
 // INITIAL STATE
 const initialState = {
   thoughts: [],

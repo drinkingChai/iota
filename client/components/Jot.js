@@ -1,22 +1,18 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { postThought } from '../store'
-import JotSubmit from './messages/JotSubmit'
+import Loading from './messages/Loading'
+import Textarea from './reusables/Textarea'
+import Button from './reusables/Button'
 
 class Jot extends Component {
-  constructor() {
-    super()
-    this.state = { text: '', submittedDisplayed: false }
-    this.onChange = this.onChange.bind(this)
-    this.onSubmit = this.onSubmit.bind(this)
+  state = { text: '', submittedDisplayed: false }
+
+  onChange = name => ev => {
+    this.setState({ [name]: ev.target.value })
   }
 
-  onChange({ target }) {
-    const { name, value } = target
-    this.setState({ [name]: value })
-  }
-
-  onSubmit(ev) {
+  onSubmit = ev => {
     ev.preventDefault()
     this.setState({ submittedDisplayed: true })
     this.props.postThought(this.state)
@@ -25,25 +21,24 @@ class Jot extends Component {
       })
   }
 
-  render() {
+  render = () => {
     const { text, submittedDisplayed } = this.state
     const { onChange, onSubmit } = this
     const inputDisabled = text.length < 5 || text.length > 200 ? true : false
 
     return (
       <form onSubmit={ onSubmit }>
-        { submittedDisplayed ? <JotSubmit /> : null }
+        { submittedDisplayed ? <Loading message='Your jot has been recorded.' /> : null }
 
         <h3>Jot it down</h3>
-        <textarea
-          autoFocus
-          name='text'
+        <Textarea
+          autoFocus={ true }
           value={ text }
-          onChange={ onChange }
-          className={ inputDisabled ? 'red' : null }></textarea>
-        <button
-          className='btn'
-          disabled={ inputDisabled }>Submit</button>
+          onChange={ onChange('text') }
+          className={ inputDisabled ? 'red' : null } />
+        <Button
+          label='Jot it down'
+          disabled={ inputDisabled } />
       </form>
     )
   }

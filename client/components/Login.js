@@ -1,48 +1,48 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { signIn } from '../store'
+import Textbox from './reusables/Textbox'
+import Button from './reusables/Button'
 
 class UserLogin extends Component {
-  constructor() {
-    super()
-    this.state = { email: '', password: '' }
-    this.onChange = this.onChange.bind(this)
-    this.onSubmit = this.onSubmit.bind(this)
+  state = { email: '', password: '' }
+
+  onChange = name => ev => {
+    this.setState({ [name]: ev.target.value })
   }
 
-  onChange(ev) {
-    const { name, value } = ev.target
-    this.setState({ [name]: value })
-  }
-
-  onSubmit(ev) {
-    ev.preventDefault()
-    // on success
+  onSubmit = ev => {
     this.props.signIn(this.state)
       .then(() => this.props.history.push('/welcome'))
   }
 
-  render() {
+  render = () => {
     const { email, password } = this.state
     const { onChange, onSubmit } = this
 
     return (
       <div className='login'>
         <h3>Login</h3>
-        <form onSubmit={ onSubmit }>
-          <label htmlFor='email'>Email</label>
-          <input name='email' type='email' value={ email } onChange={ onChange } />
-
-          <label htmlFor='password'>Password</label>
-          <input name='password' type='password' value={ password } onChange={ onChange } />
-
-          <button className='btn'>Login</button>
-        </form>
+        <div className='form'>
+          <Textbox
+            label='E-mail'
+            value={ email }
+            onChange={ onChange('email') } />
+          <Textbox
+            type='password'
+            label='Password'
+            value={ password }
+            onChange={ onChange('password') } />  
+          <Button
+            label='Login'
+            onClick={ onSubmit } />
+        </div>
 
         <h3>Register</h3>
 
         <div className='btn-group'>
-          <button className='btn'>Register</button>
+          <Link to='/register' className='btn'>Register</Link>
           <button className='btn btn-red'> Login with Google</button>
           <button className='btn btn-blue'>Login with Facebook</button>
         </div>
