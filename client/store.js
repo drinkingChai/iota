@@ -70,14 +70,7 @@ export const setAuthHeaderToken = token => {
 
 export const signIn = authInfo => dispatch =>
   axios.post('/api/auth', authInfo)
-    .then(res => {
-      // set up the local storage
-      const token = res.data.jotKey
-      localStorage.setItem('jotKey', token)
-
-      // start loading relevant data
-      return dispatch(loadUserData(token))   
-    })
+    .then(res => dispatch(loadUserData(res.data.jotKey)))
 
 export const signOut = () => dispatch => {
   delete axios.defaults.headers.common['Authorization']
@@ -86,6 +79,8 @@ export const signOut = () => dispatch => {
 }
 
 export const loadUserData = token => dispatch => {
+  localStorage.setItem('jotKey', token)
+
   setAuthHeaderToken(token)
   dispatch(setCurrentUser(jwt.decode(token)))
 
@@ -97,6 +92,10 @@ export const loadUserData = token => dispatch => {
 
 export const updatePassword = password => dispatch =>
   axios.put('/api/auth/change-password', { password })
+
+export const updateProfile = profileData => dispatch =>
+  axios.put('/api/auth/update-profile', profileData)
+    .then(res => dispatch(loadUserData(res.data.jotKey)))
 
 // INITIAL STATE
 const initialState = {

@@ -26,8 +26,10 @@ class Analysis extends Component {
   }
 
   componentWillReceiveProps = (nextProps) => {
-    Pack(catFrequencyOverTime(nextProps.thoughts).slice(0, 5), '.pie-chart')
-    Scatter(thoughtsOverTime(nextProps.thoughts), '.scatter-chart')
+    if (nextProps.thoughts.length) {
+      Pack(catFrequencyOverTime(nextProps.thoughts).slice(0, 5), '.pie-chart')
+      Scatter(thoughtsOverTime(nextProps.thoughts), '.scatter-chart')
+    }
   }
 
   selectPackView = ev => {

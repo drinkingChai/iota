@@ -9,7 +9,7 @@ module.exports.verifyToken = (req, res, next) => {
     jwt.verify(req.token, env.JWTKEY, (err, data) => {
       if (err) return res.sendStatus(403)
 
-      req.user = data.user
+      req.user = data
       next()
     })
   } else {

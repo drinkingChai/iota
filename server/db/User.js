@@ -20,7 +20,9 @@ const User = conn.define('user', {
       return hashInstancePassword(instance)
     },
     beforeUpdate(instance, options) {
-      return hashInstancePassword(instance)
+      return instance.changed('password') ?
+        hashInstancePassword(instance) :
+        instance
     }
   }
 })
@@ -48,6 +50,14 @@ User.updatePassword = function(query, { password }) {
   return this.findOne({ where: query })
     .then(user => {
       Object.assign(user, { password })
+      return user.save()
+    })
+}
+
+User.updateUser = function(query, profileData) {
+  return this.findOne({ where: query })
+    .then(user => {
+      Object.assign(user, profileData)
       return user.save()
     })
 }

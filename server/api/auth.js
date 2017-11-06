@@ -12,11 +12,10 @@ const publicUserInfo = (user) => ({
 router.post('/', (req, res, next) => {
   // log in
   const { email, password } = req.body
-  // User.findOne({ where: { email, password } })
   User.matchUser({ email }, password)
     .then(user => {
       if (!user) return res.sendStatus(403)
-      res.send({ jotKey: jwt.sign({ user: publicUserInfo(user) }, env.JWTKEY) })
+      res.send({ jotKey: jwt.sign(publicUserInfo(user), env.JWTKEY) })
     })
     .catch(next)
 })
@@ -25,6 +24,14 @@ router.put('/change-password', verifyToken, (req, res, next) => {
   // change password while logged on
   User.updatePassword({ id: req.user.id }, req.body)
     .then(() => res.sendStatus(200))
+    .catch(next)
+})
+
+router.put('/update-profile', verifyToken, (req, res, next) => {
+  User.updateUser({ id: req.user.id }, req.body)
+    .then(user => {
+      res.send({ jotKey: jwt.sign(publicUserInfo(user), env.JWTKEY) })
+    }) 
     .catch(next)
 })
 

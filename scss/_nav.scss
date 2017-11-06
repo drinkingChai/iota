@@ -43,6 +43,7 @@ nav {
   & .burger-container-active {
     left: 10px;
 
+    & .im { padding-top: 2px; }
     & .im.im-x-mark { color: $black; }
   }
 
