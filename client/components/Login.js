@@ -12,7 +12,7 @@ class UserLogin extends Component {
     this.setState({ [name]: ev.target.value })
   }
 
-  onSubmit = ev => {
+  onSubmit = () => {
     this.props.signIn(this.state)
       .then(() => this.props.history.push('/welcome'))
   }

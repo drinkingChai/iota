@@ -60,6 +60,8 @@ class Analysis extends Component {
     const packOptions = [
       { value: 'recent', label: 'Recent' },
       { value: 'all', label: 'All' } ]
+    const topicsOptions = topics ? topics.map(topic => ({ value: topic.label, label: topic.label })) : []
+    topicsOptions.sort((a, b) => a.label > b.label)
 
     return (
       <div className='charts'>
@@ -74,7 +76,7 @@ class Analysis extends Component {
 
         <h4>Topics over time</h4>
         <Select
-          options={ topics ? topics.map(topic => ({ value: topic.label, label: topic.label })) : [] }
+          options={ topicsOptions }
           defaultValue={ { value: 0, label: 'All' } }
           onChange={ selectScatterView('lineSelect') } />
         <Select

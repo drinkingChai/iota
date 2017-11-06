@@ -6,11 +6,11 @@ import Nav from './Nav'
 import Routes from './Routes'
 
 export default class Root extends Component {
-  componentDidMount() {
+  componentDidMount = () => {
     if (localStorage.jotKey) store.dispatch(loadUserData(localStorage.jotKey))
   }
 
-  render() {
+  render = () => {
     return (
       <div>
         <Nav />

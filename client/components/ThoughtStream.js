@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { formatDate } from '../helpers'
 import { linkThoughts } from '../store'
+import Button from './reusables/Button'
 
 class ThoughtStream extends Component {
   state = {
@@ -92,10 +93,10 @@ class ThoughtStream extends Component {
         </div>
 
         <div className={ `cluster-button-fixed ${selected.length ? 'active' : '' }` }>
-          <button
+          <Button
+            label='Cluster'
             onClick={ onCluster }
-            className='btn'
-            disabled={ selected.length <= 1 ? true : false }>Cluster</button>
+            disabled={ selected.length <= 1 ? true : false } />
         </div>
       </div>
     )

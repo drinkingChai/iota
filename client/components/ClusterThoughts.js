@@ -12,7 +12,7 @@ function ClusterThoughts ({ thoughts, categories, unlink }) {
       <div className='thought-list linked'>
         { thoughts.map(thought => (
           <div key={ thought.id } className='thought thought-linked'>
-            <button className='cluster-link unlink' onClick={ () => unlink(thought) }><i className='im im-unlink'></i></button>
+            <button className='cluster-link unlink' onClick={ () => unlink(thought, thoughts) }><i className='im im-unlink'></i></button>
             <div>
               <p>{ thought.text }</p>
             </div>
@@ -21,9 +21,6 @@ function ClusterThoughts ({ thoughts, categories, unlink }) {
               <span className='date'>{ formatDate(thought.updated) }</span>
               <div className='horiz-buttons'>
                 <Link to={ `/thoughts/${thought.id}` }><i className="im im-pencil"></i></Link>
-                {/*<button><i className='im im-unlink'></i></button>*/}
-                {/*<Link to='/'><i className="im im-share"></i></Link>*/}
-                {/* <button><i className="im im-network"></i></button> */}
               </div>
             </div>
           </div>)) }
@@ -54,8 +51,11 @@ const mapState = ({ thoughts }, ownProps) => {
 }
 
 const mapDispatch = (dispatch, ownProps) => ({ 
-  unlink(thought) {
+  unlink(thought, thoughts) {
     dispatch(unlinkThought(thought))
+      .then(() => {
+        if (thoughts.length <= 2) ownProps.history.push('/thoughts')
+      })
   }
 })
 

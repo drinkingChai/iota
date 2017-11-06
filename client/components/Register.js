@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { register } from '../store'
+import Textbox from './reusables/Textbox'
+import Button from './reusables/Button'
 
 class Register extends Component {
   state = {
@@ -13,8 +15,7 @@ class Register extends Component {
     this.setState({ [name]: ev.target.value })
   }
 
-  onSubmit = ev => {
-    ev.preventDefault()
+  onSubmit = () => {
     this.props.register(this.state)
       .then(() => this.props.history.push('/welcome'))
   }
@@ -26,15 +27,20 @@ class Register extends Component {
     return (
       <div className='login'>
         <h3>Register</h3>
-        <form onSubmit={ onSubmit }>
-          <label htmlFor='email'>Email</label>
-          <input type='email' value={ email } onChange={ onChange('email') } />
-
-          <label htmlFor='password'>Password</label>
-          <input type='password' value={ password } onChange={ onChange('password') } />
-
-          <button className='btn'>Register</button>
-        </form>
+        <div className='form'>
+          <Textbox
+            label='E-mail'
+            value={ email }
+            onChange={ onChange('email') } />
+          <Textbox
+            type='password'
+            label='Password'
+            value={ password }
+            onChange={ onChange('password') } />  
+          <Button
+            label='Register'
+            onClick={ onSubmit } />
+        </div>
 
         <div className='btn-group'>
           <h4>Already have an account?</h4>

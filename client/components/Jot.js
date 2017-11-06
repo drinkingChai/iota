@@ -12,8 +12,7 @@ class Jot extends Component {
     this.setState({ [name]: ev.target.value })
   }
 
-  onSubmit = ev => {
-    ev.preventDefault()
+  onSubmit = () => {
     this.setState({ submittedDisplayed: true })
     this.props.postThought(this.state)
       .then(classification => {
@@ -27,7 +26,7 @@ class Jot extends Component {
     const inputDisabled = text.length < 5 || text.length > 200 ? true : false
 
     return (
-      <form onSubmit={ onSubmit }>
+      <div className='form'>
         { submittedDisplayed ? <Loading message='Your jot has been recorded.' /> : null }
 
         <h3>Jot it down</h3>
@@ -38,8 +37,9 @@ class Jot extends Component {
           className={ inputDisabled ? 'red' : null } />
         <Button
           label='Jot it down'
+          onClick={ onSubmit }
           disabled={ inputDisabled } />
-      </form>
+      </div>
     )
   }
 }

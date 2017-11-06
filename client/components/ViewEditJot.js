@@ -4,6 +4,9 @@ import { updateThought, removeCategory,
   addCategory, deleteThought, fetchThoughts } from '../store'
 import Loading from './messages/Loading'
 import Confirm from './messages/Confirm'
+import Textbox from './reusables/Textbox'
+import Textarea from './reusables/Textarea'
+import Button from './reusables/Button'
 
 class ViewEditJot extends Component {
   state = {
@@ -25,8 +28,7 @@ class ViewEditJot extends Component {
   onChange = name => ev =>
     this.setState({ [name]: ev.target.value })
 
-  onSubmit = ev => {
-    ev.preventDefault()
+  onSubmit = () => {
     this.setState({ updatedDisplayed: true })
     this.props.updateThought(this.props.match.params.id, this.state)
       .then(classification => {
@@ -34,13 +36,11 @@ class ViewEditJot extends Component {
       })
   }
 
-  onRemoveCategory = (ev, category) => {
-    ev.preventDefault()
+  onRemoveCategory = category => ev => {
     this.props.removeCategory(this.props.thought, category)
   }
 
-  onAddCategory = ev => {
-    ev.preventDefault()
+  onAddCategory = () => {
     const newCategories = this.state.newcategory.split(',').filter(c => c.length)
 
     this.setState({ waitDisplayed: true })
@@ -53,8 +53,7 @@ class ViewEditJot extends Component {
     
   }
 
-  onDelete = ev => {
-    ev.preventDefault()
+  onDelete = () => {
     this.setState({ delConfDisplayed: true })
   }
 
@@ -78,7 +77,7 @@ class ViewEditJot extends Component {
     const inputDisabled = text.length < 5 || text.length > 100 ? true : false
 
     return (
-      <form onSubmit={ onSubmit }>
+      <div className='form'>
         { updatedDisplayed ? <Loading message='Your jot has been updated.' /> : null }
         { waitDisplayed ? <Loading message='Loading...' /> : null }
         { delConfDisplayed ?
@@ -89,21 +88,20 @@ class ViewEditJot extends Component {
             null }
 
         <h3>Edit a thought</h3>
-        <label htmlFor='text'>Thought</label>
-        <textarea
+        <Textarea
+          label='Thought'
           value={ text }
           onChange={ onChange('text') }
-          className={ inputDisabled ? 'red' : null }></textarea>
+          className={ inputDisabled ? 'red' : null } />
 
         <label htmlFor='categories'>Categories</label>
         <div className='categories'>
           { classifications && classifications.map(cat => (
-              <button
+              <Button
                 key={ cat.id }
-                onClick={ (ev) => onRemoveCategory(ev, cat) }
-                className='category remove-category'>
-                <span>{ cat.label } <i className='im im-x-mark'></i></span>
-              </button>)) }
+                label={ <span>{ cat.label } <i className='im im-x-mark'></i></span> }
+                onClick={ onRemoveCategory(cat) }
+                className='category remove-category' /> )) }
         </div>
 
         <label htmlFor='newcategory'>Add categories</label>
@@ -111,17 +109,20 @@ class ViewEditJot extends Component {
         <input
           value={ newcategory }
           onChange={ onChange('newcategory') } />
-        <button
+        <Button
+          label='Add category'
           className='btn btn-blue'
-          onClick={ onAddCategory }>Add category</button>
+          onClick={ onAddCategory } />
 
-        <button
-          className='btn'
-          disabled={ inputDisabled }>Update</button>
-        <button
+        <Button
+          label='Update'
+          disabled={ inputDisabled }
+          onClick={ onSubmit } />
+        <Button
+          label='Delete'
           className='btn btn-red'
-          onClick={ onDelete }>Delete</button>
-      </form>
+          onClick={ onDelete } /> 
+      </div>
     )
   }
 }

@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import ConfirmedSubmitted from './messages/ConfirmedSubmitted'
 import Loading from './messages/Loading'
 import { updatePassword, updateProfile } from '../store'
+import Textbox from './reusables/Textbox'
+import Button from './reusables/Button'
 
 class Profile extends Component {
   state = {
@@ -24,8 +26,7 @@ class Profile extends Component {
     this.setState({ [name]: ev.target.value })
   }
 
-  passwordChange = ev => {
-    ev.preventDefault()
+  passwordChange = () => {
     this.setState({ inProgress: true })
     this.props.updatePassword(this.state.password)
       .then(() => {
@@ -33,8 +34,7 @@ class Profile extends Component {
       })
   } 
 
-  profileUpdate = ev => {
-    ev.preventDefault()
+  profileUpdate = () => {
     this.setState({ inProgress: true })
 
     const {
@@ -58,20 +58,27 @@ class Profile extends Component {
             message='Your profile has been updated.'
             confirm={ () => { this.setState({ confirmDisplayed: false }) } } /> : null }
 
-        <form onSubmit={ this.profileUpdate }>
-          <label htmlFor='email'>Change email</label>
-          <input type='email' value={ this.state.email } onChange={ this.changeHandler('email') } />
+        <div className='form'>
+          <Textbox
+            label='Change email'
+            type='email'
+            value={ this.state.email }
+            onChange={ this.changeHandler('email') } />
 
-          <button className='btn'>Update profile</button>
-        </form>
+          <Button
+            label='Update profile'
+            onClick={ this.profileUpdate } />
 
-        <form onSubmit={ this.passwordChange }>
-          <label htmlFor='password'>Change password</label>
-          <input type='password' value={ this.state.password } onChange={ this.changeHandler('password') } />
+          <Textbox
+            label='Change password'
+            type='password'
+            value={ this.state.password }
+            onChange={ this.changeHandler('password') } />
 
-          <button className='btn'>Update password</button>
-        </form>
-
+          <Button
+            label='Update password'
+            onClick={ this.passwordChange } />
+        </div>
       </div>
     )
   }
