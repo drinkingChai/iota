@@ -1,9 +1,15 @@
 const conn = require('./conn')
-const machine = require('../machine')
 
 const Cluster = conn.define('cluster', {
-  text: {
-    type: conn.Sequelize.STRING,
+  name: {
+    type: conn.Sequelize.STRING
+  },
+  description: {
+    type: conn.Sequelize.STRING
+  },
+  head: {
+    type: conn.Sequelize.INTEGER,
+    // allowNull: false
   }
 })
 

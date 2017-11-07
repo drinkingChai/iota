@@ -3,6 +3,7 @@ const { verifyToken } = require('./authcheck')
 
 router.use('/auth', require('./auth'))
 router.use('/users', require('./users'))
+router.use('/test', require('./test'))
 
 const { MachineData } = require('../db').models
 router.post('/train', (req, res, next) => {
