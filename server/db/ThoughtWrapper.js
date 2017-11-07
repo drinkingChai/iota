@@ -19,6 +19,10 @@ ThoughtWrapper.belongsTo(Thought)
 ThoughtWrapper.belongsTo(Cluster)
 Cluster.hasMany(ThoughtWrapper)
 
+ThoughtWrapper.wrap = function(clusterId, thoughtId) {
+  return this.create({ clusterId, thoughtId })
+}
+
 ThoughtWrapper.findLast = function(currentHead) {
   return this.findById(currentHead)
     .then(current => (
@@ -32,7 +36,7 @@ Cluster.createCluster = function(clusterInfo, thoughts) {
   return Cluster.create(clusterInfo)
     .then(_cluster => cluster = _cluster) // caching
     .then(() => Promise.each(thoughts, (thought) => (
-      ThoughtWrapper.create({ clusterId: cluster.id, thoughtId: thought.id })
+      ThoughtWrapper.wrap(cluster.id, thought.id)
     )))
     .then(wrappers => Promise.each(wrappers, (wrapper) => (
       cluster.head == null ?
@@ -40,6 +44,29 @@ Cluster.createCluster = function(clusterInfo, thoughts) {
         ThoughtWrapper.findLast(cluster.head)
           .then(last => last.update({ next: wrapper.id }))
     )))
+}
+
+Cluster.moveAfter = function(clusterId, thoughtAfter, thoughtMoving) {
+
+}
+
+Cluster.moveToHead = function(clusterId, thought) {
+
+}
+
+Cluster.appendThought = function(clusterId, thought) {
+  return Cluster.findById(clusterId)
+    .then(cluster => (
+      ThoughtWrapper.wrap(cluster.id, thought.id)
+        .then(wrapper => (
+          ThoughtWrapper.findLast(cluster.head)
+            .then(last => last.update({ next: wrapper.id }))
+        ))
+    ))
+}
+
+Cluster.removeThought = function(clusterId, thought) {
+  
 }
 
 module.exports = { Cluster, Thought, ThoughtWrapper }
