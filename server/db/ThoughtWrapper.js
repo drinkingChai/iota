@@ -57,22 +57,27 @@ Cluster.prototype.moveAfter = function(after, thought) {
     Promise.all([
       afterWrapper,
       thoughtWrapper,
-      ThoughtWrapper.findOne({ where: { clusterId: this.id, thoughtId: afterWrapper.previousNode } }),
       ThoughtWrapper.findOne({ where: { clusterId: this.id, thoughtId: afterWrapper.nextNode } }),
       ThoughtWrapper.findOne({ where: { clusterId: this.id, thoughtId: thoughtWrapper.previousNode } }),
       ThoughtWrapper.findOne({ where: { clusterId: this.id, thoughtId: thoughtWrapper.nextNode } })
     ])
   ))
-  // .then(([ afterWrapper, thoughtWrapper, afterWrapperPrevious, thoughtWrapperPrevious ]) => {
+  .then(([ afterWrapper, thoughtWrapper, afterNext, thoughtPrevious, thoughtNext ]) => {
     // console.log(
-    //   afterWrapper.nextNode,
-    //   thoughtWrapper.nextNode,
-    //   afterWrapperPrevious && afterWrapperPrevious.nextNode,
-    //   thoughtWrapperPrevious && thoughtWrapperPrevious.nextNode)
-    // thoughtWrapperPrevious && thoughtWrapperPrevious.update({ nextNode: thoughtWrapper.nextNode }),
+    //   afterWrapper.id,
+    //   thoughtWrapper.id,
+    //   afterNext && afterNext.id,
+    //   thoughtPrevious && thoughtPrevious.id,
+    //   thoughtNext && thoughtNext.id)
 
-    // afterWrapperPrevious && afterWrapperPrevious.update({ previousNode: afterWrapper.id })
-  // })
+    return Promise.all([
+      thoughtPrevious && thoughtPrevious.update({ nextNode: thoughtWrapper.nextNode }),
+      thoughtNext && thoughtNext.update({ previousNode: thoughtWrapper.previousNode }),
+      afterWrapper.update({ nextNode: thoughtWrapper.id }),
+      thoughtWrapper.update({ previousNode: afterWrapper.id, nextNode: afterNext.id }),
+      afterNext && afterNext.update({ previousNode: thoughtWrapper.id })
+    ])
+  })
 }
 
 Cluster.prototype.moveToHead = function(thought) {
