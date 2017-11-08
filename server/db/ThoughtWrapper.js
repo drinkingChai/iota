@@ -12,7 +12,8 @@ const Thought = conn.define('thought', {
 })
 
 const ThoughtWrapper = conn.define('thoughtwrapper', {
-  next: { type: conn.Sequelize.INTEGER, defaultValue: null }
+  nextNode: { type: conn.Sequelize.INTEGER, defaultValue: null },
+  previousNode: { type: conn.Sequelize.INTEGER, defaultValue: null }
 })
 
 ThoughtWrapper.belongsTo(Thought)
@@ -23,49 +24,81 @@ ThoughtWrapper.wrap = function(clusterId, thoughtId) {
   return this.create({ clusterId, thoughtId })
 }
 
-ThoughtWrapper.findLast = function(currentHead) {
-  return this.findById(currentHead)
+ThoughtWrapper.findLast = function(current) {
+  return this.findById(current)
     .then(current => (
-      current.next ? this.findLast(current.next) : current
+      current.nextNode ? this.findLast(current.nextNode) : current
     ))
 }
 
 Cluster.createCluster = function(clusterInfo, thoughts) {
   // thoughts are sequelize objects
-  let cluster
   return Cluster.create(clusterInfo)
-    .then(_cluster => cluster = _cluster) // caching
-    .then(() => Promise.each(thoughts, (thought) => (
-      ThoughtWrapper.wrap(cluster.id, thought.id)
-    )))
-    .then(wrappers => Promise.each(wrappers, (wrapper) => (
-      cluster.head == null ?
-        cluster.update({ head: wrapper.id }) :
-        ThoughtWrapper.findLast(cluster.head)
-          .then(last => last.update({ next: wrapper.id }))
-    )))
+    .then(cluster => {
+      return Promise.each(thoughts, thought => (
+        cluster.appendThought(thought) 
+      ))
+    })
 }
 
-Cluster.moveAfter = function(clusterId, thoughtAfter, thoughtMoving) {
+Cluster.prototype.moveAfter = function(after, thought) {
+  /*
+    wrapper.previousNode.wrapper.nextNode -> wrappernextNode.
+    after.nextNode.wrapper.previousNode -> wrapper
+    wrapper.previousNode -> after
+    wrapper.nextNode -> afternextNode.
+    after.nextNode -> wrapper
+  */
+  return Promise.all([
+    ThoughtWrapper.findOne({ where: { clusterId: this.id, thoughtId: after.id } }),
+    ThoughtWrapper.findOne({ where: { clusterId: this.id, thoughtId: thought.id } })
+  ])
+  .then(([ afterWrapper, thoughtWrapper ]) => (
+    Promise.all([
+      afterWrapper,
+      thoughtWrapper,
+      ThoughtWrapper.findOne({ where: { clusterId: this.id, thoughtId: afterWrapper.previousNode } }),
+      ThoughtWrapper.findOne({ where: { clusterId: this.id, thoughtId: afterWrapper.nextNode } }),
+      ThoughtWrapper.findOne({ where: { clusterId: this.id, thoughtId: thoughtWrapper.previousNode } }),
+      ThoughtWrapper.findOne({ where: { clusterId: this.id, thoughtId: thoughtWrapper.nextNode } })
+    ])
+  ))
+  // .then(([ afterWrapper, thoughtWrapper, afterWrapperPrevious, thoughtWrapperPrevious ]) => {
+    // console.log(
+    //   afterWrapper.nextNode,
+    //   thoughtWrapper.nextNode,
+    //   afterWrapperPrevious && afterWrapperPrevious.nextNode,
+    //   thoughtWrapperPrevious && thoughtWrapperPrevious.nextNode)
+    // thoughtWrapperPrevious && thoughtWrapperPrevious.update({ nextNode: thoughtWrapper.nextNode }),
 
+    // afterWrapperPrevious && afterWrapperPrevious.update({ previousNode: afterWrapper.id })
+  // })
 }
 
-Cluster.moveToHead = function(clusterId, thought) {
-
+Cluster.prototype.moveToHead = function(thought) {
+  /*
+    wrapper.previousNode.wrapper.nextNode -> wrappernextNode.
+    wrapper.previousNode -> null
+    cache this.head
+    this.head.previousNode -> wrapper
+    wrapper.nextNode -> this.headpreviousNode.
+    head -> wrapper
+  */
 }
 
-Cluster.appendThought = function(clusterId, thought) {
-  return Cluster.findById(clusterId)
-    .then(cluster => (
-      ThoughtWrapper.wrap(cluster.id, thought.id)
-        .then(wrapper => (
-          ThoughtWrapper.findLast(cluster.head)
-            .then(last => last.update({ next: wrapper.id }))
-        ))
+Cluster.prototype.appendThought = function(thought) {
+  return ThoughtWrapper.wrap(this.id, thought.id)
+    .then(wrapper => (
+      !this.head ?
+        this.update({ head: wrapper.id }) :
+        ThoughtWrapper.findLast(this.head)
+          .then(last => Promise.all([
+            last.update({ nextNode: wrapper.id }),
+            wrapper.update({ previousNode: last.id }) ]))
     ))
 }
 
-Cluster.removeThought = function(clusterId, thought) {
+Cluster.prototype.removeThought = function(thought) {
   
 }
 
