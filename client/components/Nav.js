@@ -24,14 +24,13 @@ class Nav extends Component {
       <div>
         <div className='top-bar'>
           <i className="im im-book"></i> <span>jot</span>
+          <i onClick={ displayMenu } className="im im-menu"></i>
         </div>
         
         <nav className={ menuActive ? 'nav-visible' : 'nav-hidden' }>
           <div className={ menuActive ? 'burger-container-active' : 'burger-container-inactive' }>
             <button onClick={ displayMenu }>
-              { menuActive ?
-                <i className="im im-x-mark"></i> :
-                <i className="im im-menu"></i> }
+              <i className="im im-x-mark"></i>
             </button>
           </div>
 
