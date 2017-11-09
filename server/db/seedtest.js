@@ -1,5 +1,5 @@
 const conn = require('./conn')
-const { Cluster, Thought, ThoughtWrapper } = require('./ThoughtWrapper')
+const { Cluster, Thought } = require('./ThoughtWrapper')
 
 const thoughts = [
   { text: 'Thought 1' },
@@ -12,7 +12,7 @@ const thought4 = { text: 'Thought 4' }
 const clusterInfo = { name: 'Thoughts 1,2,3' }
 
 const seed = () => {
-  let _cluster, _thought4
+  let _cluster, _thought3, _thought4
   return Promise.all(thoughts.map(t => Thought.create(t)))
     .then(thoughts => Cluster.makeCluster(clusterInfo, thoughts.map(t => t.id)))
     .then(() => Promise.all([
@@ -20,9 +20,10 @@ const seed = () => {
       Thought.findOne({ where: { text: 'Thought 1' } }),
       Thought.findOne({ where: { text: 'Thought 3' } })
     ]))
-    .then(([ cluster, thought1, thought2 ]) => {
+    .then(([ cluster, thought1, thought3 ]) => {
       _cluster = cluster
-      return cluster.moveAfter(thought1, thought2)
+      _thought3 = thought3
+      return Cluster.moveBehind(cluster.id, thought1.id, thought3.id)
     })
     .then(() => Thought.create(thought4))
     .then(thought => {
@@ -30,6 +31,8 @@ const seed = () => {
       return Cluster.appendTo(_cluster.id, thought.id)
     })
     .then(() => Cluster.makeHead(_cluster.id, _thought4.id))
+    .then(() => Cluster.removeFrom(_cluster.id, _thought3.id))
+    .then(() => Cluster.getCluster(_cluster.id))
 }
 
 // seed prompt
