@@ -18,8 +18,7 @@ Cluster.createCluster = function(clusterInfo, thoughts) {
     })
 }
 
-Cluster.prototype.findNext = function(currentId, nodes) {
-  nodes = nodes || []
+Cluster.prototype.findNext = function(currentId, nodes = []) {
   return models.thoughtnode.findOne({ where: { clusterId: this.id, id: currentId } })
     .then(node => {
       nodes.push(node.thoughtId)
@@ -30,9 +29,6 @@ Cluster.prototype.findNext = function(currentId, nodes) {
 
 Cluster.prototype.findNodes = function() {
   return this.findNext(this.head)
-  //   .then(_nodes => {
-  //     console.log(_nodes)
-  //   })
 }
 
 Cluster.prototype.moveAfter = function(after, thought) {
@@ -152,7 +148,9 @@ Cluster.prototype.removeThought = function(thought) {
         previous && previous.update({ nextNode: wrapper.nextNode }),
         next && next.update({ previousNode: wrapper.previousNode }),
         wrapper.id == this.head ? this.update({ head: wrapper.nextNode }) : null,
-        wrapper.destroy()
+        // wrapper.id == this.head && !wrapper.nextNode ? this.destroy : this.head ? this.update({ head: wrapper.nextNode }) : null,
+        wrapper.destroy(),
+        thought.update({ clusterId: null })
       ])
     ))
 }
@@ -165,22 +163,16 @@ Cluster.prototype.removeThought = function(thought) {
 
 Cluster.getCluster = function(clusterId) {
   return this.findById(clusterId)
-    .then(cluster => cluster.findNodes())
-    .then(nodes => Promise.all(nodes.map(n => models.thought.findById(n))))
-    // .then(nodes =>
-    //   Promise.all(
-    //     nodes.map(n => models.thought.findById(n, {
-    //       order: [[ 'updatedAt', 'DESC' ]],
-    //       include: [ models.category ],
-    //       attributes: [ 'id', 'text', 'createdAt', 'created_at', 'updatedAt' ]
-    //     }))
-    //   )
-    // )
+    .then(cluster => 
+      cluster.findNodes()
+        .then(nodes => Promise.all(nodes.map(n => models.thought.findById(n))))
+        .then(nodes => ({ cluster, nodes }))
+    )
 }
 
 Cluster.getClusterOrder = function(clusterId) {
   return this.findById(clusterId)
-    .then(cluster => cluster.findNodes())
+    .then(cluster => ({ cluster, nodes: cluster.findNodes() }))
 }
 
 Cluster.makeCluster = function(clusterInfo, thoughtsIds) {

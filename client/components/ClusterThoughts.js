@@ -3,11 +3,13 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { formatDate } from '../helpers'
 import { unlinkThought } from '../store'
+import Button from './reusables/Button'
 
 function ClusterThoughts ({ thoughts, categories, unlink }) {
   return (
     <div>
       <h3>A cluster of thoughts</h3>
+      {/* name your cluster here */}
       
       <div className='thought-list linked'>
         { thoughts.map(thought => (
@@ -21,6 +23,8 @@ function ClusterThoughts ({ thoughts, categories, unlink }) {
               <span className='date'>{ formatDate(thought.createdAt) }</span>
               <div className='horiz-buttons'>
                 <Link to={ `/thoughts/${thought.id}` }><i className="im im-pencil"></i></Link>
+                {/*<Button label='up' onClick={ () => console.log('going up') } />
+                <Button label='down' onClick={ () => console.log('going up') } />*/}
               </div>
             </div>
           </div>)) }
@@ -38,11 +42,12 @@ function ClusterThoughts ({ thoughts, categories, unlink }) {
 }
 
 
-const mapState = ({ thoughts }, ownProps) => {
+const mapState = ({ thoughts, clusters }, ownProps) => {
   const filteredThoughts = thoughts.filter(t => t.clusterId == ownProps.match.params.id)
+  const cluster = clusters.find(c => c.id == ownProps.match.params.id)
 
   return {
-    thoughts: filteredThoughts,
+    thoughts: cluster && cluster.thoughts || [],
     categories: filteredThoughts.reduce((allCats, t) => {
       const newCats = t.categories.map(c => c.label).slice(0, 5).filter(c => allCats.indexOf(c) == -1)
       return allCats.concat(newCats)

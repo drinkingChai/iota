@@ -21,7 +21,7 @@ files.forEach(file => {
 const prompt = 'Seed the database? (Y/N) '
 process.stdin.on('data', function (data) {
   const cmd = data.toString().trim()
-  if (cmd == 'Y') {
+  if (cmd.match(/y/gi)) {
     conn.sync({ force: true })
       .then(() => Promise.all(documents.map(doc => MachineData.create(doc))))
       .then(() => User.create({ email: 'teatocode@gmail.com', password: 'jot' }))

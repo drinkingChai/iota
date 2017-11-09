@@ -74,7 +74,7 @@ Thought.getThoughts = function(userId) {
     include: [ models.category ] })
 }
 
-Thought.updateThoughtAndClassify = function(id, content) {
+Thought.updateThought = function(id, content) {
   return this.findById(id)
     .then(thought => {
       Object.assign(thought, content)

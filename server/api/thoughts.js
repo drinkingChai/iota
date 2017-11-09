@@ -16,15 +16,8 @@ router.get('/', verifyToken, (req, res, next) => {
 
 router.get('/clusters', verifyToken, (req, res, next) => {
   Cluster.findAll({ where: { userId: req.user.id } })
-    .then(clusters => {
-      return Promise.all(clusters.map(cluster => Cluster.getCluster(cluster.id)))
-    })
+    .then(clusters => Promise.all(clusters.map(cluster => Cluster.getCluster(cluster.id))))
     .then(result => res.send(result))
-  // Cluster.findAll({ where: { userId: req.user.id } })
-  //   .then(clusters => {
-  //     return Promise.all(clusters.map(cluster => Cluster.getCluster(cluster.id)))
-  //   })
-  //   .then(result => res.send(result))
 })
 
 router.delete('/:id/remove-category/:categoryId', verifyToken, (req, res, next) => {
@@ -40,7 +33,8 @@ router.put('/:id/add-category', verifyToken, (req, res, next) => {
 })
 
 router.delete('/:id/remove-cluster/:clusterId', verifyToken, (req, res, next) => {
-  Thought.removeFromCluster(req.params.id, req.params.clusterId)
+  // needs auth
+  Cluster.removeFrom(req.params.clusterId, req.params.id)
     .then(() => res.sendStatus(200))
     .catch(next)
 })

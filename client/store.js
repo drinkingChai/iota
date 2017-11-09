@@ -42,6 +42,8 @@ export const postThought = content => dispatch =>
 export const updateThought = (id, content) => dispatch =>
   axios.put(`/api/thoughts/${id}`, content)
     .then(() => dispatch(fetchThoughts()))
+    .then(() => dispatch(fetchClusters()))
+    /***** NOTE: combine the above into one update function *****/
     //.then(res => res.data)
 
 export const deleteThought = id => dispatch =>

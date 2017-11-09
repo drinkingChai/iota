@@ -37,10 +37,10 @@ class ThoughtStream extends Component {
   render = () => {
     const { selected, search } = this.state
     const { onToggleSelect, onCluster, onSearch } = this
-    let { thoughts } = this.props
+    let { items } = this.props
 
     if (search.length) {
-      thoughts = thoughts.filter(thought => {
+      items = items.filter(thought => {
         // flatten
         const flatten = `${thought.text} ${thought.categories.reduce((s, c) => (`${s} ${c.label}`), '')}`
         const regex = new RegExp(search.split(' ').join('|'), 'gi')
@@ -61,7 +61,7 @@ class ThoughtStream extends Component {
         </div>
 
         <div className='thought-list'>
-          { thoughts.map(thought => (
+          { items.map(thought => (
               <div
                 key={ thought.id } 
                 onClick={ () => onToggleSelect(thought) }
@@ -104,33 +104,8 @@ class ThoughtStream extends Component {
 }
 
 const mapState = ({ thoughts, clusters }) => {
-  let inCluster = []
-  let _thoughts = thoughts.filter(t => {
-    if (t.clusterId && !inCluster.find(c => c == t.clusterId)) {
-      inCluster.push(t.clusterId)
-      return t
-    } else if (!t.clusterId) return t;
-  })
-  _thoughts.sort((a, b) => (new Date(b.created) - new Date(a.created)))
-
-  // let _clusters = clusters.reduce((thoughts, cluster) => {
-  //   // if cluster has a title, use title
-  //   // else show the top entry
-  //   if (cluster.length === 1) {
-  //     cluster[0].clusterId = cluster.id
-  //     return [ ...thoughts, cluster[0] ]
-  //   } else {
-  //     let cThoughts = cluster.map((thought, i) => {
-  //       thought.clusterId = cluster.id
-  //       if (i !== 0) thought.hidden = true
-  //       return thought
-  //     })
-  //     return [ ...thoughts, ...cThoughts ]
-  //   }
-  // }, [])
-  
   return {
-    thoughts: _thoughts
+    items: thoughts
   }
 }
 

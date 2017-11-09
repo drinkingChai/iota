@@ -21,6 +21,7 @@ nav {
     -webkit-transform: translateX(158%);
     transform: translateX(158%);
     transition: transform 300ms ease-out;
+    will-change: transform;
   }
   &.nav-visible {
     -webkit-transform: translateX(32%);
