@@ -1,5 +1,6 @@
 const Promise = require('bluebird')
 const conn = require('./conn')
+const models = conn.models
 
 const Cluster = conn.define('cluster', {
   name: conn.Sequelize.STRING,
@@ -19,7 +20,7 @@ Cluster.createCluster = function(clusterInfo, thoughts) {
 
 Cluster.prototype.findNext = function(currentId, nodes) {
   nodes = nodes || []
-  return conn.models.thoughtnode.findOne({ where: { clusterId: this.id, id: currentId } })
+  return models.thoughtnode.findOne({ where: { clusterId: this.id, id: currentId } })
     .then(node => {
       nodes.push(node.thoughtId)
       if (node.nextNode) return this.findNext(node.nextNode, nodes)
@@ -45,16 +46,16 @@ Cluster.prototype.moveAfter = function(after, thought) {
     edge case: if already in right position
   */
   return Promise.all([
-    conn.models.thoughtnode.findOne({ where: { clusterId: this.id, thoughtId: after.id } }),
-    conn.models.thoughtnode.findOne({ where: { clusterId: this.id, thoughtId: thought.id } })
+    models.thoughtnode.findOne({ where: { clusterId: this.id, thoughtId: after.id } }),
+    models.thoughtnode.findOne({ where: { clusterId: this.id, thoughtId: thought.id } })
   ])
   .then(([ after, wrapper ]) => (
     Promise.all([
       after,
       wrapper,
-      conn.models.thoughtnode.findOne({ where: { clusterId: this.id, thoughtId: after.nextNode } }),
-      conn.models.thoughtnode.findOne({ where: { clusterId: this.id, thoughtId: wrapper.previousNode } }),
-      conn.models.thoughtnode.findOne({ where: { clusterId: this.id, thoughtId: wrapper.nextNode } })
+      models.thoughtnode.findOne({ where: { clusterId: this.id, thoughtId: after.nextNode } }),
+      models.thoughtnode.findOne({ where: { clusterId: this.id, thoughtId: wrapper.previousNode } }),
+      models.thoughtnode.findOne({ where: { clusterId: this.id, thoughtId: wrapper.nextNode } })
     ])
   ))
   .then(([ after, wrapper, afterNextNode, previous, next ]) => {
@@ -90,15 +91,15 @@ Cluster.prototype.moveToHead = function(thought) {
     edge case: if already head
   */
   return Promise.all([
-    conn.models.thoughtnode.findOne({ where: { id: this.head } }),
-    conn.models.thoughtnode.findOne({ where: { clusterId: this.id, thoughtId: thought.id } }),
+    models.thoughtnode.findOne({ where: { id: this.head } }),
+    models.thoughtnode.findOne({ where: { clusterId: this.id, thoughtId: thought.id } }),
   ])
   .then(([ head, wrapper ]) => (
     Promise.all([
       head,
       wrapper,
-      conn.models.thoughtnode.findOne({ where: { clusterId: this.id, thoughtId: wrapper.previousNode } }),
-      conn.models.thoughtnode.findOne({ where: { clusterId: this.id, thoughtId: wrapper.nextNode } })
+      models.thoughtnode.findOne({ where: { clusterId: this.id, thoughtId: wrapper.previousNode } }),
+      models.thoughtnode.findOne({ where: { clusterId: this.id, thoughtId: wrapper.nextNode } })
     ])
   ))
   .then(([ head, wrapper, thoughtPrevious, thoughtNext ]) => {
@@ -119,11 +120,11 @@ Cluster.prototype.moveToHead = function(thought) {
 }
 
 Cluster.prototype.appendThought = function(thought) {
-  return conn.models.thoughtnode.wrap(this.id, thought.id)
+  return models.thoughtnode.wrap(this.id, thought.id)
     .then(wrapper => (
       !this.head ?
         this.update({ head: wrapper.id }) :
-        conn.models.thoughtnode.findLast(this.head)
+        models.thoughtnode.findLast(this.head)
           .then(last => Promise.all([
             last.update({ nextNode: wrapper.id }),
             wrapper.update({ previousNode: last.id }) ]))
@@ -138,12 +139,12 @@ Cluster.prototype.removeThought = function(thought) {
 
     edge case: thought is head
   */
-  return conn.models.thoughtnode.findOne({ where: { clusterId: this.id, thoughtId: thought.id } })
+  return models.thoughtnode.findOne({ where: { clusterId: this.id, thoughtId: thought.id } })
     .then(wrapper => (
       Promise.all([
         wrapper,
-        conn.models.thoughtnode.findOne({ where: { clusterId: this.id, thoughtId: wrapper.previousNode } }),
-        conn.models.thoughtnode.findOne({ where: { clusterId: this.id, thoughtId: wrapper.nextNode } })
+        models.thoughtnode.findOne({ where: { clusterId: this.id, thoughtId: wrapper.previousNode } }),
+        models.thoughtnode.findOne({ where: { clusterId: this.id, thoughtId: wrapper.nextNode } })
       ])
     ))
     .then(([ wrapper, previous, next ]) => (
@@ -165,7 +166,16 @@ Cluster.prototype.removeThought = function(thought) {
 Cluster.getCluster = function(clusterId) {
   return this.findById(clusterId)
     .then(cluster => cluster.findNodes())
-    .then(nodes => Promise.all(nodes.map(n => conn.models.thought.findById(n))))
+    .then(nodes => Promise.all(nodes.map(n => models.thought.findById(n))))
+    // .then(nodes =>
+    //   Promise.all(
+    //     nodes.map(n => models.thought.findById(n, {
+    //       order: [[ 'updatedAt', 'DESC' ]],
+    //       include: [ models.category ],
+    //       attributes: [ 'id', 'text', 'createdAt', 'created_at', 'updatedAt' ]
+    //     }))
+    //   )
+    // )
 }
 
 Cluster.getClusterOrder = function(clusterId) {
@@ -174,7 +184,7 @@ Cluster.getClusterOrder = function(clusterId) {
 }
 
 Cluster.makeCluster = function(clusterInfo, thoughtsIds) {
-  return Promise.all(thoughtsIds.map(id => conn.models.thought.findById(id)))
+  return Promise.all(thoughtsIds.map(id => models.thought.findById(id)))
     .then(thoughts => (
       this.createCluster(clusterInfo, thoughts)
     ))
@@ -183,7 +193,7 @@ Cluster.makeCluster = function(clusterInfo, thoughtsIds) {
 Cluster.appendTo = function(clusterId, thoughtId) {
   return this.findById(clusterId)
     .then(cluster => (
-      conn.models.thought.findById(thoughtId)
+      models.thought.findById(thoughtId)
         .then(thought => cluster.appendThought(thought))
     ))
 }
@@ -192,8 +202,8 @@ Cluster.moveBehind = function(clusterId, behindId, thoughtId) {
   return this.findById(clusterId)
     .then(cluster => (
       Promise.all([
-        conn.models.thought.findById(behindId),
-        conn.models.thought.findById(thoughtId)
+        models.thought.findById(behindId),
+        models.thought.findById(thoughtId)
       ])
       .then(([ after, thought ]) => cluster.moveAfter(after, thought))
     ))
@@ -202,7 +212,7 @@ Cluster.moveBehind = function(clusterId, behindId, thoughtId) {
 Cluster.makeHead = function(clusterId, thoughtId) {
   return this.findById(clusterId)
     .then(cluster => (
-      conn.models.thought.findById(thoughtId)
+      models.thought.findById(thoughtId)
         .then(thought => cluster.moveToHead(thought))
     ))
 }
@@ -210,7 +220,7 @@ Cluster.makeHead = function(clusterId, thoughtId) {
 Cluster.removeFrom = function(clusterId, thoughtId) {
   return this.findById(clusterId)
     .then(cluster => (
-      conn.models.thought.findById(thoughtId)
+      models.thought.findById(thoughtId)
         .then(thought => cluster.removeThought(thought))
     ))
 }

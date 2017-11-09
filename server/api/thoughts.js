@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const { verifyToken } = require('./authcheck')
-const { Thought } = require('../db').models
+const { Thought, Cluster } = require('../db').models
 
 router.post('/', verifyToken, (req, res, next) => {
   Thought.storeAndCluster(req.body, req.user.id)
@@ -12,6 +12,19 @@ router.get('/', verifyToken, (req, res, next) => {
   Thought.getThoughts(req.user.id)
     .then(thoughts => res.send(thoughts))
     .catch(next)
+})
+
+router.get('/clusters', verifyToken, (req, res, next) => {
+  Cluster.findAll({ where: { userId: req.user.id } })
+    .then(clusters => {
+      return Promise.all(clusters.map(cluster => Cluster.getCluster(cluster.id)))
+    })
+    .then(result => res.send(result))
+  // Cluster.findAll({ where: { userId: req.user.id } })
+  //   .then(clusters => {
+  //     return Promise.all(clusters.map(cluster => Cluster.getCluster(cluster.id)))
+  //   })
+  //   .then(result => res.send(result))
 })
 
 router.delete('/:id/remove-category/:categoryId', verifyToken, (req, res, next) => {

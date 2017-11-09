@@ -1,4 +1,5 @@
 import { createStore, applyMiddleware } from 'redux'
+import { composeWithDevTools } from 'redux-devtools-extension'
 import loggerMiddleware from 'redux-logger'
 import thunkMiddleware from 'redux-thunk'
 import jwt from 'jsonwebtoken'
@@ -7,11 +8,13 @@ import _ from 'lodash'
 
 // ACTION NAMES
 const GET_THOUGHTS = 'GET_THOUGHTS'
+const GET_CLUSTERS = 'GET_CLUSTERS'
 const SET_CURRENT_USER = 'SET_CURRENT_USER'
 const RESET_APP = 'RESET_APP'
 
 // ACTION CREATORS
 const getThoughts = thoughts => ({ type: GET_THOUGHTS, thoughts })
+const getClusters = clusters => ({ type: GET_CLUSTERS, clusters })
 const resetApp = () => ({ type: RESET_APP })
 export const setCurrentUser = user => ({ type: SET_CURRENT_USER, user })
 
@@ -19,6 +22,11 @@ export const setCurrentUser = user => ({ type: SET_CURRENT_USER, user })
 export const fetchThoughts = () => dispatch => {
   return axios.get('/api/thoughts')
     .then(res => dispatch(getThoughts(res.data)))
+}
+
+export const fetchClusters = () => dispatch => {
+  return axios.get('/api/thoughts/clusters')
+    .then(res => dispatch(getClusters(res.data)))
 }
 
 export const trainMachine = content => dispatch =>
@@ -86,7 +94,8 @@ export const loadUserData = token => dispatch => {
 
   // async op
   return Promise.all([
-    dispatch(fetchThoughts())
+    dispatch(fetchThoughts()),
+    dispatch(fetchClusters())
   ])
 }
 
@@ -104,6 +113,7 @@ export const register = userData => dispatch =>
 // INITIAL STATE
 const initialState = {
   thoughts: [],
+  clusters: [],
   isAuthenticated: false,
   user: {}
 }
@@ -113,6 +123,8 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_THOUGHTS:
       return { ...state, thoughts: action.thoughts }
+    case GET_CLUSTERS:
+      return { ...state, clusters: action.clusters }
     case SET_CURRENT_USER:
       return {
         ...state,
@@ -126,5 +138,7 @@ const reducer = (state = initialState, action) => {
   }
 }
 
-export default createStore(reducer,
-  applyMiddleware(thunkMiddleware, loggerMiddleware))
+export default createStore(
+  reducer,
+  composeWithDevTools(
+    applyMiddleware(thunkMiddleware, loggerMiddleware)))

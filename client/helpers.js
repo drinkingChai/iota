@@ -11,7 +11,7 @@ export function catFrequencyOverTime (thoughts) {
   Object.keys(frequencyCount).forEach(key => {
     const dateMap = {}
     frequencyCount[key].forEach(thought => {
-      const date = dateOnly(thought.created)
+      const date = dateOnly(thought.createdAt)
       dateMap[date] = dateMap[date] ? ++dateMap[date] : 1
     })
     frequencyCount[key].dateMap = Object.keys(dateMap).map(key => ({
@@ -31,7 +31,7 @@ export function catFrequencyOverTime (thoughts) {
 }
 
 export function thoughtsOverTime (thoughts) {
-  return thoughts.reduce((times, thought) => ([ ...times, new Date(thought.created)]), [])
+  return thoughts.reduce((times, thought) => ([ ...times, new Date(thought.createdAt)]), [])
 }
 
 export function dateOnly (_date) {

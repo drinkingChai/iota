@@ -18,7 +18,7 @@ function ClusterThoughts ({ thoughts, categories, unlink }) {
             </div>
 
             <div className='subheader'>
-              <span className='date'>{ formatDate(thought.updated) }</span>
+              <span className='date'>{ formatDate(thought.createdAt) }</span>
               <div className='horiz-buttons'>
                 <Link to={ `/thoughts/${thought.id}` }><i className="im im-pencil"></i></Link>
               </div>

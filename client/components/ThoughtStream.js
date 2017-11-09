@@ -83,7 +83,7 @@ class ThoughtStream extends Component {
                   </div>
 
                   <div className='subheader'>
-                    <span className='date'>{ formatDate(thought.updated) }</span>
+                    <span className='date'>{ formatDate(thought.updatedAt) }</span>
                     <div className='horiz-buttons'>
                       <Link to={ `/thoughts/${thought.id}` }><i className="im im-pencil"></i></Link>
                     </div>
@@ -103,7 +103,7 @@ class ThoughtStream extends Component {
   }
 }
 
-const mapState = ({ thoughts }) => {
+const mapState = ({ thoughts, clusters }) => {
   let inCluster = []
   let _thoughts = thoughts.filter(t => {
     if (t.clusterId && !inCluster.find(c => c == t.clusterId)) {
@@ -112,6 +112,22 @@ const mapState = ({ thoughts }) => {
     } else if (!t.clusterId) return t;
   })
   _thoughts.sort((a, b) => (new Date(b.created) - new Date(a.created)))
+
+  // let _clusters = clusters.reduce((thoughts, cluster) => {
+  //   // if cluster has a title, use title
+  //   // else show the top entry
+  //   if (cluster.length === 1) {
+  //     cluster[0].clusterId = cluster.id
+  //     return [ ...thoughts, cluster[0] ]
+  //   } else {
+  //     let cThoughts = cluster.map((thought, i) => {
+  //       thought.clusterId = cluster.id
+  //       if (i !== 0) thought.hidden = true
+  //       return thought
+  //     })
+  //     return [ ...thoughts, ...cThoughts ]
+  //   }
+  // }, [])
   
   return {
     thoughts: _thoughts

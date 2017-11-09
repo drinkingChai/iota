@@ -1,5 +1,5 @@
 const conn = require('./conn')
-const { Cluster, Thought } = require('./ThoughtNode')
+const { Cluster, Thought } = require('./index').models
 
 const thoughts = [
   { text: 'Thought 1' },

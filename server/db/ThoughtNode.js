@@ -1,4 +1,5 @@
 const conn = require('./conn')
+const models = conn.models
 // const Promise = require('bluebird')
 
 // const Cluster = conn.define('cluster', {
@@ -21,7 +22,9 @@ const ThoughtNode = conn.define('thoughtnode', {
 // Cluster.hasMany(ThoughtNode)
 
 ThoughtNode.wrap = function(clusterId, thoughtId) {
-  return this.create({ clusterId, thoughtId })
+  return models.thought.findById(thoughtId)
+    .then(thought => thought.update({ clusterId }))
+    .then(() => this.create({ clusterId, thoughtId }))
 }
 
 ThoughtNode.findLast = function(current) {

@@ -10,9 +10,11 @@ const User = require('./User')
 User.hasMany(Thought)
 Thought.belongsTo(User)
 
+Thought.belongsTo(Cluster)
 ThoughtNode.belongsTo(Thought)
 ThoughtNode.belongsTo(Cluster)
 Cluster.hasMany(ThoughtNode)
+Cluster.belongsTo(User)
 
 Category.belongsToMany(Thought, { through: 'thought_category' })
 Thought.belongsToMany(Category, { through: 'thought_category' })
