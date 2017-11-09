@@ -16,13 +16,13 @@ class ViewEditJot extends Component {
 
   componentDidMount = () => {
     if (!this.props.thought) return
-    const { text, classifications } = this.props.thought
-    this.setState({ text, classifications })
+    const { text, categories } = this.props.thought
+    this.setState({ text, categories })
   }
 
   componentWillReceiveProps = (nextProps) => {
-    const { text, classifications } = nextProps.thought
-    this.setState({ text, classifications })
+    const { text, categories } = nextProps.thought
+    this.setState({ text, categories })
   }
 
   onChange = name => ev =>
@@ -31,7 +31,7 @@ class ViewEditJot extends Component {
   onSubmit = () => {
     this.setState({ updatedDisplayed: true })
     this.props.updateThought(this.props.match.params.id, this.state)
-      .then(classification => {
+      .then(() => {
         this.setState({ updatedDisplayed: false })
       })
   }
@@ -72,7 +72,7 @@ class ViewEditJot extends Component {
   }
 
   render = () => {
-    const { text, newcategory, classifications, updatedDisplayed, waitDisplayed, delConfDisplayed } = this.state
+    const { text, newcategory, categories, updatedDisplayed, waitDisplayed, delConfDisplayed } = this.state
     const { onChange, onSubmit, onDelete, onRemoveCategory, onAddCategory, onCancelDelete, onConfirmDelete } = this
     const inputDisabled = text.length < 5 || text.length > 100 ? true : false
 
@@ -96,7 +96,7 @@ class ViewEditJot extends Component {
 
         <label htmlFor='categories'>Categories</label>
         <div className='categories'>
-          { classifications && classifications.map(cat => (
+          { categories && categories.map(cat => (
               <Button
                 key={ cat.id }
                 label={ <span>{ cat.label } <i className='im im-x-mark'></i></span> }

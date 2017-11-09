@@ -47,7 +47,7 @@ class Analysis extends Component {
     this.setState({ [name]: value })
 
     let filtered = value !== 'All' ? thoughts.filter(thought => (
-      thought.classifications.find(c => c.label == value)
+      thought.categories.find(c => c.label == value)
     )) : thoughts
     Scatter(thoughtsOverTime(thoughts), '.scatter-chart', thoughtsOverTime(filtered))
   }
@@ -91,7 +91,7 @@ class Analysis extends Component {
 const mapState = ({ thoughts }) => ({
   thoughts,
   topics: thoughts.reduce((_topics, thought) => {
-    thought.classifications.forEach(c => {
+    thought.categories.forEach(c => {
       if (!_topics.find(t => t.label == c.label)) _topics.push(c)
     })
     return _topics

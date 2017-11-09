@@ -1,5 +1,5 @@
 const conn = require('./conn')
-const { Cluster, Thought } = require('./ThoughtWrapper')
+const { Cluster, Thought } = require('./ThoughtNode')
 
 const thoughts = [
   { text: 'Thought 1' },

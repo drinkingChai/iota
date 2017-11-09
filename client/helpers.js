@@ -1,7 +1,7 @@
 export function catFrequencyOverTime (thoughts) {
   const frequencyCount = {}
   thoughts.forEach(thought => {
-    thought.classifications.forEach(c => {
+    thought.categories.forEach(c => {
       const mapData = frequencyCount[c.label] ? frequencyCount[c.label] : []
       mapData.push(thought)
       frequencyCount[c.label] = mapData

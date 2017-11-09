@@ -1,4 +1,5 @@
 const conn = require('./conn')
+const { models } = conn 
 const machine = require('../machine')
 
 const Thought = conn.define('thought', {
@@ -10,55 +11,66 @@ const Thought = conn.define('thought', {
   created_at: {
     type: conn.Sequelize.DATE
   }
+}, {
+  hooks: {
+    afterCreate(instance, options) {
+      /* removing classifier temporarily
+      models.category.classifyThought(instance)
+        .then(() => instance) */
+      return instance
+    },
+    afterUpdate(instance, options) {
+      /* removing classifier temporarily
+      return instance.changed('text') ?
+        models.category.classifyThought(instance)
+          .then(() => instance) :
+        instance */
+      return instance
+    }
+  }
 })
 
-Thought.createAndClassify = function(content) {
+Thought.createAndCluster = function(content) {
   return this.create(content)
-    .then(thought => conn.models.category.classifyThought(thought))
-}
-
-Thought.storeAndCluster = function(content, userId) {
-  const date = new Date()
-  Object.assign(content, { userId })
-
-  return this.findAll({ order: [[ 'updatedAt', 'DESC' ]], where: { userId } })
-    .then(function(thoughts) {
-      if (!thoughts.length) {
-        // optimistic: assumes userId is valid
-        return Thought.createAndClassify(content)
-      }
-
-      let createdWithinLimit = thoughts.find(t => {
-        return (date - (new Date(t.createdAt))) / 1000 / 60 < 5
-      })
-
-      if (createdWithinLimit && createdWithinLimit.clusterId) {
-        Object.assign(content, { clusterId: createdWithinLimit.clusterId })
-      } else if (createdWithinLimit) {
-        return conn.models.cluster.create()
-          .then(function(cluster) {
-            Object.assign(createdWithinLimit, { clusterId: cluster.id })
-            Object.assign(content, { clusterId: cluster.id })
-            return Promise.all([
-              createdWithinLimit.save(),
-              Thought.createAndClassify(content, userId)
-            ])
-          })
-      }
-      return Thought.createAndClassify(content)
+    .then(thought => {
+      return models.cluster.makeCluster({}, [thought.id])
     })
 }
 
-Thought.getThoughtsAndClassify = function(userId) {
-  return this.findAll({ where: { userId }, order: [[ 'updatedAt', 'DESC' ]], include: [ conn.models.category ] })
+Thought.findWithinLimit = function(userId, minutes) {
+  return this.findAll({ where: { userId }, order: [[ 'createdAt', 'DESC' ]], limit: 1 })
+    .then(thoughts => {
+      if (thoughts.length && (new Date() - (new Date(thoughts[0].createdAt))) / 1000 / 60 < minutes) {
+        return models.thoughtnode.findOne({ where: { thoughtId: thoughts[0].id } })
+      }
+    })
+}
+
+Thought.storeAndCluster = function(content, userId) {
+  Object.assign(content, { userId })
+
+  return this.findWithinLimit(userId, 5)
+    .then(thought => {
+      // if there is one, and it's in a cluster, append to that cluster
+      // if there is one, but not part of a cluster, place it in cluster
+      // otherwise create it
+      if (thought) {
+        return this.create(content)
+          .then(newThought => models.cluster.appendTo(thought.clusterId, newThought.id))
+      }
+      return this.createAndCluster(content)
+    })
+}
+
+Thought.getThoughts = function(userId) {
+  return this.findAll({ where: { userId }, order: [[ 'updatedAt', 'DESC' ]], include: [ models.category ] })
     .then(thoughts =>
       thoughts.map(thought => ({
         id: thought.id,
         text: thought.text,
         created: thought.created_at || thought.createdAt,
         updated: thought.updatedAt,
-        clusterId: thought.clusterId,
-        classifications: thought.categories
+        categories: thought.categories
       }))
     )
 }
@@ -69,32 +81,18 @@ Thought.updateThoughtAndClassify = function(id, content) {
       Object.assign(thought, content)
       return thought.save()
     })
-    .then(thought => conn.models.category.classifyThought(thought))
 }
 
 Thought.deleteThought = function(id) {
+  // TODO: delete relevant node in cluster
   return this.findById(id)
     .then(thought => thought.destroy()) 
 }
 
-Thought.removeFromCluster = function(id, clusterId) {
-  return Thought.findById(id)
-    .then(thought => {
-      Object.assign(thought, { clusterId: null })
-      return thought.save()
-    })
-    .then(() => {
-      return Thought.findAll({ where: { clusterId } })
-        .then(thoughts => {
-          if (thoughts.length == 1) return Thought.removeFromCluster(thoughts[0].id, clusterId)
-        })
-    })
-}
-
 Thought.removeCategory = function(id, categoryId) {
-  return Thought.findById(id)
+  return this.findById(id)
     .then(thought => {
-      return conn.models.category.findById(categoryId)
+      return models.category.findById(categoryId)
         .then(category => {
           return thought.removeCategories(category)
         })
@@ -102,9 +100,9 @@ Thought.removeCategory = function(id, categoryId) {
 }
 
 Thought.addCategory = function(id, category) {
-  return Thought.findById(id)
+  return this.findById(id)
     .then(thought => {
-      return conn.models.category._findOrCreate(category)
+      return models.category._findOrCreate(category)
         .then(category => {
           return thought.addCategories(category)
         })

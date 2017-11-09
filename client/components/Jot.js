@@ -15,7 +15,7 @@ class Jot extends Component {
   onSubmit = () => {
     this.setState({ submittedDisplayed: true })
     this.props.postThought(this.state)
-      .then(classification => {
+      .then(() => {
         this.setState({ text: '', submittedDisplayed: false })
       })
   }

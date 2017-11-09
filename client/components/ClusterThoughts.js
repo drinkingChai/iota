@@ -44,7 +44,7 @@ const mapState = ({ thoughts }, ownProps) => {
   return {
     thoughts: filteredThoughts,
     categories: filteredThoughts.reduce((allCats, t) => {
-      const newCats = t.classifications.map(c => c.label).slice(0, 5).filter(c => allCats.indexOf(c) == -1)
+      const newCats = t.categories.map(c => c.label).slice(0, 5).filter(c => allCats.indexOf(c) == -1)
       return allCats.concat(newCats)
     }, [])
   }

@@ -42,7 +42,7 @@ class ThoughtStream extends Component {
     if (search.length) {
       thoughts = thoughts.filter(thought => {
         // flatten
-        const flatten = `${thought.text} ${thought.classifications.reduce((s, c) => (`${s} ${c.label}`), '')}`
+        const flatten = `${thought.text} ${thought.categories.reduce((s, c) => (`${s} ${c.label}`), '')}`
         const regex = new RegExp(search.split(' ').join('|'), 'gi')
         if (regex.exec(flatten)) return thought
       })
@@ -77,7 +77,7 @@ class ThoughtStream extends Component {
                   <div>
                     <p>{ thought.text }</p>
                     <div className='categories'>
-                      { thought.classifications.map(c => c.label).slice(0, 5).map(cat =>
+                      { thought.categories.map(c => c.label).slice(0, 5).map(cat =>
                           <span key={ cat } className='category remove-category'>{ cat }</span> ) }
                     </div>
                   </div>
