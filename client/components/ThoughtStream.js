@@ -5,11 +5,15 @@ import { formatDate } from '../helpers'
 import { linkThoughts } from '../store'
 import Button from './reusables/Button'
 
+const ClusterCard = ({ thought }) => (
+  <div>
+    Stuff
+  </div>
+)
+
+
 class ThoughtStream extends Component {
-  state = {
-    selected: [],
-    search: ''
-  }
+  state = { selected: [], search: '' }
 
   componentDidMount = () => {
     window.scrollTo(0, 0)
@@ -37,10 +41,10 @@ class ThoughtStream extends Component {
   render = () => {
     const { selected, search } = this.state
     const { onToggleSelect, onCluster, onSearch } = this
-    let { items } = this.props
+    let { thoughts } = this.props
 
     if (search.length) {
-      items = items.filter(thought => {
+      thoughts = thoughts.filter(thought => {
         // flatten
         const flatten = `${thought.text} ${thought.categories.reduce((s, c) => (`${s} ${c.label}`), '')}`
         const regex = new RegExp(search.split(' ').join('|'), 'gi')
@@ -61,7 +65,7 @@ class ThoughtStream extends Component {
         </div>
 
         <div className='thought-list'>
-          { items.map(thought => (
+          { thoughts.map(thought => (
               <div
                 key={ thought.id } 
                 onClick={ () => onToggleSelect(thought) }
@@ -105,7 +109,8 @@ class ThoughtStream extends Component {
 
 const mapState = ({ thoughts, clusters }) => {
   return {
-    items: thoughts
+    thoughts,
+    clusters
   }
 }
 

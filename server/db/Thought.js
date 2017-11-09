@@ -71,7 +71,7 @@ Thought.getThoughts = function(userId) {
   return this.findAll({
     where: { userId },
     order: [[ 'updatedAt', 'DESC' ]],
-    include: [ models.category ] })
+    include: [ models.category, models.cluster ] })
 }
 
 Thought.updateThought = function(id, content) {
