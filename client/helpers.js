@@ -1,3 +1,5 @@
+import * as d3 from 'd3'
+
 export function catFrequencyOverTime (thoughts) {
   const frequencyCount = {}
   thoughts.forEach(thought => {
@@ -42,5 +44,5 @@ export function dateOnly (_date) {
 
 export function formatDate (_date) {
   const date = new Date(_date)
-  return `${date.getMonth()}/${date.getDate()}/${date.getFullYear()} ${date.getHours() % 12}:${date.getMinutes()} ${date.getHours() % 12 > 0 ? 'PM' : 'AM' }`
+  return d3.timeFormat('%I:%M %p')(date)
 }

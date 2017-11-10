@@ -217,4 +217,9 @@ Cluster.removeFrom = function(clusterId, thoughtId) {
     ))
 }
 
+Cluster.merge = function(...items) {
+  // merge a -> b = result -> merge c
+  console.log(items) 
+}
+
 module.exports = Cluster
