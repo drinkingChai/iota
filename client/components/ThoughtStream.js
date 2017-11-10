@@ -4,71 +4,8 @@ import { connect } from 'react-redux'
 import { formatDate } from '../helpers'
 import { linkThoughts } from '../store'
 import Button from './reusables/Button'
-
-const ClusterCard = ({ cluster }) => {
-  if (!cluster) return <div></div>
-  
-  return (
-    <div
-      className='thought thought-cluster' >
-      {/* className={ `thought thought-cluster ${selected.find(t=> t.id == thought.id) ? 'selected' : ''}` }>
-      onClick={ () => onToggleSelect(thought) } */}
-
-      <Link
-        to={ `/clusters/${cluster.cluster.id}` }
-        className='cluster-link'>cluster</Link>
-
-      <div>
-        <p>{ cluster.cluster.name || cluster.nodes[0].text }</p>
-        <p>{ cluster.cluster.description }</p>
-      </div>
-
-      <div className='subheader'>
-        <span className='date'>{ formatDate(cluster.cluster.createdAt) }</span>
-        <div className='horiz-buttons'>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-const ThoughtCard = ({ thought, clickHandler, selectedPool }) => {
-  // make this better by having it take a class instead of selectedPool
-  // const ThoughtCard = ({ thought, className, clickHandler })
-  // apply className from parent based on selected
-  if (!thought) return <div></div>
-
-  return (
-    <div
-      key={ thought.id } 
-      onClick={ () => clickHandler(thought) }
-      className={
-        `${thought.clusterId ? 'thought thought-cluster' : 'thought'}
-        ${selectedPool.find(t=> t.id == thought.id) ? 'selected' : ''}`
-      }>
-
-      { thought.clusterId ?
-        <Link
-          to={ `/clusters/${thought.clusterId}` }
-          className='cluster-link'>cluster</Link> : null }
-
-      <div>
-        <p>{ thought.text }</p>
-        <div className='categories'>
-          { thought.categories.map(c => c.label).slice(0, 5).map(cat =>
-              <span key={ cat } className='category remove-category'>{ cat }</span> ) }
-        </div>
-      </div>
-
-      <div className='subheader'>
-        <span className='date'>{ formatDate(thought.updatedAt) }</span>
-        <div className='horiz-buttons'>
-          <Link to={ `/thoughts/${thought.id}` }><i className="im im-pencil"></i></Link>
-        </div>
-      </div>
-    </div>
-  )
-}
+import ThoughtCard from './cards/ThoughtCard'
+import ClusterCard from './cards/ClusterCard'
 
 
 class ThoughtStream extends Component {
@@ -78,12 +15,14 @@ class ThoughtStream extends Component {
     window.scrollTo(0, 0)
   }
 
-  onToggleSelect = thought => {
+  onToggleSelect = (type, id) => {
     const { selected } = this.state
+    const item = { type, id }
     this.setState({
-      selected: selected.find(t => t.id == thought.id) ?
-        selected.filter(t => t.id != thought.id) :
-        [ ...selected, thought ]
+      selected:
+        selected.find(i => i.type == item.type && i.id == item.id) ?
+          selected.filter(i => i.type != item.type && i.id != item.id) :
+          [ ...selected, item ]
     })
   }
 
@@ -114,8 +53,10 @@ class ThoughtStream extends Component {
 
     let clusterRendered = []
 
+    console.log(this.state);
+
     return (
-      <div>
+      <div className='thought-stream'>
         <h3>Thought stream</h3>
 
         <div>
@@ -129,9 +70,11 @@ class ThoughtStream extends Component {
         <div className='thought-list'>
         {
           thoughts.reduce((cards, thought) => {
+            let clusterId
             if (thought.clusterId) {
-              if (clusterRendered.indexOf(thought.clusterId) == -1) {
-                clusterRendered.push(thought.clusterId)
+              clusterId = thought.clusterId
+              if (clusterRendered.indexOf(clusterId) == -1) {
+                clusterRendered.push(clusterId)
               } else {
                 return cards
               }
@@ -139,12 +82,14 @@ class ThoughtStream extends Component {
 
             return thought.clusterId ?
             [ ...cards, <ClusterCard
-              key={ thought.id }
-              cluster={ clusters.find(c => c.cluster.id == thought.clusterId) }/> ] :
+              key={ clusterId }
+              cluster={ clusters.find(c => c.cluster.id == clusterId) }
+              clickHandler={ () => onToggleSelect('cluster', clusterId) }
+              selectedPool={ selected } /> ] :
             [ ...cards, <ThoughtCard
               key={ thought.id }
               thought={ thought }
-              clickHandler={ onToggleSelect }
+              clickHandler={ () => onToggleSelect('thought', thought.id) }
               selectedPool={ selected } /> ]
           }, [])
         }

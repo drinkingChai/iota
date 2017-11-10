@@ -22,9 +22,15 @@ function ClusterThoughts ({ thoughts, categories, unlink }) {
             <div className='subheader'>
               <span className='date'>{ formatDate(thought.createdAt) }</span>
               <div className='horiz-buttons'>
+                <Button
+                  label={ <i className="im im-angle-up"></i> }
+                  className='btn btn-clear'
+                  onClick={ () => console.log('going up') } />
+                <Button
+                  label={ <i className="im im-angle-down"></i> }
+                  className='btn btn-clear'
+                  onClick={ () => console.log('going down') } />
                 <Link to={ `/thoughts/${thought.id}` }><i className="im im-pencil"></i></Link>
-                {/*<Button label='up' onClick={ () => console.log('going up') } />
-                <Button label='down' onClick={ () => console.log('going up') } />*/}
               </div>
             </div>
           </div>)) }
@@ -44,10 +50,10 @@ function ClusterThoughts ({ thoughts, categories, unlink }) {
 
 const mapState = ({ thoughts, clusters }, ownProps) => {
   const filteredThoughts = thoughts.filter(t => t.clusterId == ownProps.match.params.id)
-  const cluster = clusters.find(c => c.id == ownProps.match.params.id)
+  const cluster = clusters.find(c => c.cluster.id == ownProps.match.params.id)
 
   return {
-    thoughts: cluster && cluster.thoughts || [],
+    thoughts: cluster && cluster.nodes || [],
     categories: filteredThoughts.reduce((allCats, t) => {
       const newCats = t.categories.map(c => c.label).slice(0, 5).filter(c => allCats.indexOf(c) == -1)
       return allCats.concat(newCats)

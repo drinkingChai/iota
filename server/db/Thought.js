@@ -70,7 +70,7 @@ Thought.storeAndCluster = function(content, userId) {
 Thought.getThoughts = function(userId) {
   return this.findAll({
     where: { userId },
-    order: [[ 'updatedAt', 'DESC' ]],
+    order: [[ 'createdAt', 'DESC' ]],
     include: [ models.category, models.cluster ] })
 }
 

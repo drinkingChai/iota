@@ -21,6 +21,10 @@
     background-color: $black;
     color: $white !important;
   }
+
+  &-clear {
+    background-color: transparent;
+  }
 }
 
 .btn-group {
