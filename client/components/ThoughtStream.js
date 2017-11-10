@@ -82,7 +82,7 @@ class ThoughtStream extends Component {
 
             return thought.clusterId ?
             [ ...cards, <ClusterCard
-              key={ clusterId }
+              key={ thought.id }
               cluster={ clusters.find(c => c.cluster.id == clusterId) }
               clickHandler={ () => onToggleSelect('cluster', clusterId) }
               selectedPool={ selected } /> ] :

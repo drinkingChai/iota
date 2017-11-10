@@ -15,6 +15,7 @@ Cluster.createCluster = function(clusterInfo, thoughts) {
       return Promise.each(thoughts, thought => (
         cluster.appendThought(thought) 
       ))
+      .then(() => cluster)
     })
 }
 
@@ -125,6 +126,7 @@ Cluster.prototype.appendThought = function(thought) {
             last.update({ nextNode: wrapper.id }),
             wrapper.update({ previousNode: last.id }) ]))
     ))
+    .then(() => this)
 }
 
 Cluster.prototype.removeThought = function(thought) {
@@ -154,6 +156,8 @@ Cluster.prototype.removeThought = function(thought) {
       ])
     ))
 }
+
+// merge pipeline
 
 
 
@@ -217,9 +221,36 @@ Cluster.removeFrom = function(clusterId, thoughtId) {
     ))
 }
 
-Cluster.merge = function(...items) {
+Cluster.pipe = function(items, userId, aggr) {
+  if (!items.length) return Promise.resolve(aggr)
+
+  if (!aggr) {
+    let removed = items.shift()
+    return this.pipe(items, userId, removed)
+  }
+
+  let item = items.shift()
+
+  switch (true) {
+    case aggr.type == 'cluster' && item.type == 'thought':
+      return this.appendTo(aggr.id, item.id)
+        .then(cluster => this.pipe(items, userId, { type: 'cluster', id: cluster.id }))
+    case aggr.type == 'thought' && item.type == 'cluster':
+      return this.appendTo(item.id, aggr.id)
+        .then(cluster => this.pipe(items, userId, { type: 'cluster', id: cluster.id }))
+    case aggr.type == 'thought' && item.type == 'thought':
+      return this.makeCluster({ userId }, [ item.id, aggr.id ])
+        .then(cluster => this.pipe(items, userId, { type: 'cluster', id: cluster.id }))
+    case aggr.type == 'cluster' && item.type == 'cluster':
+      //edge case
+    default:
+      return
+  }
+}
+
+Cluster.merge = function(userId, items) {
   // merge a -> b = result -> merge c
-  console.log(items) 
+  return this.pipe(items, userId)
 }
 
 module.exports = Cluster

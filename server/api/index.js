@@ -16,7 +16,7 @@ router.post('/train', (req, res, next) => {
 const { Cluster } = require('../db').models
 router.post('/clusters', verifyToken, (req, res, next) => {
   // needs auth
-  Cluster.clusterThoughts(req.body)
+  Cluster.merge(req.user.id, req.body)
     .then(() => res.sendStatus(200))
     .catch(next)
 })
