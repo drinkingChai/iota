@@ -19,6 +19,83 @@ Cluster.createCluster = function(clusterInfo, thoughts) {
     })
 }
 
+Cluster.clusterMerge = function(cluster1Id, cluster2Id) {
+  return Promise.all([
+    // find cluster 1
+    // find cluster 2
+    this.findById(cluster1Id),
+    this.findById(cluster2Id)
+    
+  ])
+  .then(([ cl1, cl2 ]) => {
+    return Promise.all([
+      // find last of cluster1
+      // find head of cluster2
+      cl1.findTail(),
+      models.thoughtnode.findById(cl2.head)
+    ])
+  })
+  .then(([ tail, head ]) => {
+    return Promise.all([
+      // tail.nextNode = head.id
+      // head.previousNode = tail.id
+      // all thoughtNodes with cluster2 update id to cluster1
+      tail.update({ nextNode: head.id }),
+      head.update({ previousNode: tail.id }),
+      models.thoughtnode.findAll({ where: { clusterId: cluster2Id } })
+        .then(nodes => Promise.all(nodes.map(node => node.update({ clusterId: cluster1Id }))))
+    ])
+  })
+}
+
+Cluster.pipe = function(items, userId, aggr) {
+  if (!items.length) return Promise.resolve(aggr)
+
+  if (!aggr) {
+    let removed = items.shift()
+    return this.pipe(items, userId, removed)
+  }
+
+  let item = items.shift()
+
+  switch (true) {
+    case aggr.type == 'cluster' && item.type == 'thought':
+      return this.appendTo(aggr.id, item.id)
+        .then(cluster => this.pipe(items, userId, { type: 'cluster', id: cluster.id }))
+    case aggr.type == 'thought' && item.type == 'cluster':
+      return this.appendTo(item.id, aggr.id)
+        .then(cluster => this.pipe(items, userId, { type: 'cluster', id: cluster.id }))
+    case aggr.type == 'thought' && item.type == 'thought':
+      return this.makeCluster({ userId }, [ item.id, aggr.id ])
+        .then(cluster => this.pipe(items, userId, { type: 'cluster', id: cluster.id }))
+    case aggr.type == 'cluster' && item.type == 'cluster':
+      return this.clusterMerge(aggr.id, item.id)
+        .then(() => this.pipe(items, userId, { type: 'cluster', id: aggr.id }))
+    default:
+      return
+  }
+}
+
+Cluster.prototype.findTail = function(node) {
+  return !node ?
+    models.thoughtnode.findById(this.head)
+      .then(node => this.findTail(node)) :
+    node && node.nextNode ?
+    models.thoughtnode.findById(node.nextNode)
+      .then(node => this.findTail(node)) :
+    node
+  // if (!node) {
+  //   return models.thoughtnode.findById(this.head)
+  //     .then(node => this.findTail(node))
+  // }
+  // if (node && node.nextNode) {
+  //   // console.log(node.nextNode)
+  //   return models.thoughtnode.findById(node.nextNode)
+  //     .then(node => this.findTail(node))
+  // }
+  // return node
+}
+
 Cluster.prototype.findNext = function(currentId, nodes = []) {
   return models.thoughtnode.findOne({ where: { clusterId: this.id, id: currentId } })
     .then(node => {
@@ -219,33 +296,6 @@ Cluster.removeFrom = function(clusterId, thoughtId) {
       models.thought.findById(thoughtId)
         .then(thought => cluster.removeThought(thought))
     ))
-}
-
-Cluster.pipe = function(items, userId, aggr) {
-  if (!items.length) return Promise.resolve(aggr)
-
-  if (!aggr) {
-    let removed = items.shift()
-    return this.pipe(items, userId, removed)
-  }
-
-  let item = items.shift()
-
-  switch (true) {
-    case aggr.type == 'cluster' && item.type == 'thought':
-      return this.appendTo(aggr.id, item.id)
-        .then(cluster => this.pipe(items, userId, { type: 'cluster', id: cluster.id }))
-    case aggr.type == 'thought' && item.type == 'cluster':
-      return this.appendTo(item.id, aggr.id)
-        .then(cluster => this.pipe(items, userId, { type: 'cluster', id: cluster.id }))
-    case aggr.type == 'thought' && item.type == 'thought':
-      return this.makeCluster({ userId }, [ item.id, aggr.id ])
-        .then(cluster => this.pipe(items, userId, { type: 'cluster', id: cluster.id }))
-    case aggr.type == 'cluster' && item.type == 'cluster':
-      //edge case
-    default:
-      return
-  }
 }
 
 Cluster.merge = function(userId, items) {

@@ -33,6 +33,9 @@ const seed = () => {
     .then(() => Cluster.makeHead(_cluster.id, _thought4.id))
     .then(() => Cluster.removeFrom(_cluster.id, _thought3.id))
     .then(() => Cluster.getCluster(_cluster.id))
+    // .then(() => Cluster.findOne({ where: { name: 'Thoughts 1,2,3' } }))
+    // .then(cluster => cluster.findLast())
+    // .then(console.log)
 }
 
 // seed prompt
