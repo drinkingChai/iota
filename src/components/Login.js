@@ -4,25 +4,30 @@ import { connect } from 'react-redux'
 import { signIn } from '../store'
 import Textbox from './reusables/Textbox'
 import Button from './reusables/Button'
+import Welcome from './messages/Welcome'
 
 class UserLogin extends Component {
-  state = { email: '', password: '' }
+  state = { email: '', password: '', welcomeShown: false }
 
   onChange = name => ev => {
     this.setState({ [name]: ev.target.value })
   }
 
   onSubmit = () => {
+    this.setState({ welcomeShown: true })
     this.props.signIn(this.state)
-      .then(() => this.props.history.push('/welcome'))
+      .then(() => this.props.history.push('/jot'))
   }
 
   render = () => {
-    const { email, password } = this.state
+    const { email, password, welcomeShown } = this.state
     const { onChange, onSubmit } = this
+
 
     return (
       <div className='login'>
+        { welcomeShown ? <Welcome /> : null }
+
         <h3>Login</h3>
         <div className='form'>
           <Textbox

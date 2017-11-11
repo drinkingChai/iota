@@ -1,4 +1,10 @@
-.loader {
+.circle-loader-container {
+  width: 100%;
+  display: grid;
+  justify-items: center;
+}
+
+.circle-loader {
   width: 3em;
   height: 3em;
   border-radius: 100%;

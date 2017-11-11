@@ -1,24 +1,17 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
 
-const Welcome = ({ text, history }) => {
-  setTimeout(() => {
-    history.push('/jot')
-  }, 1500)
-
+export default function Welcome ({ text }) {
   return (
-    <div className='welcome'>
-      <h2>Welcome! { text || 'User' }</h2>
+    <div className='welcome floating-message'>
+      <div className='floating-message-body'>
+      <h2>Logging in...</h2>
 
-      <div>
-        <div className='loader'></div>
+        <div className='circle-loader-container'>
+          <div className='circle-loader'></div>
+        </div>
+
+        <p>Loading...</p>
       </div>
-
-      <p>Loading...</p>
     </div>
   )
 }
-
-const mapState = ({ currentUser }) => ({ text: currentUser.user.email })
-export default withRouter(connect(mapState)(Welcome))
