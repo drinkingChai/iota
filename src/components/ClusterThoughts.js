@@ -35,7 +35,8 @@ function ClusterThoughts ({ thoughts, cluster, categories, unlink, update, moveT
                 <Button
                   label={ <i className="im im-angle-down"></i> }
                   className='btn btn-clear'
-                  onClick={ () => console.log('going down') } />
+                  disabled={ !thoughts[i + 1] }
+                  onClick={ () => moveThought(thought, thoughts[i + 1], 'down') } />
                 <Link to={ `/thoughts/${thought.id}` }><i className="im im-pencil"></i></Link>
               </div>
             </div>
@@ -78,8 +79,8 @@ const mapDispatch = (dispatch, ownProps) => ({
   update(info) {
     dispatch(updateCluster(ownProps.match.params.id, info))
   },
-  moveThought(thought, behind) {
-    dispatch(move(ownProps.match.params.id, thought, behind))
+  moveThought(thought, behind, direction) {
+    dispatch(move(ownProps.match.params.id, thought, behind, direction))
   }
 })
 

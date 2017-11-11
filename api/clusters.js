@@ -17,7 +17,9 @@ router.post('/', verifyToken, (req, res, next) => {
 })
 
 router.put('/:id/moving', (req, res, next) => {
-  const { behind, thought } = req.body
+  const { behind, thought, direction } = req.body
+  !behind && direction == 'down' ?
+    res.sendStatus(200) :
   !behind ?
     Cluster.makeHead(req.params.id, thought)
       .then(() => res.sendStatus(200))
