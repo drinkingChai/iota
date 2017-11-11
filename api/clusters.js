@@ -6,6 +6,7 @@ router.get('/', verifyToken, (req, res, next) => {
   Cluster.findAll({ where: { userId: req.user.id } })
     .then(clusters => Promise.all(clusters.map(cluster => Cluster.getCluster(cluster.id))))
     .then(result => res.send(result))
+    .catch(next)
 })
 
 router.post('/', verifyToken, (req, res, next) => {
@@ -13,6 +14,20 @@ router.post('/', verifyToken, (req, res, next) => {
   Cluster.merge(req.user.id, req.body)
     .then(() => res.sendStatus(200))
     .catch(next)
+})
+
+router.put('/:id/moving', (req, res, next) => {
+  const { behind, thought, direction } = req.body
+  !behind && direction == 'down' ?
+    res.sendStatus(200) :
+  !behind ?
+    Cluster.makeHead(req.params.id, thought)
+      .then(() => res.sendStatus(200))
+      .catch(next)
+    :
+    Cluster.moveBehind(req.params.id, behind, thought)
+      .then(() => res.sendStatus(200))
+      .catch(next)
 })
 
 router.put('/:id', verifyToken, (req, res, next) => {

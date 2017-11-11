@@ -126,6 +126,7 @@ Cluster.prototype.moveAfter = function(after, thought) {
     after.nextNode -> wrapper
 
     edge case: if already in right position
+    edge case: if head is being moved
   */
   return Promise.all([
     models.thoughtnode.findOne({ where: { clusterId: this.id, thoughtId: after.id } }),
@@ -143,12 +144,17 @@ Cluster.prototype.moveAfter = function(after, thought) {
   .then(([ after, wrapper, afterNextNode, previous, next ]) => {
     if (after.nextNode == wrapper.id) return
 
+    // console.log(wrapper, next)
+    // already at bottom
+    if (!wrapper.nextNode && !after) return
+
     return Promise.all([
       previous && previous.update({ nextNode: wrapper.nextNode }),
       next && next.update({ previousNode: wrapper.previousNode }),
       after.update({ nextNode: wrapper.id }),
-      wrapper.update({ previousNode: after.id, nextNode: afterNextNode.id }),
-      afterNextNode && afterNextNode.update({ previousNode: wrapper.id })
+      wrapper.update({ previousNode: after.id, nextNode: afterNextNode ? afterNextNode.id : null }),
+      afterNextNode && afterNextNode.update({ previousNode: wrapper.id }),
+      wrapper.id == this.head ? this.update({ head: next.id }) : null
     ])
   })
 }

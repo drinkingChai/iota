@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:dev": "webpack -w & node-sass -w scss/ -o public/ & nodemon app.js --ignore public/ --ignore client/",
-    "seed": "node server/db/seed.js",
-    "reset": "node server/db/reset.js"
+    "start:dev": "webpack -w & node-sass -w scss/ -o public/ & nodemon app.js --ignore public/ --ignore dist/ --ignore src/",
+    "seed": "node db/seed.js",
+    "reset": "node db/reset.js"
   },
   "keywords": [],
   "author": "",
