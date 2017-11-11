@@ -84,6 +84,6 @@ class Profile extends Component {
   }
 }
 
-const mapState = ({ user }) => ({ user })
+const mapState = ({ currentUser }) => ({ user: currentUser.user })
 const mapDispatch = { updatePassword, updateProfile }
 export default connect(mapState, mapDispatch)(Profile)

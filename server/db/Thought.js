@@ -84,6 +84,7 @@ Thought.updateThought = function(id, content) {
 
 Thought.deleteThought = function(id) {
   // TODO: delete relevant node in cluster
+  // if only note one left with cluster id, remove nodes + cluster
   return this.findById(id)
     .then(thought => thought.destroy()) 
 }

@@ -20,5 +20,5 @@ const Welcome = ({ text, history }) => {
   )
 }
 
-const mapState = ({ user }) => ({ text: user.email })
+const mapState = ({ currentUser }) => ({ text: currentUser.user.email })
 export default withRouter(connect(mapState)(Welcome))

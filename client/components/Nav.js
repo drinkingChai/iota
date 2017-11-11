@@ -57,6 +57,6 @@ class Nav extends Component {
   }
 }
 
-const mapState = ({ isAuthenticated }) => ({ isAuthenticated })
+const mapState = ({ currentUser }) => ({ isAuthenticated: currentUser.isAuthenticated })
 const mapDispatch = { signOut }
 export default withRouter(connect(mapState, mapDispatch)(Nav))
