@@ -9,7 +9,8 @@ import ClusterThoughts from './ClusterThoughts'
 import Login from './Login'
 import Register from './Register'
 import Profile from './Profile'
-import Welcome from './messages/Welcome'
+
+import TestArea from './testarea/TestArea'
 
 export default function Routes () {
   return (
@@ -23,7 +24,7 @@ export default function Routes () {
       <Route exact path='/login' component={ Login } />
       <Route exact path='/register' component={ Register } />
       <Route exact path='/profile' component={ Profile } />
-      <Route exact path='/welcome' component={ Welcome } />
+      <Route exact path='/test' component={ TestArea } />
       <Redirect to='/jot' />
     </Switch>
   )

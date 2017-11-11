@@ -46,6 +46,10 @@ Thought.findWithinLimit = function(userId, minutes) {
   )
 }
 
+
+/* ================================================= */
+/* ================= api wrappers  ================= */
+
 Thought.storeAndCluster = function(content, userId) {
   Object.assign(content, { userId })
 
@@ -83,10 +87,17 @@ Thought.updateThought = function(id, content) {
 }
 
 Thought.deleteThought = function(id) {
-  // TODO: delete relevant node in cluster
-  // if only note one left with cluster id, remove nodes + cluster
   return this.findById(id)
-    .then(thought => thought.destroy()) 
+    .then(thought => {
+      if (!thought) throw new Error('thought not found')
+
+      return thought.clusterId ?
+        Promise.all([
+          thought,
+          models.cluster.removeFrom(thought.clusterId, thought.id) ]) :
+        Promise.all([ thought ])
+    })
+    .then(([ thought, ...rest ]) => thought.destroy()) 
 }
 
 Thought.removeCategory = function(id, categoryId) {

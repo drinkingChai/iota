@@ -20,6 +20,7 @@ const Category = conn.define('category', {
 })
 
 Category._findOrCreate = function(mlcat) {
+  // mlcat = monkey learn category
   const { category_id, label } = mlcat
   return this.findOne({ where: { label } })
     .then(cat => {
