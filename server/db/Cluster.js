@@ -27,25 +27,43 @@ Cluster.clusterMerge = function(cluster1Id, cluster2Id) {
     this.findById(cluster2Id)
     
   ])
-  .then(([ cl1, cl2 ]) => {
+  .then(([ cluster1, cluster2 ]) => {
     return Promise.all([
       // find last of cluster1
       // find head of cluster2
-      cl1.findTail(),
-      models.thoughtnode.findById(cl2.head)
+      cluster1,
+      cluster2,
+      cluster1.findTail(),
+      models.thoughtnode.findById(cluster2.head),
     ])
   })
-  .then(([ tail, head ]) => {
+  .then(([ cluster1, cluster2, tail, head, cl2nodes ]) => {
     return Promise.all([
       // tail.nextNode = head.id
       // head.previousNode = tail.id
       // all thoughtNodes with cluster2 update id to cluster1
+      cluster1,
+      cluster2,
       tail.update({ nextNode: head.id }),
       head.update({ previousNode: tail.id }),
-      models.thoughtnode.findAll({ where: { clusterId: cluster2Id } })
-        .then(nodes => Promise.all(nodes.map(node => node.update({ clusterId: cluster1Id }))))
     ])
   })
+  .then(([ cluster1, cluster2, ...rest ]) => {
+    return Promise.all([
+      cluster1,
+      cluster2,
+      models.thoughtnode.findAll({ where: { clusterId: cluster2.id } }),
+      models.thought.findAll({ where: { clusterId: cluster2.id } })
+    ])
+  })
+  .then(([ cluster1, cluster2, cluster2nodes, cluster2thoughts ]) => {
+    return Promise.all([
+      cluster2,
+      Promise.all(cluster2nodes.map(node => node.update({ clusterId: cluster1.id }))),
+      Promise.all(cluster2thoughts.map(thought => thought.update({ clusterId: cluster1.id })))
+    ]) 
+  })
+  .then(([ cluster2, ...rest ]) => cluster2.destroy())
 }
 
 Cluster.pipe = function(items, userId, aggr) {
@@ -84,16 +102,6 @@ Cluster.prototype.findTail = function(node) {
     models.thoughtnode.findById(node.nextNode)
       .then(node => this.findTail(node)) :
     node
-  // if (!node) {
-  //   return models.thoughtnode.findById(this.head)
-  //     .then(node => this.findTail(node))
-  // }
-  // if (node && node.nextNode) {
-  //   // console.log(node.nextNode)
-  //   return models.thoughtnode.findById(node.nextNode)
-  //     .then(node => this.findTail(node))
-  // }
-  // return node
 }
 
 Cluster.prototype.findNext = function(currentId, nodes = []) {
@@ -127,20 +135,12 @@ Cluster.prototype.moveAfter = function(after, thought) {
     Promise.all([
       after,
       wrapper,
-      models.thoughtnode.findOne({ where: { clusterId: this.id, thoughtId: after.nextNode } }),
-      models.thoughtnode.findOne({ where: { clusterId: this.id, thoughtId: wrapper.previousNode } }),
-      models.thoughtnode.findOne({ where: { clusterId: this.id, thoughtId: wrapper.nextNode } })
+      models.thoughtnode.findOne({ where: { clusterId: this.id, id: after.nextNode } }),
+      models.thoughtnode.findOne({ where: { clusterId: this.id, id: wrapper.previousNode } }),
+      models.thoughtnode.findOne({ where: { clusterId: this.id, id: wrapper.nextNode } })
     ])
   ))
   .then(([ after, wrapper, afterNextNode, previous, next ]) => {
-    // console.log(
-    //   after.id,
-    //   wrapper.id,
-    //   afterNextNode && afterNextNode.id,
-    //   previous && previous.id,
-    //   next && next.id)
-
-    // edge case
     if (after.nextNode == wrapper.id) return
 
     return Promise.all([
@@ -172,17 +172,11 @@ Cluster.prototype.moveToHead = function(thought) {
     Promise.all([
       head,
       wrapper,
-      models.thoughtnode.findOne({ where: { clusterId: this.id, thoughtId: wrapper.previousNode } }),
-      models.thoughtnode.findOne({ where: { clusterId: this.id, thoughtId: wrapper.nextNode } })
+      models.thoughtnode.findOne({ where: { clusterId: this.id, id: wrapper.previousNode } }),
+      models.thoughtnode.findOne({ where: { clusterId: this.id, id: wrapper.nextNode } })
     ])
   ))
   .then(([ head, wrapper, thoughtPrevious, thoughtNext ]) => {
-    // console.log(
-    //   head,
-    //   wrapper.id,
-    //   thoughtPrevious && thoughtPrevious.id,
-    //   thoughtNext && thoughtNext.id)
-
     return Promise.all([
       thoughtPrevious && thoughtPrevious.update({ nextNode: wrapper.nextNode }),
       thoughtNext && thoughtNext.update({ previousNode: wrapper.previousNode }),
@@ -213,29 +207,35 @@ Cluster.prototype.removeThought = function(thought) {
     delete wrapper
 
     edge case: thought is head
+    edge case 2: cluster can't only have 1
   */
   return models.thoughtnode.findOne({ where: { clusterId: this.id, thoughtId: thought.id } })
     .then(wrapper => (
       Promise.all([
         wrapper,
-        models.thoughtnode.findOne({ where: { clusterId: this.id, thoughtId: wrapper.previousNode } }),
-        models.thoughtnode.findOne({ where: { clusterId: this.id, thoughtId: wrapper.nextNode } })
+        models.thoughtnode.findOne({ where: { clusterId: this.id, id: wrapper.previousNode } }),
+        models.thoughtnode.findOne({ where: { clusterId: this.id, id: wrapper.nextNode } })
       ])
     ))
-    .then(([ wrapper, previous, next ]) => (
-      Promise.all([
+    .then(([ wrapper, previous, next ]) => {
+      console.log(wrapper.nextNode, wrapper.previousNode, previous)
+      return Promise.all([
+        wrapper,
         previous && previous.update({ nextNode: wrapper.nextNode }),
         next && next.update({ previousNode: wrapper.previousNode }),
         wrapper.id == this.head ? this.update({ head: wrapper.nextNode }) : null,
-        // wrapper.id == this.head && !wrapper.nextNode ? this.destroy : this.head ? this.update({ head: wrapper.nextNode }) : null,
-        wrapper.destroy(),
         thought.update({ clusterId: null })
       ])
-    ))
+    })
+    .then(([ wrapper, ...rest ]) => wrapper.destroy())
+    .then(() => models.thoughtnode.findAll({ where: { clusterId: this.id } }))
+    .then(nodes => nodes.length > 1 ? null : Promise.all([
+      nodes[0].destroy(),
+      this.destroy()
+    ]))
+    // .then(() => models.thoughtnode.findAll({ where: { clusterId: null } }))
+    // .then(nodes => Promise.all(nodes.map(node => node.destroy()))) // brute force
 }
-
-// merge pipeline
-
 
 
 
