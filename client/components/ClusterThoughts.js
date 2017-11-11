@@ -2,14 +2,19 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { formatDate } from '../helpers'
-import { unlinkThought } from '../store'
+import { unlinkThought, updateCluster } from '../store'
 import Button from './reusables/Button'
+import NameCluster from './cards/NameCluster'
 
-function ClusterThoughts ({ thoughts, categories, unlink }) {
+function ClusterThoughts ({ thoughts, cluster, categories, unlink, test }) {
   return (
     <div>
       <h3>A cluster of thoughts</h3>
       {/* name your cluster here */}
+
+      <NameCluster
+        cluster={ cluster }
+        onClick={ (info) => test(info) }/>
       
       <div className='thought-list linked'>
         { thoughts.map(thought => (
@@ -54,6 +59,7 @@ const mapState = ({ thoughts, clusters }, ownProps) => {
 
   return {
     thoughts: cluster && cluster.nodes || [],
+    cluster: cluster && cluster.cluster,
     categories: filteredThoughts.reduce((allCats, t) => {
       const newCats = t.categories.map(c => c.label).slice(0, 5).filter(c => allCats.indexOf(c) == -1)
       return allCats.concat(newCats)
@@ -67,6 +73,9 @@ const mapDispatch = (dispatch, ownProps) => ({
       .then(() => {
         if (thoughts.length <= 2) ownProps.history.push('/thoughts')
       })
+  },
+  test(stuff) {
+    dispatch(updateCluster(ownProps.match.params.id, stuff))
   }
 })
 

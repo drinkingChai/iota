@@ -14,12 +14,6 @@ router.get('/', verifyToken, (req, res, next) => {
     .catch(next)
 })
 
-router.get('/clusters', verifyToken, (req, res, next) => {
-  Cluster.findAll({ where: { userId: req.user.id } })
-    .then(clusters => Promise.all(clusters.map(cluster => Cluster.getCluster(cluster.id))))
-    .then(result => res.send(result))
-})
-
 router.delete('/:id/remove-category/:categoryId', verifyToken, (req, res, next) => {
   Thought.removeCategory(req.params.id, req.params.categoryId)
     .then(() => res.sendStatus(200))

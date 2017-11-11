@@ -4,11 +4,11 @@ export default class Textbox extends Component {
   state = {
     placeHolder: '',
     focused: false,
-    style: {
-      span: {
-        display: 'grid',
-        gridGap: '10px'
-      }
+    styles: {
+      // some styles here
+      // can be expanded more via css
+      span: { display: 'grid', gridGap: '10px' },
+      placeHolder: { color: '#BDBDBD' }
     }
   }
 
@@ -34,13 +34,14 @@ export default class Textbox extends Component {
       label,
       disabled,
       type,
+      style,
       className,
       value } = this.props
 
     const {
       placeHolder,
       focused,
-      style } = this.state
+      styles } = this.state
 
     const {
       onChange,
@@ -48,14 +49,15 @@ export default class Textbox extends Component {
       onFocus } = this
 
     return (
-      <span style={ style.span }>
+      <span style={ styles.span }>
         { label ? <label>{ label }</label> : null }
         <input
-          className={ className || '' }
           autoFocus={ focused }
           disabled={ disabled }
           value={ !focused && !value ? placeHolder : value }
           type={ !focused && !value ? 'text' : type }
+          style={ !focused && !value ? styles.placeHolder : style }
+          className={ className }
           onChange={ onChange }
           onFocus={ onFocus }
           onBlur={ onBlur }

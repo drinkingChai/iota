@@ -5,19 +5,12 @@ router.use('/auth', require('./auth'))
 router.use('/thoughts', require('./thoughts'))
 router.use('/users', require('./users'))
 router.use('/test', require('./test'))
+router.use('/clusters', require('./clusters'))
 
 const { MachineData } = require('../db').models
 router.post('/train', (req, res, next) => {
   MachineData.storeAndTrain(req.body)
     .then(() => res.sendStatus(201))
-    .catch(next)
-})
-
-const { Cluster } = require('../db').models
-router.post('/clusters', verifyToken, (req, res, next) => {
-  // needs auth
-  Cluster.merge(req.user.id, req.body)
-    .then(() => res.sendStatus(200))
     .catch(next)
 })
 
