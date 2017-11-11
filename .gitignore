@@ -1,6 +1,5 @@
-node_modules
-public/bundle.js
-public/bundle.map.js
-public/style.css
+node_modules/
+dist/
+style.css
 env.json
 .DS_Store

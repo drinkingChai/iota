@@ -23,16 +23,16 @@ export default class NameCluster extends Component {
 
   render = () => {
     return (
-      <div>
+      <div className='form'>
         <Textbox
           label='Cluster name'
-          value={ this.state.name }
+          value={ this.state.name || '' }
           onChange={ this.onChange('name') }
           placeHolder='Name your cluster...' />
         <Button
           label='Save'
           onClick={ this.onClick }
-          className='btn btn-clear' /> 
+          className='btn' /> 
       </div>
     )
   }

@@ -34,9 +34,11 @@ class UserLogin extends Component {
             label='Password'
             value={ password }
             onChange={ onChange('password') } />  
-          <Button
-            label='Login'
-            onClick={ onSubmit } />
+          <div className='btn-group'>
+            <Button
+              label='Login'
+              onClick={ onSubmit } />
+          </div>
         </div>
 
         <h3>Register</h3>

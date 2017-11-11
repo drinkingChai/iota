@@ -3,9 +3,6 @@ import React, { Component } from 'react'
 export default class Button extends Component {
   state = {
     styles: {
-      button: {
-        width: '100%'
-      }
     }
   }
 

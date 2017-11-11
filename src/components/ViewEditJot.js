@@ -109,19 +109,21 @@ class ViewEditJot extends Component {
         <input
           value={ newcategory }
           onChange={ onChange('newcategory') } />
-        <Button
-          label='Add category'
-          className='btn btn-blue'
-          onClick={ onAddCategory } />
+        <div className='btn-group'>
+          <Button
+            label='Add category'
+            className='btn btn-blue'
+            onClick={ onAddCategory } />
 
-        <Button
-          label='Update'
-          disabled={ inputDisabled }
-          onClick={ onSubmit } />
-        <Button
-          label='Delete'
-          className='btn btn-red'
-          onClick={ onDelete } /> 
+          <Button
+            label='Update'
+            disabled={ inputDisabled }
+            onClick={ onSubmit } />
+          <Button
+            label='Delete'
+            className='btn btn-red'
+            onClick={ onDelete } /> 
+        </div>
       </div>
     )
   }

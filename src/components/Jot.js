@@ -23,7 +23,7 @@ class Jot extends Component {
   render = () => {
     const { text, submittedDisplayed } = this.state
     const { onChange, onSubmit } = this
-    const inputDisabled = text.length < 5 || text.length > 200 ? true : false
+    const inputDisabled = text.length < 5 ? true : false
 
     return (
       <div className='form'>
@@ -35,10 +35,12 @@ class Jot extends Component {
           value={ text }
           onChange={ onChange('text') }
           className={ inputDisabled ? 'red' : null } />
-        <Button
-          label='Jot it down'
-          onClick={ onSubmit }
-          disabled={ inputDisabled } />
+        <div className='btn-group'>
+          <Button
+            label='Jot it down'
+            onClick={ onSubmit }
+            disabled={ inputDisabled } />
+        </div>
       </div>
     )
   }
