@@ -2,11 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { formatDate } from '../helpers'
-import { unlinkThought, updateCluster } from '../store'
+import { unlinkThought, updateCluster, move } from '../store'
 import Button from './reusables/Button'
 import NameCluster from './cards/NameCluster'
 
-function ClusterThoughts ({ thoughts, cluster, categories, unlink, test }) {
+function ClusterThoughts ({ thoughts, cluster, categories, unlink, update, moveThought }) {
   return (
     <div>
       <h3>A cluster of thoughts</h3>
@@ -14,11 +14,12 @@ function ClusterThoughts ({ thoughts, cluster, categories, unlink, test }) {
 
       <NameCluster
         cluster={ cluster }
-        onClick={ (info) => test(info) }/>
+        onClick={ (info) => update(info) }/>
       
       <div className='thought-list linked'>
-        { thoughts.map(thought => (
+        { thoughts.map((thought, i) => (
           <div key={ thought.id } className='thought thought-linked'>
+            {/* thoughts to separate cards */}
             <button className='cluster-link unlink' onClick={ () => unlink(thought, thoughts) }><i className='im im-unlink'></i></button>
             <div>
               <p>{ thought.text }</p>
@@ -30,7 +31,7 @@ function ClusterThoughts ({ thoughts, cluster, categories, unlink, test }) {
                 <Button
                   label={ <i className="im im-angle-up"></i> }
                   className='btn btn-clear'
-                  onClick={ () => console.log('going up') } />
+                  onClick={ () => moveThought(thought, thoughts[i - 2]) } />
                 <Button
                   label={ <i className="im im-angle-down"></i> }
                   className='btn btn-clear'
@@ -74,8 +75,11 @@ const mapDispatch = (dispatch, ownProps) => ({
         if (thoughts.length <= 2) ownProps.history.push('/thoughts')
       })
   },
-  test(stuff) {
-    dispatch(updateCluster(ownProps.match.params.id, stuff))
+  update(info) {
+    dispatch(updateCluster(ownProps.match.params.id, info))
+  },
+  moveThought(thought, behind) {
+    dispatch(move(ownProps.match.params.id, thought, behind))
   }
 })
 

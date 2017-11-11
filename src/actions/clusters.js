@@ -12,8 +12,18 @@ export const fetchClusters = () => dispatch => {
 
 export const updateCluster = (id, info) => dispatch =>
   axios.put(`/api/clusters/${id}`, info)
+    .then(() => dispatch(fetchThoughts()))
     .then(() => dispatch(fetchClusters()))
 
 export const linkThoughts = thoughts => dispatch =>
   axios.post(`/api/clusters`, thoughts)
     .then(() => dispatch(fetchThoughts()))
+    .then(() => dispatch(fetchClusters()))
+
+// re-order thoughts
+export const move = (id, thought, behind) => dispatch => {
+  const order = { thought: thought.id, behind: behind && behind.id || null }
+  return axios.put(`/api/clusters/${id}/moving`, order)
+    .then(() => dispatch(fetchThoughts()))
+    .then(() => dispatch(fetchClusters()))
+}
