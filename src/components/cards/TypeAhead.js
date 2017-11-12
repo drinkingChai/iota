@@ -65,10 +65,14 @@ export default class TypeAhead extends Component {
     this.setState({ selected: [] })
   }
 
+  onFocus = () => {
+    this.input.focus()
+  }
+
   render = () => {
-    const { input, selected, selectionsDisplayed } = this.state
+    const { input, selected, selectionsDisplayed, focused } = this.state
     let { selections } = this.state
-    const { onSelect, onChange, onDeselect, toggleDropdown, clear } = this
+    const { onSelect, onChange, onDeselect, toggleDropdown, clear, onFocus } = this
 
     selections = selections
       .filter(select => selected.indexOf(select) == -1)
@@ -76,11 +80,15 @@ export default class TypeAhead extends Component {
 
     return (
       <div className='typeahead'>
-        <div className='main'>
+        <div className='main' onClick={ onFocus }>
           <span className='selected'>
             {/* added items go here */}
             { selected.map(select => <Label key={ select } text={ select } onX={ onDeselect(select) } />) }
-            <input value={ input } onChange={ onChange() } />
+            <input
+              ref={ (input) => { this.input = input } }
+              value={ input }
+              onChange={ onChange() }
+              size={ input.length ? input.length : 1 } />
           </span>
 
           <span className='buttons'>
