@@ -15,29 +15,32 @@ export default class TypeAhead extends Component {
   state = { input: '', selections: [], selected: [], selectionsDisplayed: false }
 
   componentDidMount = () => {
-    this.setState({ selections: this.props.selections })
+    this.setState({ selections: this.props.selections || [] })
   }
 
   componentWillReceiveProps = nextProps => {
-    this.setState({ selections: nextProps.selections })
+    if (!nextProps.check.length) this.setState({ selected: [] })
   }
-
+  
   onChange = () => ev => {
+    ev.preventDefault()
     const { input, selections, selected } = this.state
     let { value } = ev.target
-    if (value[value.length - 1] == ',' && input.length) {
+    if (value[value.length - 1] == ',' && input.trim().length) {
       let sliced = value.slice(0, -1)
 
       if (selected.indexOf(sliced) !== -1) return this.setState({ input: value })
-
-      this.setState({
-        input: '',
-        selections: [ ...selections, sliced ],
-        selected: [ ...selected, sliced ]
-      })
+      else {
+        this.setState({
+          input: '',
+          selections: selections.indexOf(sliced) !== -1 ? selections : [ ...selections, sliced ],
+          selected: [ ...selected, sliced ]
+        })
+      }
     } else {
       this.setState({ input: value })
     }
+    this.props.onUpdate([ ...selected, value ])
   }
 
   onSelect = name => () => {
@@ -62,7 +65,7 @@ export default class TypeAhead extends Component {
   }
 
   clear = () => {
-    this.setState({ selected: [] })
+    this.setState({ selected: [], input: '' })
   }
 
   onFocus = () => {
@@ -79,8 +82,8 @@ export default class TypeAhead extends Component {
       .filter(select => select.match(new RegExp(input, 'gi')))
 
     return (
-      <div className='typeahead'>
-        <div className='main' onClick={ onFocus }>
+      <div className='typeahead' onClick={ onFocus }>
+        <div className='main'>
           <span className='selected'>
             {/* added items go here */}
             { selected.map(select => <Label key={ select } text={ select } onX={ onDeselect(select) } />) }
@@ -92,7 +95,7 @@ export default class TypeAhead extends Component {
           </span>
 
           <span className='buttons'>
-            <span onClick={ clear }><i className="im im-x-mark"></i></span>
+            <span onClick={ clear }><i className="im im-x-mark" style={ { color: selected.length ? 'inherit' : 'transparent' } }></i></span>
             <span onClick={ toggleDropdown }>
               { selectionsDisplayed ? <i className="im im-care-up"></i> : <i className="im im-care-down"></i> }
             </span>

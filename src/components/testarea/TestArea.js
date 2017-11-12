@@ -13,7 +13,7 @@ export default class TestArea extends Component {
       <div>
         <h3>Test Area</h3>
 
-        <TypeAhead selections={ items }/>
+        <TypeAhead onUpdate={ () => {} }/>
         Putting some stuff here to test
       </div>
     )

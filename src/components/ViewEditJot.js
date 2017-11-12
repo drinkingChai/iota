@@ -7,10 +7,11 @@ import Confirm from './messages/Confirm'
 import Textbox from './reusables/Textbox'
 import Textarea from './reusables/Textarea'
 import Button from './reusables/Button'
+import TypeAhead from './cards/TypeAhead'
 
 class ViewEditJot extends Component {
   state = {
-    text: '', newcategory: '', categories: '',
+    text: '', newcategories: [], categories: '',
     updatedDisplayed: false, waitDisplayed: false, delConfDisplayed: false
   }
 
@@ -41,16 +42,20 @@ class ViewEditJot extends Component {
   }
 
   onAddCategory = () => {
-    const newCategories = this.state.newcategory.split(',').filter(c => c.length)
+    console.log(this.state.newcategories)
 
     this.setState({ waitDisplayed: true })
     setTimeout(() => {
-      Promise.all(newCategories.map(label =>
+      Promise.all(this.state.newcategories.map(label =>
         this.props.addCategory(this.props.thought, { label: label.trim() })
       ))
-      .then(() => this.setState({ newcategory: '', waitDisplayed: false }))
-    }, 1000)
+      .then(() => this.setState({ newcategories: [], waitDisplayed: false }))
+    }, 500)
     
+  }
+
+  setCollection = (collection) => {
+    this.setState({ newcategories: collection })
   }
 
   onDelete = () => {
@@ -72,8 +77,8 @@ class ViewEditJot extends Component {
   }
 
   render = () => {
-    const { text, newcategory, categories, updatedDisplayed, waitDisplayed, delConfDisplayed } = this.state
-    const { onChange, onSubmit, onDelete, onRemoveCategory, onAddCategory, onCancelDelete, onConfirmDelete } = this
+    const { text, newcategories, categories, updatedDisplayed, waitDisplayed, delConfDisplayed } = this.state
+    const { onChange, onSubmit, onDelete, onRemoveCategory, onAddCategory, onCancelDelete, onConfirmDelete, setCollection } = this
     const inputDisabled = text.length < 5 || text.length > 100 ? true : false
 
     return (
@@ -105,10 +110,10 @@ class ViewEditJot extends Component {
         </div>
 
         <label htmlFor='newcategory'>Add categories</label>
-        {/* have this autocomplete to existing cats */}
-        <input
-          value={ newcategory }
-          onChange={ onChange('newcategory') } />
+        <TypeAhead
+          selections={ ['hello', 'world'] }
+          check={ newcategories }
+          onUpdate={ setCollection } />
         <div className='btn-group'>
           <Button
             label='Add category'
