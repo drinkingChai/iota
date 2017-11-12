@@ -38,6 +38,9 @@ h3 { font-size: 1.4em; line-height: 2em; }
 @import '_loader.scss';
 @import '_chartstyles.scss';
 
+// cards
+@import '_typeahead.scss';
+
 // pages
 @import '_nav.scss';
 @import '_thoughts.scss';
