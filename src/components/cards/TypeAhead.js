@@ -3,8 +3,10 @@ import React, { Component } from 'react'
 export const Label = ({ text, onX }) => {
   return (
     <div className='label'>
-      <span className='label-button' onClick={ onX }><i className="im im-x-mark"></i></span>
-      <span className='label-text'>{ text }</span>
+      <div className='label-inner'>
+        <div className='label-button' onClick={ onX }><i className="im im-x-mark"></i></div>
+        <div className='label-text'>{ text }</div>
+      </div>
     </div>
   )
 }
