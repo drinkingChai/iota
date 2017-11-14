@@ -35,6 +35,7 @@ export default class Textarea extends Component {
       disabled,
       type,
       className,
+      autoFocus,
       value } = this.props
 
     const {
@@ -52,7 +53,7 @@ export default class Textarea extends Component {
         { label ? <label>{ label }</label> : null }
         <textarea
           className={ className || '' }
-          autoFocus={ focused }
+          autoFocus={ autoFocus }
           disabled={ disabled }
           value={ !focused && !value ? placeHolder : value }
           type={ !focused && !value ? 'text' : type }

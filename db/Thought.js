@@ -4,7 +4,7 @@ const machine = require('../machine')
 
 const Thought = conn.define('thought', {
   text: {
-    type: conn.Sequelize.STRING,
+    type: conn.Sequelize.TEXT,
     allowNull: false,
     validate: { notEmpty: true },
   },

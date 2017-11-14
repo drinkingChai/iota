@@ -42,8 +42,6 @@ class ViewEditJot extends Component {
   }
 
   onAddCategory = () => {
-    console.log(this.state.newcategories)
-
     this.setState({ waitDisplayed: true })
     setTimeout(() => {
       Promise.all(this.state.newcategories.map(label =>

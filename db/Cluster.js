@@ -144,7 +144,6 @@ Cluster.prototype.moveAfter = function(after, thought) {
   .then(([ after, wrapper, afterNextNode, previous, next ]) => {
     if (after.nextNode == wrapper.id) return
 
-    // console.log(wrapper, next)
     // already at bottom
     if (!wrapper.nextNode && !after) return
 
@@ -183,6 +182,9 @@ Cluster.prototype.moveToHead = function(thought) {
     ])
   ))
   .then(([ head, wrapper, thoughtPrevious, thoughtNext ]) => {
+    // edge case: if already head
+    if (!wrapper.previousNode) return
+
     return Promise.all([
       thoughtPrevious && thoughtPrevious.update({ nextNode: wrapper.nextNode }),
       thoughtNext && thoughtNext.update({ previousNode: wrapper.previousNode }),
@@ -224,7 +226,6 @@ Cluster.prototype.removeThought = function(thought) {
       ])
     ))
     .then(([ wrapper, previous, next ]) => {
-      console.log(wrapper.nextNode, wrapper.previousNode, previous)
       return Promise.all([
         wrapper,
         previous && previous.update({ nextNode: wrapper.nextNode }),
