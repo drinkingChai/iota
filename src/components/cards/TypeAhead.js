@@ -20,6 +20,7 @@ export default class TypeAhead extends Component {
 
   componentWillReceiveProps = nextProps => {
     if (!nextProps.check.length) this.setState({ selected: [], input: '' })
+    this.setState({ selections: nextProps.selections || [] })
   }
   
   onChange = () => ev => {
@@ -36,7 +37,7 @@ export default class TypeAhead extends Component {
           selections: selections.indexOf(sliced) !== -1 ? selections : [ ...selections, sliced ],
           selected: [ ...selected, sliced ]
         })
-        this.props.onUpdate([ ...selected, sliced ])
+        return this.props.onUpdate([ ...selected, sliced ])
       }
     } else {
       this.setState({ input: value })
@@ -51,6 +52,7 @@ export default class TypeAhead extends Component {
       selectionsDisplayed: selections.length == selected.length + 1 ? false : true,
       selected: [ ...selected, name ]
     })
+    this.props.onUpdate([ ...selected, name ])
   }
 
   onDeselect = name => () => {

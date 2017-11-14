@@ -25,6 +25,7 @@ module.exports = {
   sync,
   models: {
     MachineData,
+    Category,
     Thought,
     Cluster,
     User

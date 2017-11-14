@@ -17,6 +17,13 @@ const Category = conn.define('category', {
   category_id: {
     type: conn.Sequelize.INTEGER
   }
+}, {
+  hooks: {
+    beforeCreate(instance, options) {
+      instance.label = instance.label.toLowerCase()
+      return instance
+    }
+  }
 })
 
 Category._findOrCreate = function(mlcat) {

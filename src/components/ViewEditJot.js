@@ -17,13 +17,14 @@ class ViewEditJot extends Component {
 
   componentDidMount = () => {
     if (!this.props.thought) return
-    const { text, categories } = this.props.thought
-    this.setState({ text, categories })
+    const { text } = this.props.thought
+    this.setState({ text })
   }
 
   componentWillReceiveProps = (nextProps) => {
-    const { text, categories } = nextProps.thought
-    this.setState({ text, categories })
+    if (!nextProps.thought) return
+    const { text } = nextProps.thought
+    this.setState({ text })
   }
 
   onChange = name => ev =>
@@ -75,9 +76,12 @@ class ViewEditJot extends Component {
   }
 
   render = () => {
-    const { text, newcategories, categories, updatedDisplayed, waitDisplayed, delConfDisplayed } = this.state
+    const { text, newcategories, updatedDisplayed, waitDisplayed, delConfDisplayed } = this.state
     const { onChange, onSubmit, onDelete, onRemoveCategory, onAddCategory, onCancelDelete, onConfirmDelete, setCollection } = this
+    const { thought, categories } = this.props
     const inputDisabled = text.length < 5 ? true : false
+
+    // console.log(categories)
 
     return (
       <div className='form'>
@@ -99,7 +103,7 @@ class ViewEditJot extends Component {
 
         <label htmlFor='categories'>Categories</label>
         <div className='categories'>
-          { categories && categories.map(cat => (
+          { thought && thought.categories && thought.categories.map(cat => (
               <Button
                 key={ cat.id }
                 label={ <span>{ cat.label } <i className='im im-x-mark'></i></span> }
@@ -109,7 +113,7 @@ class ViewEditJot extends Component {
 
         <label htmlFor='newcategory'>Add categories</label>
         <TypeAhead
-          selections={ ['hello', 'world'] }
+          selections={ categories }
           check={ newcategories }
           onUpdate={ setCollection } />
         <div className='btn-group'>
@@ -132,9 +136,15 @@ class ViewEditJot extends Component {
   }
 }
 
-const mapState = ({ thoughts }, ownProps) => ({
-  thought: thoughts.find(t => t.id == ownProps.match.params.id)
-})
+const mapState = ({ thoughts, categories }, ownProps) => {
+  let _categories = categories.map(category => category.label)
+  _categories.sort()
+  
+  return {
+    thought: thoughts.find(t => t.id == ownProps.match.params.id),
+    categories: _categories
+  }
+}
 const mapDispatch = {
   updateThought,
   removeCategory,
