@@ -77,7 +77,7 @@ class ViewEditJot extends Component {
   render = () => {
     const { text, newcategories, categories, updatedDisplayed, waitDisplayed, delConfDisplayed } = this.state
     const { onChange, onSubmit, onDelete, onRemoveCategory, onAddCategory, onCancelDelete, onConfirmDelete, setCollection } = this
-    const inputDisabled = text.length < 5 || text.length > 100 ? true : false
+    const inputDisabled = text.length < 5 ? true : false
 
     return (
       <div className='form'>

@@ -19,7 +19,7 @@ export default class TypeAhead extends Component {
   }
 
   componentWillReceiveProps = nextProps => {
-    if (!nextProps.check.length) this.setState({ selected: [] })
+    if (!nextProps.check.length) this.setState({ selected: [], input: '' })
   }
   
   onChange = () => ev => {
@@ -40,8 +40,8 @@ export default class TypeAhead extends Component {
       }
     } else {
       this.setState({ input: value })
-      this.props.onUpdate([ ...selected, value ])
     }
+    this.props.onUpdate([ ...selected, value ])
   }
 
   onSelect = name => () => {
@@ -70,11 +70,9 @@ export default class TypeAhead extends Component {
   onFocus = () => { this.input.focus() }
 
   render = () => {
-    const { input, selected, selectionsDisplayed, focused } = this.state
+    const { input, selected, selectionsDisplayed } = this.state
     let { selections } = this.state
     const { onSelect, onChange, onDeselect, toggleDropdown, clear, onFocus } = this
-
-    console.log(this.state);
 
     selections = selections
       .filter(select => selected.indexOf(select) == -1)
