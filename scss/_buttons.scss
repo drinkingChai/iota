@@ -37,3 +37,8 @@
     width: 100%;
   }
 }
+
+.btn-group-horiz {
+  display: flex;
+  & > * { margin-right: 5px; }
+}

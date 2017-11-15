@@ -19,7 +19,7 @@ export default class TypeAhead extends Component {
   }
 
   componentWillReceiveProps = nextProps => {
-    if (!nextProps.check.length) this.setState({ selected: [], input: '' })
+    if (nextProps.check && !nextProps.check.length) this.setState({ selected: [], input: '' })
     this.setState({ selections: nextProps.selections || [] })
   }
   
