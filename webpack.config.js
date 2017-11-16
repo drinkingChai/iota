@@ -13,6 +13,7 @@ module.exports = {
         test: /jsx?$/,
         exclude: /node_modules/,
         query: {
+          plugins: ['transform-decorators-legacy'],
           presets: [ 'env', 'react', 'stage-2' ]
         }
       }
