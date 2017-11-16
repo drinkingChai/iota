@@ -2,13 +2,15 @@ import React, { Component } from 'react'
 import { Switch, Route, Link } from 'react-router-dom'
 import TypeAheadTest from './TypeAheadTest'
 import DraggableTest from './DraggableTest'
+import HOCTest from './HOCTest'
 
 export default class TestArea extends Component {
   render = () => {
     const pathname = this.props.location.pathname
     const paths = [
       { link: '/test/typeahead', label: 'TypeAhead' },
-      { link: '/test/draggable', label: 'Draggable' }
+      { link: '/test/draggable', label: 'Draggable' },
+      { link: '/test/hoctest', label: 'HOCTest' }
     ]
 
     return (
@@ -26,6 +28,7 @@ export default class TestArea extends Component {
         <Switch>
           <Route exact path='/test/typeahead' component={ TypeAheadTest } />
           <Route exact path='/test/draggable' component={ DraggableTest } />
+          <Route exact path='/test/hoctest' component={ HOCTest } />
         </Switch>
       </div>
     )
