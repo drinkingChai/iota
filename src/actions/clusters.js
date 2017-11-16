@@ -21,8 +21,8 @@ export const linkThoughts = thoughts => dispatch =>
     .then(() => dispatch(fetchClusters()))
 
 // re-order thoughts
-export const move = (id, thought, behind, direction) => dispatch => {
-  const order = { thought: thought.id, behind: behind && behind.id || null, direction }
+export const move = (id, movingId, behindId) => dispatch => {
+  const order = { movingId, behindId }
   return axios.put(`/api/clusters/${id}/moving`, order)
     .then(() => dispatch(fetchThoughts()))
     .then(() => dispatch(fetchClusters()))

@@ -67,8 +67,8 @@ const mapDispatch = (dispatch, ownProps) => ({
   update(info) {
     dispatch(updateCluster(ownProps.match.params.id, info))
   },
-  moveThought(thought, behind, direction) {
-    dispatch(move(ownProps.match.params.id, thought, behind, direction))
+  moveThought(movingId, behindId) {
+    dispatch(move(ownProps.match.params.id, movingId, behindId))
   }
 })
 

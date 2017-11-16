@@ -8,7 +8,7 @@ export default function DraggableCard ({ thought, clickHandler }) {
   if (!thought) return <div></div>
 
   return (
-    <Draggable draggableId={ thought.id } type="PERSON">
+    <Draggable draggableId={ thought.id } type="THOUGHTCARD">
       {(provided, snapshot) => (
         <div>
           <div

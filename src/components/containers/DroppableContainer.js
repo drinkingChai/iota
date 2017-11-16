@@ -24,6 +24,9 @@ export default class DroppableContainer extends Component {
   onDragEnd = (result) => {
     if (!result.destination) return
 
+    let sourceItemId = this.state.items[result.source.index].props.thought.id
+    let destItemId = this.state.items[result.destination.index].props.thought.id
+
     const items = reorder(
       this.state.items,
       result.source.index,
@@ -33,6 +36,8 @@ export default class DroppableContainer extends Component {
     this.setState({
       items
     })
+
+    this.props.onDrop(sourceItemId, !result.destination.index ? null : destItemId)
   }
 
   render = () => {
@@ -40,7 +45,7 @@ export default class DroppableContainer extends Component {
       <DragDropContext
         onDragEnd={ this.onDragEnd }>
 
-        <Droppable droppableId="droppable-1" type="PERSON">
+        <Droppable droppableId="droppable-1" type="THOUGHTCARD">
           {(provided, snapshot) => (
             <div ref={provided.innerRef}>
               { this.state.items.map(item => item) }

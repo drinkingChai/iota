@@ -17,15 +17,13 @@ router.post('/', verifyToken, (req, res, next) => {
 })
 
 router.put('/:id/moving', (req, res, next) => {
-  const { behind, thought, direction } = req.body
-  !behind && direction == 'down' ?
-    res.sendStatus(200) :
-  !behind ?
-    Cluster.makeHead(req.params.id, thought)
+  const { movingId, behindId } = req.body
+  !behindId ?
+    Cluster.makeHead(req.params.id, movingId)
       .then(() => res.sendStatus(200))
       .catch(next)
     :
-    Cluster.moveBehind(req.params.id, behind, thought)
+    Cluster.moveBehind(req.params.id, behindId, movingId)
       .then(() => res.sendStatus(200))
       .catch(next)
 })
