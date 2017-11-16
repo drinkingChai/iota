@@ -5,6 +5,7 @@ import { formatDate } from '../helpers'
 import { unlinkThought, updateCluster, move } from '../store'
 import Button from './reusables/Button'
 import DraggableCard from './cards/DraggableCard'
+import DroppableContainer from './containers/DroppableContainer'
 import NameCluster from './cards/NameCluster'
 
 function ClusterThoughts ({ cluster, unlink, update, moveThought }) {
@@ -18,15 +19,16 @@ function ClusterThoughts ({ cluster, unlink, update, moveThought }) {
       <NameCluster
         cluster={ cluster }
         onClick={ (info) => update(info) }/>
-      
-      <div className='thought-list linked'>
-        { cluster.thoughts.map((thought, i) => (
+
+      <DroppableContainer
+        items={ cluster.thoughts.map((thought, i) => (
           <DraggableCard
             clickHandler={ () => unlink(thought, thoughts) }
             key={ thought.id }
             thought={ thought } />
-        ))}
-      </div>
+          ))}
+        onDrop={ moveThought }
+      />
 
       <div className='cluster-categories'>
         <h3>Categories in this cluster</h3>

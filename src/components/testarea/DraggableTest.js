@@ -10,9 +10,27 @@ const reorder = (list, startIndex, endIndex) => {
 };
 
 
+const DraggableItem = ({ id, content }) => (
+  <Draggable draggableId={ id } type="PERSON">
+    {(provided, snapshot) => (
+      <div>
+        <div
+          ref={provided.innerRef}
+          style={provided.draggableStyle}
+          {...provided.dragHandleProps}
+        >
+          <h4>{ content }</h4>
+        </div>
+        {provided.placeholder}
+      </div>
+    )}
+  </Draggable>
+)
+
+
 export default class DraggableTest extends Component {
   state = { items: [
-    { id: 1, content: 'what' },
+    { id: 1, content: <div>Craytimes</div> },
     { id: 2, content: 'the hell is this' }
   ]}
 
@@ -42,20 +60,7 @@ export default class DraggableTest extends Component {
               ref={provided.innerRef}
               style={{ backgroundColor: snapshot.isDraggingOver ? 'blue' : 'grey' }}
             >
-              { this.state.items.map(item => (<Draggable draggableId={ item.id } key={ item.id } type="PERSON">
-                {(provided, snapshot) => (
-                  <div>
-                    <div
-                      ref={provided.innerRef}
-                      style={provided.draggableStyle}
-                      {...provided.dragHandleProps}
-                    >
-                      <h4>{ item.content }</h4>
-                    </div>
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Draggable>))}
+              { this.state.items.map(item => <DraggableItem id={ item.id } content={ item.content } key={ item.id }/>) }
               {provided.placeholder}
             </div>
           )}
