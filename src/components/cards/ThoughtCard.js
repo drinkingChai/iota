@@ -2,23 +2,11 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { formatDate } from '../../helpers'
 
-export default function ThoughtCard ({ thought, clickHandler, selectedPool }) {
-  // make this better by having it take a class instead of selectedPool
-  // const ThoughtCard = ({ thought, className, clickHandler })
-  // apply className from parent based on selected
+export default function ThoughtCard ({ thought }) {
   if (!thought) return <div></div>
 
   return (
-    <div
-      key={ thought.id } 
-      onClick={ clickHandler }
-      className={ `thought ${selectedPool.find(item => item.type == 'thought' && item.id == thought.id) ? 'selected' : ''}` }>
-
-      { thought.clusterId ?
-        <Link
-          to={ `/clusters/${thought.clusterId}` }
-          className='cluster-link'>cluster</Link> : null }
-
+    <div>
       <div>
         <p>{ thought.text }</p>
         <div className='categories'>

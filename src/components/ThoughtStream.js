@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { formatDate } from '../helpers'
 import { linkThoughts } from '../store'
 import Button from './reusables/Button'
-import ThoughtCard from './cards/ThoughtCard'
+import ClusterableCard from './cards/ClusterableCard'
 import ClusterCard from './cards/ClusterCard'
 
 
@@ -53,8 +53,6 @@ class ThoughtStream extends Component {
 
     let clusterRendered = []
 
-    console.log(this.state);
-
     return (
       <div className='thought-stream'>
         <h3>Thought stream</h3>
@@ -86,7 +84,7 @@ class ThoughtStream extends Component {
               cluster={ clusters.find(c => c.cluster.id == clusterId) }
               clickHandler={ () => onToggleSelect('cluster', clusterId) }
               selectedPool={ selected } /> ] :
-            [ ...cards, <ThoughtCard
+            [ ...cards, <ClusterableCard
               key={ thought.id }
               thought={ thought }
               clickHandler={ () => onToggleSelect('thought', thought.id) }

@@ -6,11 +6,12 @@ export default class NameCluster extends Component {
   state = { name: '' }
 
   componentDidMount = () => {
-    this.setState(this.props.cluster)
+    // fix this cluster.cluster!
+    this.setState(this.props.cluster.cluster)
   }
 
   componentWillReceiveProps = nextProps => {
-    this.setState(nextProps.cluster)
+    this.setState(nextProps.cluster.cluster)
   }
 
   onChange = name => ev => {
