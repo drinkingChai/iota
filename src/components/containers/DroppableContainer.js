@@ -24,8 +24,10 @@ export default class DroppableContainer extends Component {
   onDragEnd = (result) => {
     if (!result.destination) return
 
-    let sourceItemId = this.state.items[result.source.index].props.thought.id
-    let destItemId = this.state.items[result.destination.index].props.thought.id
+    const sourceIdx = result.source.index,
+      destIdx = result.destination.index,
+      sourceItemId = this.state.items[sourceIdx].props.thought.id,
+      destItemId = this.state.items[sourceIdx > destIdx && destIdx != 0 ? destIdx - 1 : destIdx].props.thought.id
 
     const items = reorder(
       this.state.items,
