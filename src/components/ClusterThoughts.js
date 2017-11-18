@@ -12,7 +12,7 @@ function ClusterThoughts ({ cluster, unlink, update, moveThought }) {
   if (!cluster) return <div></div>
 
   return (
-    <div>
+    <div className='form'>
       <h3>A cluster of thoughts</h3>
       {/* name your cluster here */}
 

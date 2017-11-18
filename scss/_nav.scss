@@ -46,6 +46,7 @@ nav {
 
   & .burger-container-active {
     & .im { padding-top: 2px; }
+    & .x-container { background-color: transparent; }
     & .im.im-x-mark { color: $black; }
   }
 

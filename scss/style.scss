@@ -13,8 +13,6 @@ html {
   font-family: 'Lato', sans-serif;
 }
 
-//body { background-color: lighten($navy, 5%); }
-//body { background-color: darken(#526187, 10%); }
 body { 
   background-color: $white;
   line-height: 1.5em;
@@ -55,15 +53,8 @@ svg { z-index: -1; }
 
 main {
   padding: 65px 30px;
-  // display: flex;
-  // flex-direction: row;
   background-color: #E3E6F5;
   min-height: 100vh;
-
-  & > * {
-    // padding-bottom: 30px;
-    // width: 100%;
-  }
 }
 
 .welcome {

@@ -18,9 +18,8 @@
   border: solid 2px transparent;
   transition: border .5s;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  // z-index: 10;
 
-  &.selected { border-color: $teal; }
+  &.selected { border-color: lighten(#504679, 10%); }
   & * { color: $black; }
   & p { padding: 10px 0; }
 
@@ -37,9 +36,7 @@
     top: -9px;
     left: 0.25%;
     right: 0.25%;
-    // background-color: lighten($gray, 20%);
     background-color: #6C91C2;
-    // z-index: -1;
     transition: background-color 0.5s;
   }
   &.thought-cluster:before {
@@ -50,17 +47,15 @@
     top: -14px;
     left: 1%;
     right: 1%;
-    // background-color: lighten($gray, 15%);
     background-color: lighten(#6C91C2, 10%);
-    // z-index: -1;
     transition: background-color 0.5s;
   }
 
   &.thought-cluster.selected:after {
-    background-color: darken($teal, 20%);
+    background-color: lighten(#504679, 10%);
   }
   &.thought-cluster.selected:before {
-    background-color: darken($teal, 25%);
+    background-color: lighten(#504679, 20%);
   }
 
   &.thought-linked {
@@ -118,11 +113,17 @@
 .subheader {
   display: grid;
   grid-auto-flow: column;
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
 
   & * { color: darken($gray, 20%); }
 
-  & > div {
+  & > span:nth-child(2) {
+    display: grid;
+    grid-auto-flow: column;
+    align-items: center;
+    justify-items: center;
+  }
+  & > span:last-child {
     display: grid;
     grid-auto-flow: column;
     align-items: center;

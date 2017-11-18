@@ -26,6 +26,7 @@ export default class NameCluster extends Component {
     return (
       <div className='form'>
         <Textbox
+          className='cluster-name'
           label='Cluster name'
           value={ this.state.name || '' }
           onChange={ this.onChange('name') }

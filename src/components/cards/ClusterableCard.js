@@ -12,11 +12,6 @@ export default function ClusterableCard ({ thought, clickHandler, selectedPool }
       onClick={ clickHandler }
       className={ `thought ${selectedPool.find(item => item.type == 'thought' && item.id == thought.id) ? 'selected' : ''}` }>
 
-      { thought.clusterId ?
-        <Link
-          to={ `/clusters/${thought.clusterId}` }
-          className='cluster-link'>cluster</Link> : null }
-
       <ThoughtCard thought={ thought }/>
     </div>
   )
