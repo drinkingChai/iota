@@ -26,7 +26,7 @@ class Jot extends Component {
     const inputDisabled = text.length < 5 ? true : false
 
     return (
-      <div className='form'>
+      <div className='form jot-form'>
         { submittedDisplayed ? <Loading message='Your jot has been recorded.' /> : null }
 
         <h3>Jot it down</h3>

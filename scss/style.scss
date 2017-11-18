@@ -43,6 +43,7 @@ h3 { font-size: 1.4em; line-height: 2em; }
 
 // pages
 @import '_nav.scss';
+@import '_jot.scss';
 @import '_thoughts.scss';
 @import '_welcome.scss';
 @import '_messages.scss';
@@ -54,12 +55,14 @@ svg { z-index: -1; }
 
 main {
   padding: 65px 30px;
-  display: grid;
-  // align-items: center;
-  height: 100%;
+  // display: flex;
+  // flex-direction: row;
+  background-color: #E3E6F5;
+  min-height: 100vh;
 
   & > * {
-    padding-bottom: 30px;
+    // padding-bottom: 30px;
+    // width: 100%;
   }
 }
 

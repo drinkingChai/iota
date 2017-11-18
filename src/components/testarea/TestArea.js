@@ -3,6 +3,7 @@ import { Switch, Route, Link } from 'react-router-dom'
 import TypeAheadTest from './TypeAheadTest'
 import DraggableTest from './DraggableTest'
 import HOCTest from './HOCTest'
+import TestTextbox from './TestTextbox'
 
 export default class TestArea extends Component {
   render = () => {
@@ -10,7 +11,8 @@ export default class TestArea extends Component {
     const paths = [
       { link: '/test/typeahead', label: 'TypeAhead' },
       { link: '/test/draggable', label: 'Draggable' },
-      { link: '/test/hoctest', label: 'HOCTest' }
+      { link: '/test/hoctest', label: 'HOCTest' },
+      { link: '/test/textbox', label: 'Test Textbox' },
     ]
 
     return (
@@ -29,6 +31,7 @@ export default class TestArea extends Component {
           <Route exact path='/test/typeahead' component={ TypeAheadTest } />
           <Route exact path='/test/draggable' component={ DraggableTest } />
           <Route exact path='/test/hoctest' component={ HOCTest } />
+          <Route exact path='/test/textbox' component={ TestTextbox } />
         </Switch>
       </div>
     )

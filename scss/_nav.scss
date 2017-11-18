@@ -71,7 +71,7 @@ nav {
   position: fixed;
   height: 3em;
   width: 100%;
-  background-color: $white;
+  background-color: #D65780;
   z-index: 9;
   font-family: 'Sofia', cursive;
 
@@ -82,12 +82,10 @@ nav {
 
   padding: 15px 30px 0 30px;
 
-  border-bottom: solid 1px #d3dce6;
-
-  // display: flex;
-  // align-content: space-between;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+
+  & * { color: $white; }
 
   & > span {
     text-align: center;

@@ -1,11 +1,14 @@
 .btn {
   font-size: 16px;
   padding: 13px;
-  background-color: $black;
-  color: $white;
   text-align: center;
   -webkit-appearance: none;
   border-radius: 0;
+  background-color: #373F47;
+  color: $white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  cursor: pointer;
+  transition: all 0.25s;
 
 
   &-red {
@@ -27,6 +30,12 @@
     background-color: transparent;
     color: $black;
   }
+
+  &-disabled {
+    background-color: #CDD2ED;
+    color: darken($gray, 10%);
+    cursor: not-allowed;
+  }
 }
 
 .btn-group {
@@ -41,4 +50,8 @@
 .btn-group-horiz {
   display: flex;
   & > * { margin-right: 5px; }
+}
+
+button {
+  border-width: 0;
 }

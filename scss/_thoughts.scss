@@ -3,9 +3,7 @@
   grid-gap: 20px;
   padding-top: 10px;
 
-  &.linked {
-    grid-gap: 0;
-  }
+  &.linked { grid-gap: 0; }
 }
 
 .thought {
@@ -17,14 +15,14 @@
   position: relative;
 
   padding: 10px;
-  border: solid 2px #d3dce6;
+  border: solid 2px transparent;
   transition: border .5s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  // z-index: 10;
 
   &.selected { border-color: $teal; }
   & * { color: $black; }
-  & p {
-    padding: 10px 0;
-  }
+  & p { padding: 10px 0; }
 
   &.thought-cluster {
     padding-top: 25px;
@@ -34,13 +32,14 @@
   &.thought-cluster:after {
     content: '';
     width: 99.5%;
-    height: 10px;
+    height: 7px;
     position: absolute;
-    top: -7px;
+    top: -9px;
     left: 0.25%;
     right: 0.25%;
-    background-color: lighten($gray, 20%);
-    z-index: -1;
+    // background-color: lighten($gray, 20%);
+    background-color: #6C91C2;
+    // z-index: -1;
     transition: background-color 0.5s;
   }
   &.thought-cluster:before {
@@ -48,11 +47,12 @@
     width: 98%;
     height: 10px;
     position: absolute;
-    top: -12px;
+    top: -14px;
     left: 1%;
     right: 1%;
-    background-color: lighten($gray, 15%);
-    z-index: -1;
+    // background-color: lighten($gray, 15%);
+    background-color: lighten(#6C91C2, 10%);
+    // z-index: -1;
     transition: background-color 0.5s;
   }
 

@@ -74,6 +74,7 @@ export default class TypeAhead extends Component {
   render = () => {
     const { input, selected, selectionsDisplayed } = this.state
     let { selections } = this.state
+    let { label } = this.props
     const { onSelect, onChange, onDeselect, toggleDropdown, clear, onFocus } = this
 
     selections = selections
@@ -81,33 +82,36 @@ export default class TypeAhead extends Component {
       .filter(select => select.match(new RegExp(input, 'gi')))
 
     return (
-      <div className='typeahead' onClick={ onFocus }>
-        <div className='main'>
-          <span className='selected'>
-            {/* added items go here */}
-            { selected.map(select => <Label key={ select } text={ select } onX={ onDeselect(select) } />) }
-            <input
-              ref={ (input) => { this.input = input } }
-              value={ input }
-              onChange={ onChange() }
-              size={ input.length ? input.length : 1 } />
-          </span>
-
-          <span className='buttons'>
-            <span onClick={ clear }><i className="im im-x-mark" style={ { color: selected.length ? 'inherit' : 'transparent' } }></i></span>
-            <span onClick={ toggleDropdown }>
-              { selectionsDisplayed ? <i className="im im-care-up"></i> : <i className="im im-care-down"></i> }
+      <div className='typeahead-container'>
+        { label ? <label>{ label }</label> : null }
+        <div className='typeahead' onClick={ onFocus }>
+          <div className='main'>
+            <span className='selected'>
+              {/* added items go here */}
+              { selected.map(select => <Label key={ select } text={ select } onX={ onDeselect(select) } />) }
+              <input
+                ref={ (input) => { this.input = input } }
+                value={ input }
+                onChange={ onChange() }
+                size={ input.length ? input.length : 1 } />
             </span>
-          </span>
-        </div>
 
-        { input.length || selectionsDisplayed ?
-          <div className='selections'>
-          { /* selections here */}
-          { selections.map(select => <div key={ select } onClick={ onSelect(select) }>{ select }</div>) }
-          </div> : null
-        }
-        
+            <span className='buttons'>
+              <span onClick={ clear }><i className="im im-x-mark" style={ { color: selected.length ? 'inherit' : 'transparent' } }></i></span>
+              <span onClick={ toggleDropdown }>
+                { selectionsDisplayed ? <i className="im im-care-up"></i> : <i className="im im-care-down"></i> }
+              </span>
+            </span>
+          </div>
+
+          { input.length || selectionsDisplayed ?
+            <div className='selections'>
+            { /* selections here */}
+            { selections.map(select => <div key={ select } onClick={ onSelect(select) }>{ select }</div>) }
+            </div> : null
+          }
+          
+        </div>
       </div>
     )
   }
