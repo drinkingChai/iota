@@ -79,13 +79,14 @@ class Profile extends Component {
           <Button
             label='Update password'
             onClick={ this.passwordChange } />
+        </div>
 
-          <Link
+        <br/>
+        <Link
             to='/login'
             className='btn btn-red'
             style={{ width: '50%' }}
             onClick={ this.props.signOut }>Sign out</Link>
-        </div>
       </div>
     )
   }
