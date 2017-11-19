@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
-import { Route } from 'react-router-dom'
+import { Route, withRouter } from 'react-router-dom'
 import store, { loadUserData, fetchCategories } from '../store'
+import { connect } from 'react-redux'
 
 import Nav from './Nav'
 import Routes from './Routes'
+import Login from './Login'
 
-export default class Root extends Component {
+class Root extends Component {
   componentDidMount = () => {
     store.dispatch(fetchCategories())
     if (localStorage.jotKey) store.dispatch(loadUserData(localStorage.jotKey))
@@ -17,9 +19,14 @@ export default class Root extends Component {
         <Nav />
 
         <main>
-          <Routes />
+         { this.props.isAuthenticated ?
+           <Routes /> :
+           <Login /> }
         </main>
       </div>
     )
   }
 }
+
+const mapState = ({ currentUser }) => ({ isAuthenticated: currentUser.isAuthenticated })
+export default withRouter(connect(mapState)(Root))

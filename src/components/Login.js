@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { signIn } from '../store'
 import Textbox from './reusables/Textbox'
@@ -31,6 +31,7 @@ class UserLogin extends Component {
         <h3>Login</h3>
         <div className='form'>
           <Textbox
+            type='email'
             label='E-mail'
             value={ email }
             onChange={ onChange('email') } />
@@ -43,12 +44,14 @@ class UserLogin extends Component {
             <Button
               label='Login'
               onClick={ onSubmit } />
+
+            <h3>Login with:</h3>
             <div className='btn-group-horiz'>
               <Button
-                label='Google Login'
+                label='Google'
                 className='btn btn-red' />
               <Button
-                label='Facebook Login'
+                label='Facebook'
                 className='btn btn-blue' />
             </div>
           </div>
@@ -67,5 +70,4 @@ class UserLogin extends Component {
 }
 
 const mapDispatch = { signIn }
-
-export default connect(null, mapDispatch)(UserLogin)
+export default withRouter(connect(null, mapDispatch)(UserLogin))
