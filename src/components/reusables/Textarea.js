@@ -6,8 +6,11 @@ export default class Textarea extends Component {
     focused: false,
     style: {
       span: {
-        display: 'grid',
-        gridGap: '10px'
+        display: 'flex',
+        flexDirection: 'column'
+      },
+      label: {
+        marginBottom: '10px'
       }
     }
   }
@@ -50,8 +53,9 @@ export default class Textarea extends Component {
 
     return (
       <span style={ style.span }>
-        { label ? <label>{ label }</label> : null }
+        { label ? <label style={ style.label }>{ label }</label> : null }
         <textarea
+          rows='15'
           className={ className || '' }
           autoFocus={ autoFocus }
           disabled={ disabled }

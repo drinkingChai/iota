@@ -13,8 +13,6 @@ html {
   font-family: 'Lato', sans-serif;
 }
 
-//body { background-color: lighten($navy, 5%); }
-//body { background-color: darken(#526187, 10%); }
 body { 
   background-color: $white;
   line-height: 1.5em;
@@ -43,6 +41,7 @@ h3 { font-size: 1.4em; line-height: 2em; }
 
 // pages
 @import '_nav.scss';
+@import '_jot.scss';
 @import '_thoughts.scss';
 @import '_welcome.scss';
 @import '_messages.scss';
@@ -53,14 +52,9 @@ h3 { font-size: 1.4em; line-height: 2em; }
 svg { z-index: -1; }
 
 main {
-  padding: 65px 20px;
-  display: grid;
-  align-items: center;
-  height: 100%;
-
-  & > * {
-    padding-bottom: 30px;
-  }
+  padding: 65px 30px;
+  background-color: #E3E6F5;
+  min-height: 100vh;
 }
 
 .welcome {

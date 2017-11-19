@@ -3,9 +3,7 @@
   grid-gap: 20px;
   padding-top: 10px;
 
-  &.linked {
-    grid-gap: 0;
-  }
+  &.linked { grid-gap: 0; }
 }
 
 .thought {
@@ -17,30 +15,27 @@
   position: relative;
 
   padding: 10px;
-  border: solid 2px #d3dce6;
+  border: solid 2px transparent;
   transition: border .5s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 
-  &.selected { border-color: $teal; }
+  &.selected { border-color: lighten(#504679, 10%); }
   & * { color: $black; }
-  & p {
-    padding: 10px 0;
-  }
+  & p { padding: 10px 0; }
 
   &.thought-cluster {
-    padding-top: 25px;
     margin-top: 16px;
   }
 
   &.thought-cluster:after {
     content: '';
     width: 99.5%;
-    height: 10px;
+    height: 7px;
     position: absolute;
-    top: -7px;
+    top: -9px;
     left: 0.25%;
     right: 0.25%;
-    background-color: lighten($gray, 20%);
-    z-index: -1;
+    background-color: #6C91C2;
     transition: background-color 0.5s;
   }
   &.thought-cluster:before {
@@ -48,34 +43,22 @@
     width: 98%;
     height: 10px;
     position: absolute;
-    top: -12px;
+    top: -14px;
     left: 1%;
     right: 1%;
-    background-color: lighten($gray, 15%);
-    z-index: -1;
+    background-color: lighten(#6C91C2, 10%);
     transition: background-color 0.5s;
   }
 
   &.thought-cluster.selected:after {
-    background-color: darken($teal, 20%);
+    background-color: lighten(#504679, 10%);
   }
   &.thought-cluster.selected:before {
-    background-color: darken($teal, 25%);
+    background-color: lighten(#504679, 20%);
   }
 
   &.thought-linked {
     padding-top: 25px;
-    border-radius: 0;
-    border-color: transparent;
-
-    &:first-of-type {
-      border-top-left-radius: 3px;
-      border-top-right-radius: 3px;
-    }
-    &:last-of-type {
-      border-bottom-left-radius: 3px;
-      border-bottom-right-radius: 3px;
-    }
   }
 }
 
@@ -118,11 +101,17 @@
 .subheader {
   display: grid;
   grid-auto-flow: column;
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
 
   & * { color: darken($gray, 20%); }
 
-  & > div {
+  & > span:nth-child(2) {
+    display: grid;
+    grid-auto-flow: column;
+    align-items: center;
+    justify-items: center;
+  }
+  & > span:last-child {
     display: grid;
     grid-auto-flow: column;
     align-items: center;
@@ -130,7 +119,7 @@
   }
 
   & i {
-    font-size: 12px;
+    font-size: 0.9em;
     color: darken($gray, 30%);
   }
 }
@@ -142,17 +131,22 @@
 }
 
 .cluster-link {
-  font-size: 12px;
-  background-color: lighten($purple, 50%);
-  color: $purple;
+  font-size: 0.9em;
+  background-color: #504679;
+  border-radius: 5px;
   position: absolute;
   right: 5px;
   top: 5px;
-  padding: 2px 5px;
+  padding: 3px 5px;
 
-  &.unlink i {
-    font-size: 12px;
+  display: flex;
+  & > * {
+    margin-right: 3px;
+    align-self: center;
   }
+
+  &, & * { color: $white; }
+  &.unlink i { font-size: 1em; }
 }
 
 .thought-stream {

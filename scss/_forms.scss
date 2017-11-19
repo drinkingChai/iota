@@ -1,21 +1,11 @@
 form, .form {
   display: grid;
   grid-gap: 20px;
-  margin-bottom: 30px;
-  //justify-items: center;
 
   * {
     -webkit-appearance: none;
     border-radius: 0;
   }
-}
-
-button {
-  border-width: 0;
-  background-color: transparent;
-}
-button:disabled {
-  color: $gray;
 }
 
 textarea, input, select, option {
@@ -26,10 +16,9 @@ textarea, input, select, option {
 
 textarea {
   border-width: 0;
-  height: 30vh;
   padding: 15px;
   resize: none;
-  border: solid 1px $nicegray;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 
   &.red { color: $red; }
 }
@@ -37,16 +26,13 @@ textarea {
 input {
   width: 100%;
   padding: 10px;
-  // border: solid 1px lighten($blue, 30%);
-  border: solid 1px lighten($nicegray, 30%);
-  transition: border-color 0.5s;
-
-  &:focus {
-    border-color: lighten($blue, 30%);
-  }
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  border: none;
+  transition: all 0.5s;
 }
 
 textarea, input { font-size: 20px; }
+input.cluster-name { font-size: 1em; }
 textarea:focus, input:focus, button:focus, select:focus {
   outline: none;
 }
@@ -62,11 +48,13 @@ textarea:focus, input:focus, button:focus, select:focus {
     border-width: 0;
     background-color: inherit;
     border-radius: 0;
+    box-shadow: none;
   }
   
   & i {
     padding-right: 10px;
     color: $nicegray;
+    text-align: right;
   }
 }
 
@@ -76,6 +64,7 @@ span.select {
   display: inline-block;
   position: relative;
   vertical-align: middle;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   &:before, &:after {
     content: "";
     position: absolute;
@@ -96,7 +85,7 @@ select {
   color: $black;
   cursor: pointer;
   // Sass specific RGBA mixin
-  border: 1px solid $black;
+  border: none;
   width: 100%;
   padding: 0.5em;
   padding-right: 2em;

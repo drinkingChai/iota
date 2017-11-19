@@ -1,20 +1,38 @@
 import React, { Component } from 'react'
-import TypeAhead from '../cards/TypeAhead'
+import { Switch, Route, Link } from 'react-router-dom'
+import TypeAheadTest from './TypeAheadTest'
+import DraggableTest from './DraggableTest'
+import HOCTest from './HOCTest'
+import TestTextbox from './TestTextbox'
 
 export default class TestArea extends Component {
   render = () => {
-    let items = [
-      'item 1',
-      'item 2',
-      'item 3'
+    const pathname = this.props.location.pathname
+    const paths = [
+      { link: '/test/typeahead', label: 'TypeAhead' },
+      { link: '/test/draggable', label: 'Draggable' },
+      { link: '/test/hoctest', label: 'HOCTest' },
+      { link: '/test/textbox', label: 'Test Textbox' },
     ]
 
     return (
       <div>
         <h3>Test Area</h3>
 
-        <TypeAhead onUpdate={ () => {} }/>
-        Putting some stuff here to test
+        <div className='btn-group-horiz'>
+          { paths.map((path, i) =>
+            <Link
+              key={ i }
+              to={ path.link }
+              className={ path.link == pathname ? 'btn btn-blue' : 'btn' }>{ path.label }</Link>) }
+        </div>
+
+        <Switch>
+          <Route exact path='/test/typeahead' component={ TypeAheadTest } />
+          <Route exact path='/test/draggable' component={ DraggableTest } />
+          <Route exact path='/test/hoctest' component={ HOCTest } />
+          <Route exact path='/test/textbox' component={ TestTextbox } />
+        </Switch>
       </div>
     )
   }

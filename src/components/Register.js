@@ -37,11 +37,14 @@ class Register extends Component {
             label='Password'
             value={ password }
             onChange={ onChange('password') } />  
-          <Button
-            label='Register'
-            onClick={ onSubmit } />
+          <div className='btn-group'>
+            <Button
+              label='Register'
+              onClick={ onSubmit } />
+          </div>
         </div>
 
+        <br/>
         <div className='btn-group'>
           <h4>Already have an account?</h4>
           <Link to='/login' className='btn'>Login</Link>

@@ -15,6 +15,7 @@ export default class Button extends Component {
     const {
       label,
       disabled,
+      disabledStyle,
       className } = this.props
 
     const { styles } = this.state
@@ -25,7 +26,7 @@ export default class Button extends Component {
         <button
           disabled={ disabled }
           style={ styles.button }
-          className={ className || 'btn' }
+          className={ disabled ? disabledStyle ? disabledStyle : 'btn btn-disabled' : className || 'btn' }
           onClick={ onClick }>{ label }</button>
       </span>
     )

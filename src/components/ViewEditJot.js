@@ -16,6 +16,8 @@ class ViewEditJot extends Component {
   }
 
   componentDidMount = () => {
+    window.scrollTo(0, 0)
+
     if (!this.props.thought) return
     const { text } = this.props.thought
     this.setState({ text })
@@ -54,6 +56,7 @@ class ViewEditJot extends Component {
   }
 
   setCollection = (collection) => {
+    console.log(collection)
     this.setState({ newcategories: collection })
   }
 
@@ -84,7 +87,7 @@ class ViewEditJot extends Component {
     // console.log(categories)
 
     return (
-      <div className='form'>
+      <div className='form jot-form'>
         { updatedDisplayed ? <Loading message='Your jot has been updated.' /> : null }
         { waitDisplayed ? <Loading message='Loading...' /> : null }
         { delConfDisplayed ?
@@ -100,32 +103,33 @@ class ViewEditJot extends Component {
           value={ text }
           onChange={ onChange('text') }
           className={ inputDisabled ? 'red' : null } />
+        <Button
+          label='Save'
+          disabled={ inputDisabled }
+          onClick={ onSubmit } />
 
         <label htmlFor='categories'>Categories</label>
         <div className='categories'>
-          { thought && thought.categories && thought.categories.map(cat => (
-              <Button
-                key={ cat.id }
-                label={ <span>{ cat.label } <i className='im im-x-mark'></i></span> }
-                onClick={ onRemoveCategory(cat) }
-                className='category remove-category' /> )) }
+        { thought && thought.categories && thought.categories.map(cat => (
+          <Button
+            key={ cat.id }
+            label={ <span>{ cat.label } <i className='im im-x-mark'></i></span> }
+            onClick={ onRemoveCategory(cat) }
+            className='category remove-category' /> )) }
         </div>
 
-        <label htmlFor='newcategory'>Add categories</label>
         <TypeAhead
+          label='Add categories'
           selections={ categories }
           check={ newcategories }
           onUpdate={ setCollection } />
+
         <div className='btn-group'>
           <Button
-            label='Add category'
+            label='Add categories'
             className='btn btn-blue'
             onClick={ onAddCategory } />
-
-          <Button
-            label='Update'
-            disabled={ inputDisabled }
-            onClick={ onSubmit } />
+          
           <Button
             label='Delete'
             className='btn btn-red'
