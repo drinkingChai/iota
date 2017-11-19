@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import axios from 'axios'
-import { fetchThoughts, fetchClusters } from './index'
+import { bulkFetch } from './index'
 
 export const SET_CURRENT_USER = 'SET_CURRENT_USER'
 export const RESET_APP = 'RESET_APP'
@@ -32,10 +32,7 @@ export const loadUserData = token => dispatch => {
   dispatch(setCurrentUser(jwt.decode(token)))
 
   // async op
-  return Promise.all([
-    dispatch(fetchThoughts()),
-    dispatch(fetchClusters())
-  ])
+  dispatch(bulkFetch())
 }
 
 export const updatePassword = password => dispatch =>

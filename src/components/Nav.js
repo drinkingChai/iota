@@ -7,7 +7,7 @@ class Nav extends Component {
   state = { menuActive: false }
 
   displayMenu = () => {
-    this.setState({ menuActive: !this.state.menuActive })
+    // this.setState({ menuActive: !this.state.menuActive })
   }
 
   logOut = () => {
@@ -23,8 +23,11 @@ class Nav extends Component {
     return (
       <div>
         <div className='top-bar'>
-          <i className="im im-book"></i> <span>jot</span>
-          <i onClick={ displayMenu } className="im im-menu"></i>
+          {/*<i className="im im-book"></i>
+          <span>jot</span>
+          <i onClick={ displayMenu } className="im im-menu"></i>*/}
+          <span></span>
+          <span>jot</span>
         </div>
         
         <nav className={ menuActive ? 'nav-visible' : 'nav-hidden' }>
@@ -54,6 +57,14 @@ class Nav extends Component {
             </div>
           </div>
         </nav>
+
+        { isAuthenticated ?
+          <div className='bottom-bar'>
+            <Link to='/jot' onClick={ displayMenu }><i className="im im-pencil"></i></Link>
+            <Link to='/thoughts' onClick={ displayMenu }><i className="im im-book"></i></Link>
+            <Link to='/stats' onClick={ displayMenu }><i className="im im-bar-chart"></i></Link>
+            <Link to='/profile' onClick={ displayMenu }><i className="im im-user-settings"></i></Link>
+          </div> : null }
       </div>
     )
   }

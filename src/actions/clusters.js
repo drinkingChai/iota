@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { fetchThoughts } from './thoughts'
+import { bulkFetch } from './index'
 
 export const GET_CLUSTERS = 'GET_CLUSTERS'
 
@@ -12,18 +12,15 @@ export const fetchClusters = () => dispatch => {
 
 export const updateCluster = (id, info) => dispatch =>
   axios.put(`/api/clusters/${id}`, info)
-    .then(() => dispatch(fetchThoughts()))
-    .then(() => dispatch(fetchClusters()))
+    .then(() => dispatch(bulkFetch()))
 
 export const linkThoughts = thoughts => dispatch =>
   axios.post(`/api/clusters`, thoughts)
-    .then(() => dispatch(fetchThoughts()))
-    .then(() => dispatch(fetchClusters()))
+    .then(() => dispatch(bulkFetch()))
 
 // re-order thoughts
 export const move = (id, movingId, behindId) => dispatch => {
   const order = { movingId, behindId }
   return axios.put(`/api/clusters/${id}/moving`, order)
-    .then(() => dispatch(fetchThoughts()))
-    .then(() => dispatch(fetchClusters()))
+    .then(() => dispatch(bulkFetch()))
 }

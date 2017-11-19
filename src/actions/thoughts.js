@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { fetchClusters } from './clusters'
+import { bulkFetch } from './index'
 
 export const GET_THOUGHTS = 'GET_THOUGHTS'
 
@@ -13,24 +13,22 @@ export const fetchThoughts = () => dispatch => {
 
 export const postThought = content => dispatch =>
   axios.post('/api/thoughts', content)
-    .then(() => dispatch(fetchThoughts()))
+    .then(() => dispatch(bulkFetch()))
     //.then(res => res.data)
 
 export const updateThought = (id, content) => dispatch =>
   axios.put(`/api/thoughts/${id}`, content)
-    .then(() => dispatch(fetchThoughts()))
-    .then(() => dispatch(fetchClusters()))
-    /***** NOTE: combine the above into one update function *****/
+    .then(() => dispatch(bulkFetch()))
     //.then(res => res.data)
 
 export const deleteThought = id => dispatch =>
   axios.delete(`/api/thoughts/${id}`)
-    // .then(() => dispatch(fetchThoughts()))
+    .then(() => dispatch(bulkFetch()))
     //.then(res => res.data)
 
 export const unlinkThought = thought => dispatch =>
   axios.delete(`/api/thoughts/${thought.id}/remove-cluster/${thought.clusterId}`)
-    .then(() => dispatch(fetchThoughts()))
+    .then(() => dispatch(bulkFetch()))
     //.then(res => res.data)
 
 export const removeCategory = (thought, category) => dispatch =>

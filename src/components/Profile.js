@@ -2,9 +2,10 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import ConfirmedSubmitted from './messages/ConfirmedSubmitted'
 import Loading from './messages/Loading'
-import { updatePassword, updateProfile } from '../store'
+import { updatePassword, updateProfile, signOut } from '../store'
 import Textbox from './reusables/Textbox'
 import Button from './reusables/Button'
+import { Link } from 'react-router-dom'
 
 class Profile extends Component {
   state = {
@@ -78,6 +79,12 @@ class Profile extends Component {
           <Button
             label='Update password'
             onClick={ this.passwordChange } />
+
+          <Link
+            to='/login'
+            className='btn btn-red'
+            style={{ width: '50%' }}
+            onClick={ this.props.signOut }>Sign out</Link>
         </div>
       </div>
     )
@@ -85,5 +92,5 @@ class Profile extends Component {
 }
 
 const mapState = ({ currentUser }) => ({ user: currentUser.user })
-const mapDispatch = { updatePassword, updateProfile }
+const mapDispatch = { updatePassword, updateProfile, signOut }
 export default connect(mapState, mapDispatch)(Profile)
