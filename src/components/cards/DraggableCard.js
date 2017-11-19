@@ -16,7 +16,7 @@ export default function DraggableCard ({ thought, clickHandler }) {
             style={provided.draggableStyle}
             {...provided.dragHandleProps}
           >
-            <div key={ thought.id } className='thought'>
+            <div key={ thought.id } className='thought thought-linked'>
               <button className='cluster-link unlink' onClick={ clickHandler }><i className='im im-unlink'></i> unlink</button>
               <ThoughtCard thought={ thought }/>
             </div>

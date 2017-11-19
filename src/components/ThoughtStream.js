@@ -6,6 +6,7 @@ import { linkThoughts } from '../store'
 import Button from './reusables/Button'
 import ClusterableCard from './cards/ClusterableCard'
 import ClusterCard from './cards/ClusterCard'
+import _ from 'lodash'
 
 
 class ThoughtStream extends Component {
@@ -18,10 +19,11 @@ class ThoughtStream extends Component {
   onToggleSelect = (type, id) => {
     const { selected } = this.state
     const item = { type, id }
+    // console.log(item)
     this.setState({
       selected:
-        selected.find(i => i.type == item.type && i.id == item.id) ?
-          selected.filter(i => i.type != item.type && i.id != item.id) :
+        selected.find(i => _.isEqual(i, item)) ?
+          selected.filter(i => !_.isEqual(i, item)) :
           [ ...selected, item ]
     })
   }

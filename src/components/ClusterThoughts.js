@@ -23,12 +23,11 @@ function ClusterThoughts ({ cluster, unlink, update, moveThought }) {
       <DroppableContainer
         items={ cluster.thoughts.map((thought, i) => (
           <DraggableCard
-            clickHandler={ () => unlink(thought, thoughts) }
+            clickHandler={ () => unlink(thought, cluster) }
             key={ thought.id }
             thought={ thought } />
           ))}
-        onDrop={ moveThought }
-      />
+        onDrop={ moveThought } />
 
       <div className='cluster-categories'>
         <h3>Categories in this cluster</h3>
@@ -58,10 +57,10 @@ const mapState = ({ thoughts, clusters }, ownProps) => {
 }
 
 const mapDispatch = (dispatch, ownProps) => ({ 
-  unlink(thought, thoughts) {
+  unlink(thought, cluster) {
     dispatch(unlinkThought(thought))
       .then(() => {
-        if (thoughts.length <= 2) ownProps.history.push('/thoughts')
+        if (cluster.thoughts.length <= 2) ownProps.history.push('/thoughts')
       })
   },
   update(info) {
