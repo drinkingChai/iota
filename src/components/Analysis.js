@@ -74,13 +74,13 @@ class Analysis extends Component {
         <div className='chart pie-chart'>
         </div>
 
-        <h4>Topics over time</h4>
+        <h4>Topics & thoughts over time</h4>
         <Select
           options={ topicsOptions }
           defaultValue={ { value: 0, label: 'All' } }
           onChange={ selectScatterView('lineSelect') } />
-        <Select
-          defaultValue={ { value: 0, label: 'From -/-/- to -/-/-' } } />
+        {/*<Select
+          defaultValue={ { value: 0, label: 'From -/-/- to -/-/-' } } />*/}
         <div className='chart scatter-chart'>
         </div>
       </div>

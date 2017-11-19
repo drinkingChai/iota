@@ -24,7 +24,6 @@
   & p { padding: 10px 0; }
 
   &.thought-cluster {
-    padding-top: 25px;
     margin-top: 16px;
   }
 
@@ -131,7 +130,7 @@
   }
 
   & i {
-    font-size: 12px;
+    font-size: 0.9em;
     color: darken($gray, 30%);
   }
 }
@@ -143,17 +142,22 @@
 }
 
 .cluster-link {
-  font-size: 12px;
-  background-color: lighten($purple, 50%);
-  color: $purple;
+  font-size: 0.9em;
+  background-color: #504679;
+  border-radius: 5px;
   position: absolute;
   right: 5px;
   top: 5px;
-  padding: 2px 5px;
+  padding: 3px 5px;
 
-  &.unlink i {
-    font-size: 12px;
+  display: flex;
+  & > * {
+    margin-right: 3px;
+    align-self: center;
   }
+
+  &, & * { color: $white; }
+  &.unlink i { font-size: 1em; }
 }
 
 .thought-stream {

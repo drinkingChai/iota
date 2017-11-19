@@ -5,6 +5,8 @@ export default function Pack (data, container) {
   // clear...
   d3.select(container).select('svg').remove()
 
+  if (!data.length) return
+
   const max = d3.max(data, d => d.count),
     color = d3.scaleLinear()
       .domain([0, 1])

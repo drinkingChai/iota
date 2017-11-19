@@ -126,7 +126,7 @@ class ViewEditJot extends Component {
 
         <div className='btn-group'>
           <Button
-            label='Add category'
+            label='Add categories'
             className='btn btn-blue'
             onClick={ onAddCategory } />
           

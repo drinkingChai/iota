@@ -3,9 +3,14 @@ import { Link } from 'react-router-dom'
 import { formatDate } from '../../helpers'
 
 export default class ThoughtCard extends Component {
-  state = { isExpanded: false }
+  state = { isExpanded: false, isLong: false }
+
+  componentDidMount = () => {
+    if (this.props.thought.text.length > 150) this.setState({ isLong: true })
+  }
 
   handleExpand = ev => {
+    if (!this.state.isLong) return
     ev.stopPropagation()
     this.setState({ isExpanded: !this.state.isExpanded })
   }
@@ -13,9 +18,9 @@ export default class ThoughtCard extends Component {
   render = () => {
     const { thought } = this.props
     const { handleExpand } = this
-    const { isExpanded } = this.state
+    const { isExpanded, isLong } = this.state
 
-    thought.shortened = thought.text.length > 150 && !isExpanded ? `${thought.text.slice(0, 100)}...` : thought.text
+    thought.shortened = isLong && !isExpanded ? `${thought.text.slice(0, 100)}...` : thought.text
 
     return (
       <div>
@@ -30,7 +35,7 @@ export default class ThoughtCard extends Component {
         <div className='subheader'>
           <span className='date'>{ formatDate(thought.updatedAt) }</span>
           <span onClick={ handleExpand }>
-          { thought.text.length > 150 ?
+          { isLong ?
               isExpanded ?
               <i className='im im-angle-up'></i> :
               <i className='im im-angle-down'></i> : null }

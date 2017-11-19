@@ -43,15 +43,23 @@ class UserLogin extends Component {
             <Button
               label='Login'
               onClick={ onSubmit } />
+            <div className='btn-group-horiz'>
+              <Button
+                label='Google Login'
+                className='btn btn-red' />
+              <Button
+                label='Facebook Login'
+                className='btn btn-blue' />
+            </div>
           </div>
         </div>
 
+        <br/>
         <h3>Register</h3>
 
         <div className='btn-group'>
           <Link to='/register' className='btn'>Register</Link>
-          <button className='btn btn-red'> Login with Google</button>
-          <button className='btn btn-blue'>Login with Facebook</button>
+          
         </div>
       </div>
     )
