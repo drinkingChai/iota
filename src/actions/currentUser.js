@@ -48,8 +48,8 @@ export const register = userData => dispatch =>
 
 // oauth, passport?
 export const googleSignIn = () => dispatch =>
-  axios.get('/api/auth/google')
+  axios.get('http://localhost:3000/api/auth/google')
 
 // oauth, passport?
 export const facebookSignIn = () => dispatch =>
-  axios.get('/api/auth/facebook')
+  axios.get('http://localhost:3000/api/auth/facebook')

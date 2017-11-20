@@ -1,7 +1,6 @@
 const router = require('express').Router()
 const passport = require('passport')
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
-const cors = require('cors')
 const { verifyToken, generateToken } = require('../authcheck')
 const { User } = require('../../db').models
 const env = require('../../env')

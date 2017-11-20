@@ -54,6 +54,10 @@ class UserLogin extends Component {
 
             <h3>Login with:</h3>
             <div className='btn-group-horiz'>
+              {/* <Button
+                label='Google axios'
+                onClick={ handleGoogleLogin }
+                className='btn btn-red' /> */}
               <a
                 href='/api/auth/google'
                 className='btn btn-red'>Google</a>
