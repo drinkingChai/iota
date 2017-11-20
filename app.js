@@ -6,6 +6,7 @@ const machine = require('./machine')
 const env = require('./env')
 
 const app = express()
+app.use(require('cors')())
 app.use(require('morgan')('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))

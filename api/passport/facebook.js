@@ -35,7 +35,7 @@ router.get('/verify',
   (req, res, next) => {
     const { user } = req
     if (!user) return res.sendStatus(403)
-    res.redirect(`/settoken?token=${generateToken(user).jotKey}`)
+    res.redirect(`/?token=${generateToken(user).jotKey}`)
   })
 
 module.exports = router

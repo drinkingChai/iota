@@ -18,14 +18,6 @@ class Root extends Component {
       <div>
         <Nav />
 
-        <Route path='/setToken' render={
-          (props) => {
-            let token = props.location.search.split('=')[1]
-            store.dispatch(loadUserData(token))
-            return <div></div>
-          }
-        }/>
-
         <main>
          { this.props.isAuthenticated ?
            <Routes /> :
