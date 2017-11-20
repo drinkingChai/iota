@@ -2,6 +2,11 @@ const router = require('express').Router()
 const { verifyToken, generateToken } = require('./authcheck')
 const { User } = require('../db').models
 
+// google auth
+router.use('/google', require('./passport/google'))
+// facebook auth
+router.use('/facebook', require('./passport/facebook'))
+
 router.post('/', (req, res, next) => {
   // log in
   const { email, password } = req.body

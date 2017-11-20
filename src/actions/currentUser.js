@@ -46,3 +46,11 @@ export const register = userData => dispatch =>
   axios.post('/api/users', userData)
     .then(res => dispatch(loadUserData(res.data.jotKey)))
 
+// oauth, passport?
+export const googleSignIn = () => dispatch =>
+  axios.get('/api/auth/google')
+
+// oauth, passport?
+export const facebookSignIn = () => dispatch =>
+  axios.get('/api/auth/facebook')
+// oauth, passport?

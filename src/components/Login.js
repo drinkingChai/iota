@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { signIn } from '../store'
+import { signIn, googleSignIn, facebookSignIn } from '../store'
 import Textbox from './reusables/Textbox'
 import Button from './reusables/Button'
 import Welcome from './messages/Welcome'
@@ -19,10 +19,17 @@ class UserLogin extends Component {
       .then(() => this.props.history.push('/jot'))
   }
 
+  handleGoogleLogin = () => {
+    this.props.googleSignIn()
+  }
+
+  handleFacebookLogin = () => {
+    this.props.facebookSignIn()
+  }
+
   render = () => {
     const { email, password, welcomeShown } = this.state
-    const { onChange, onSubmit } = this
-
+    const { onChange, onSubmit, handleGoogleLogin, handleFacebookLogin } = this
 
     return (
       <div className='login'>
@@ -47,12 +54,12 @@ class UserLogin extends Component {
 
             <h3>Login with:</h3>
             <div className='btn-group-horiz'>
-              <Button
-                label='Google'
-                className='btn btn-red' />
-              <Button
-                label='Facebook'
-                className='btn btn-blue' />
+              <a
+                href='/api/auth/google'
+                className='btn btn-red'>Google</a>
+              <a
+                href='/api/auth/facebook'
+                className='btn btn-blue'>Facebook</a> 
             </div>
           </div>
         </div>
@@ -69,5 +76,5 @@ class UserLogin extends Component {
   }
 }
 
-const mapDispatch = { signIn }
+const mapDispatch = { signIn, googleSignIn, facebookSignIn }
 export default withRouter(connect(null, mapDispatch)(UserLogin))
