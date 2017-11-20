@@ -1,5 +1,6 @@
 const conn = require('./conn')
 const bcrypt = require('bcrypt-as-promised')
+const generator = require('generate-password')
 const env = require('../env')
 
 const User = conn.define('user', {
@@ -13,6 +14,12 @@ const User = conn.define('user', {
     type: conn.Sequelize.STRING,
     allowNull: false,
     validate: { notEmpty: true }
+  },
+  googleId: {
+    type: conn.Sequelize.STRING
+  },
+  facebookId: {
+    type: conn.Sequelize.STRING
   }
 }, {
   hooks: {
@@ -59,6 +66,16 @@ User.updateUser = function(query, profileData) {
     .then(user => {
       Object.assign(user, profileData)
       return user.save()
+    })
+}
+
+User.passportAuth = function(query) {
+  return this.findOne({ where: query })
+    .then(user => {
+      if (user) return user
+
+      Object.assign(query, { password: generator.generate({ length: 15, numbers: true })} )
+      return User.create(query)
     })
 }
 

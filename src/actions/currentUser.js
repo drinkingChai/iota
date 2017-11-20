@@ -53,4 +53,3 @@ export const googleSignIn = () => dispatch =>
 // oauth, passport?
 export const facebookSignIn = () => dispatch =>
   axios.get('/api/auth/facebook')
-// oauth, passport?

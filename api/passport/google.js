@@ -2,6 +2,7 @@ const router = require('express').Router()
 const passport = require('passport')
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
 const cors = require('cors')
+const { verifyToken, generateToken } = require('../authcheck')
 const { User } = require('../../db').models
 const env = require('../../env')
 
@@ -15,16 +16,15 @@ passport.use(
   },
   (accessToken, refreshToken, profile, done) => {
     // function used to verify
-    console.log('what is happening here?')
-    console.log('access token: ', accessToken)
-    console.log(profile.emails[0].value)
-    console.log(profile.id)
-    // done('wot is this??')
-    // User.findAll({}, function(err, users) {
-    //   done(err, users)
-    // })
+    let query = {
+      email: profile.emails[0].value,
+      googleId: `${profile.id}`
+    }
 
-    done(null, 'all good')
+    User.passportAuth(query)
+      .then(user => {
+        done(null, user)
+      })
   }
 ))
 
@@ -34,9 +34,9 @@ router.get('/',
 router.get('/verify',
   passport.authenticate('google', { session: false }),
   (req, res, next) => {
-    console.log('yay!')
-    res.sendStatus(200)
+    const { user } = req
+    if (!user) return res.sendStatus(403)
+    res.redirect(`/settoken?token=${generateToken(user).jotKey}`)
   })
 
-// , failureRedirect: '/login', successRedirect: '/jot'
 module.exports = router
