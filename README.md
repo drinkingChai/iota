@@ -1,5 +1,5 @@
 # jot
-[![Waffle.io - Columns and their card count](https://badge.waffle.io/drinkingChai/jot.svg?columns=all)](https://waffle.io/drinkingChai/jot)
+[![Waffle.io - Columns and their card count](https://badge.waffle.io/drinkingChai/iota.svg?columns=all)](https://waffle.io/drinkingChai/iota)
 
 A thought tracker for your life!
 - Completely private: only you can see your information.
