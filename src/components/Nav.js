@@ -19,6 +19,14 @@ class Nav extends Component {
     const { menuActive } = this.state
     const { displayMenu, logOut } = this
     const { isAuthenticated } = this.props
+    const { pathname } = this.props.history.location
+
+    const links = [
+      { path: '/jot', label: 'Write', iconClass: 'im im-pencil' },
+      { path: '/thoughts', label: 'Feed', iconClass: 'im im-book' },
+      { path: '/stats', label: 'Analytics', iconClass: 'im im-bar-chart'  },
+      { path: '/profile', label: 'Profile', iconClass: 'im im-user-settings'  }
+    ]
 
     return (
       <div>
@@ -26,8 +34,16 @@ class Nav extends Component {
           {/*<i className="im im-book"></i>
           <span>jot</span>
           <i onClick={ displayMenu } className="im im-menu"></i>*/}
-          <span></span>
-          <span>jot</span>
+          <span className='top-bar-left'>iota</span>
+          <span className='top-bar-mid'>iota</span>
+          <span className='top-bar-right'>
+          { links.map(link =>
+            <Link
+              key={ link.path }
+              to={ link.path }
+              className={ link.path == pathname ? 'active' : '' }
+              onClick={ displayMenu }>{ link.label }</Link> )}
+          </span>
         </div>
         
         <nav className={ menuActive ? 'nav-visible' : 'nav-hidden' }>
@@ -60,10 +76,16 @@ class Nav extends Component {
 
         { isAuthenticated ?
           <div className='bottom-bar'>
-            <Link to='/jot' onClick={ displayMenu }><i className="im im-pencil"></i></Link>
+            {/* <Link to='/jot' onClick={ displayMenu }><i className="im im-pencil"></i></Link>
             <Link to='/thoughts' onClick={ displayMenu }><i className="im im-book"></i></Link>
             <Link to='/stats' onClick={ displayMenu }><i className="im im-bar-chart"></i></Link>
-            <Link to='/profile' onClick={ displayMenu }><i className="im im-user-settings"></i></Link>
+            <Link to='/profile' onClick={ displayMenu }><i className="im im-user-settings"></i></Link>*/}
+          { links.map(link =>
+            <Link
+              key={ link.path }
+              to={ link.path }
+              className={ link.path == pathname ? 'active' : '' }
+              onClick={ displayMenu }><i className={ link.iconClass }></i></Link> )}
           </div> : null }
       </div>
     )

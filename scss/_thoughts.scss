@@ -4,6 +4,17 @@
   padding-top: 10px;
 
   &.linked { grid-gap: 0; }
+
+  // export the media bounds
+  @media only screen and (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+  }
+  @media only screen and (min-width: 1024px) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  @media only screen and (min-width: 1280px) {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
 }
 
 .thought {
@@ -30,12 +41,13 @@
   &.thought-cluster:after {
     content: '';
     width: 99.5%;
-    height: 7px;
+    height: 6px;
     position: absolute;
-    top: -9px;
+    top: -8px;
     left: 0.25%;
     right: 0.25%;
-    background-color: #6C91C2;
+    // background-color: #6C91C2;
+    background-color: darken(#E3E6F5, 10%);
     transition: background-color 0.5s;
   }
   &.thought-cluster:before {
@@ -43,10 +55,11 @@
     width: 98%;
     height: 10px;
     position: absolute;
-    top: -14px;
+    top: -13px;
     left: 1%;
     right: 1%;
-    background-color: lighten(#6C91C2, 10%);
+    // background-color: lighten(#6C91C2, 10%);
+    background-color: darken(#E3E6F5, 6%);
     transition: background-color 0.5s;
   }
 
@@ -155,6 +168,7 @@
 
 .cluster-button-fixed {
   position: fixed;
+  z-index: 15;
   bottom: -80px;
   left: 0;
   background-color: $white;

@@ -1,0 +1,17 @@
+.jot-container {
+  display: grid;
+
+  @media only screen and (min-width: 768px) {
+    justify-items: center;
+
+    & > .jot-form {
+      width: 60%;
+    }
+  }
+
+  @media only screen and (min-width: 1024px) {
+    & > .jot-form {
+      width: 40%;
+    }
+  }
+}

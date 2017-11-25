@@ -32,44 +32,46 @@ class UserLogin extends Component {
     const { onChange, onSubmit, handleGoogleLogin, handleFacebookLogin } = this
 
     return (
-      <div className='login'>
-        { welcomeShown ? <Welcome /> : null }
+      <div className='login-container'>
+        <div className='login'>
+          { welcomeShown ? <Welcome /> : null }
 
-        <h3>Login</h3>
-        <div className='form'>
-          <Textbox
-            type='email'
-            label='E-mail'
-            value={ email }
-            onChange={ onChange('email') } />
-          <Textbox
-            type='password'
-            label='Password'
-            value={ password }
-            onChange={ onChange('password') } />  
-          <div className='btn-group'>
-            <Button
-              label='Login'
-              onClick={ onSubmit } />
+          <h3>Login</h3>
+          <div className='form'>
+            <Textbox
+              type='email'
+              label='E-mail'
+              value={ email }
+              onChange={ onChange('email') } />
+            <Textbox
+              type='password'
+              label='Password'
+              value={ password }
+              onChange={ onChange('password') } />  
+            <div className='btn-group'>
+              <Button
+                label='Login'
+                onClick={ onSubmit } />
 
-            <h3>Login with:</h3>
-            <div className='btn-group-horiz'>
-              <a
-                href='/api/auth/google'
-                className='btn btn-red'>Google</a>
-              <a
-                href='/api/auth/facebook'
-                className='btn btn-blue'>Facebook</a> 
+              <h3>Login with:</h3>
+              <div className='btn-group-horiz'>
+                <a
+                  href='/api/auth/google'
+                  className='btn btn-red'>Google</a>
+                <a
+                  href='/api/auth/facebook'
+                  className='btn btn-blue'>Facebook</a> 
+              </div>
             </div>
           </div>
-        </div>
 
-        <br/>
-        <h3>Register</h3>
+          <br/>
+          <h3>Register</h3>
 
-        <div className='btn-group'>
-          <Link to='/register' className='btn'>Register</Link>
-          
+          <div className='btn-group'>
+            <Link to='/register' className='btn'>Register</Link>
+            
+          </div>
         </div>
       </div>
     )

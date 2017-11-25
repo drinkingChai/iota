@@ -64,24 +64,30 @@ class Analysis extends Component {
     topicsOptions.sort((a, b) => a.label > b.label)
 
     return (
-      <div className='charts'>
+      <div className=''>
         <h3>Analysis</h3>
 
-        <h4>Your topics by popularity</h4>
-        <Select
-          options={ packOptions }
-          onChange={ selectPackView('packSelect') } />
-        <div className='chart pie-chart'>
-        </div>
+        <div className='charts'>
+          <div className='chart-container'>
+            <h4>Your topics by popularity</h4>
+            <Select
+              options={ packOptions }
+              onChange={ selectPackView('packSelect') } />
+            <div className='chart pie-chart'>
+            </div>
+          </div>
 
-        <h4>Topics & thoughts over time</h4>
-        <Select
-          options={ topicsOptions }
-          defaultValue={ { value: 0, label: 'All' } }
-          onChange={ selectScatterView('lineSelect') } />
-        {/*<Select
-          defaultValue={ { value: 0, label: 'From -/-/- to -/-/-' } } />*/}
-        <div className='chart scatter-chart'>
+          <div className='chart-container'>
+            <h4>Topics & thoughts over time</h4>
+            <Select
+              options={ topicsOptions }
+              defaultValue={ { value: 0, label: 'All' } }
+              onChange={ selectScatterView('lineSelect') } />
+            {/*<Select
+              defaultValue={ { value: 0, label: 'From -/-/- to -/-/-' } } />*/}
+            <div className='chart scatter-chart'>
+            </div>
+          </div>
         </div>
       </div>
     )

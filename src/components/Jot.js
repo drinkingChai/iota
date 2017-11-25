@@ -26,20 +26,22 @@ class Jot extends Component {
     const inputDisabled = text.length < 5 ? true : false
 
     return (
-      <div className='form jot-form'>
-        { submittedDisplayed ? <Loading message='Your jot has been recorded.' /> : null }
+      <div className='jot-container'>
+        <div className='form jot-form'>
+          { submittedDisplayed ? <Loading message='Your jot has been recorded.' /> : null }
 
-        <h3>Jot it down</h3>
-        <Textarea
-          autoFocus={ true }
-          value={ text }
-          onChange={ onChange('text') }
-          className={ inputDisabled ? 'red' : null } />
-        <div className='btn-group'>
-          <Button
-            label='Jot it down'
-            onClick={ onSubmit }
-            disabled={ inputDisabled } />
+          <h3>Write</h3>
+          <Textarea
+            autoFocus={ true }
+            value={ text }
+            onChange={ onChange('text') }
+            className={ inputDisabled ? 'red' : null } />
+          <div className='btn-group'>
+            <Button
+              label='Jot it down'
+              onClick={ onSubmit }
+              disabled={ inputDisabled } />
+          </div>
         </div>
       </div>
     )
