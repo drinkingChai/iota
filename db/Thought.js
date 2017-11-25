@@ -14,10 +14,9 @@ const Thought = conn.define('thought', {
 }, {
   hooks: {
     afterCreate(instance, options) {
-      /* removing classifier temporarily
       models.category.classifyThought(instance)
-        .then(() => instance) */
-      return instance
+        .then(() => instance)
+      // return instance
     },
     afterUpdate(instance, options) {
       /* leaving it off to not reclassify
