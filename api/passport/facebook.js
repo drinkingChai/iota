@@ -16,7 +16,6 @@ passport.use(
   (accessToken, refreshToken, profile, done) => {
     // function used to verify
     let query = {
-      email: profile.displayName,
       facebookId: `${profile.id}`
     }
 
