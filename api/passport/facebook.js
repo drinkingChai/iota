@@ -11,7 +11,7 @@ passport.use(
   new FacebookStrategy({
     clientID: env.FACEBOOK_APP_ID,
     clientSecret: env.FACEBOOK_APP_SECRET,
-    callbackURL: 'http://localhost:3000/api/auth/facebook/verify'
+    callbackURL: env.FACEBOOK_CALLBACK_URL
   },
   (accessToken, refreshToken, profile, done) => {
     // function used to verify

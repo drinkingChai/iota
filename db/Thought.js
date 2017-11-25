@@ -20,7 +20,7 @@ const Thought = conn.define('thought', {
       return instance
     },
     afterUpdate(instance, options) {
-      /* removing classifier temporarily
+      /* leaving it off to not reclassify
       return instance.changed('text') ?
         models.category.classifyThought(instance)
           .then(() => instance) :

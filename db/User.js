@@ -74,6 +74,7 @@ User.passportAuth = function(query) {
     .then(user => {
       if (user) return user
 
+
       Object.assign(query, { password: generator.generate({ length: 15, numbers: true })} )
       return User.create(query)
     })

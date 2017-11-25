@@ -45,7 +45,7 @@ export default class TypeAhead extends Component {
     this.props.onUpdate([ ...selected, value ])
   }
 
-  onSelect = name => () => {
+  onSelect = name => e => {
     const { selected, selections } = this.state
     this.setState({
       input: '',
@@ -69,7 +69,10 @@ export default class TypeAhead extends Component {
 
   clear = () => { this.setState({ selected: [], input: '' }) }
 
-  onFocus = () => { this.input.focus() }
+  onFocus = () => {
+    this.input.focus()
+    // document.addEventListener('click', this.onSelect(), false)
+  }
 
   render = () => {
     const { input, selected, selectionsDisplayed } = this.state
@@ -82,7 +85,7 @@ export default class TypeAhead extends Component {
       .filter(select => select.match(new RegExp(input, 'gi')))
 
     return (
-      <div className='typeahead-container'>
+      <div className='typeahead-container' ref={ node => this.node = node }>
         { label ? <label>{ label }</label> : null }
         <div className='typeahead' onClick={ onFocus }>
           <div className='main'>
@@ -97,9 +100,9 @@ export default class TypeAhead extends Component {
             </span>
 
             <span className='buttons'>
-              <span onClick={ clear }><i className="im im-x-mark" style={ { color: selected.length ? 'inherit' : 'transparent' } }></i></span>
+              <span onClick={ clear }><i className="im im-x-mark-circle" style={ { color: selected.length ? 'inherit' : 'transparent' } }></i></span>
               <span onClick={ toggleDropdown }>
-                { selectionsDisplayed ? <i className="im im-care-up"></i> : <i className="im im-care-down"></i> }
+                { selectionsDisplayed ? <i className="im im-angle-up-circle"></i> : <i className="im im-angle-down-circle"></i> }
               </span>
             </span>
           </div>

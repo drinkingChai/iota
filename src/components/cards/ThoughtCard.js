@@ -23,7 +23,7 @@ export default class ThoughtCard extends Component {
     thought.shortened = isLong && !isExpanded ? `${thought.text.slice(0, 100)}...` : thought.text
 
     return (
-      <div>
+      <div className='thought-card'>
         <div>
           <p>{ thought.shortened || thought.text }</p>
           <div className='categories'>

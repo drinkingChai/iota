@@ -19,7 +19,7 @@ class Nav extends Component {
     const { menuActive } = this.state
     const { displayMenu, logOut } = this
     const { isAuthenticated } = this.props
-    const { pathname } = this.props.history.location
+    const pathname = '/' + this.props.history.location.pathname.split('/')[1]
 
     const links = [
       { path: '/jot', label: 'Write', iconClass: 'im im-pencil' },
@@ -37,7 +37,7 @@ class Nav extends Component {
           <span className='top-bar-left'>iota</span>
           <span className='top-bar-mid'>iota</span>
           <span className='top-bar-right'>
-          { links.map(link =>
+          { isAuthenticated && links.map(link =>
             <Link
               key={ link.path }
               to={ link.path }
@@ -76,10 +76,6 @@ class Nav extends Component {
 
         { isAuthenticated ?
           <div className='bottom-bar'>
-            {/* <Link to='/jot' onClick={ displayMenu }><i className="im im-pencil"></i></Link>
-            <Link to='/thoughts' onClick={ displayMenu }><i className="im im-book"></i></Link>
-            <Link to='/stats' onClick={ displayMenu }><i className="im im-bar-chart"></i></Link>
-            <Link to='/profile' onClick={ displayMenu }><i className="im im-user-settings"></i></Link>*/}
           { links.map(link =>
             <Link
               key={ link.path }
