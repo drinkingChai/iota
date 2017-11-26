@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { signIn, googleSignIn, facebookSignIn } from '../store'
 import Textbox from './reusables/Textbox'
 import Button from './reusables/Button'
-import Welcome from './messages/Welcome'
+import FullScreenMessage from './messages/FullScreenMessage'
 
 class UserLogin extends Component {
   state = { email: '', password: '', welcomeShown: false }
@@ -34,7 +34,7 @@ class UserLogin extends Component {
     return (
       <div className='login-container'>
         <div className='login'>
-          { welcomeShown ? <Welcome /> : null }
+          { welcomeShown ? <FullScreenMessage text='Logging in...' /> : null }
 
           <h3>Login</h3>
           <div className='form'>

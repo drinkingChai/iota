@@ -4,11 +4,13 @@ import { connect } from 'react-redux'
 import { register } from '../store'
 import Textbox from './reusables/Textbox'
 import Button from './reusables/Button'
+import FullScreenMessage from './messages/FullScreenMessage'
 
 class Register extends Component {
   state = {
     email: '',
-    password: ''
+    password: '',
+    welcomeShown: false
   }
 
   onChange = name => ev => {
@@ -16,17 +18,20 @@ class Register extends Component {
   }
 
   onSubmit = () => {
+    this.setState({ welcomeShown: true })
     this.props.register(this.state)
       .then(() => this.props.history.push('/welcome'))
   }
 
   render = () => {
-    const { email, password } = this.state
+    const { email, password, welcomeShown } = this.state
     const { onChange, onSubmit } = this
 
     return (
       <div className='login-container'>
         <div className='login'>
+          { welcomeShown ? <FullScreenMessage text='Creating user...' /> : null }
+
           <h3>Register</h3>
           <div className='form'>
             <Textbox
