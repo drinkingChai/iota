@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 import Nav from './Nav'
 import Routes from './Routes'
-import Login from './Login'
+import AuthRoutes from './AuthRoutes'
 
 class Root extends Component {
   componentDidMount = () => {
@@ -21,7 +21,7 @@ class Root extends Component {
         <main>
          { this.props.isAuthenticated ?
            <Routes /> :
-           <Login /> }
+           <AuthRoutes /> }
         </main>
       </div>
     )
