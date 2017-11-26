@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:dev": "webpack -w & node-sass -w scss/ -o public/ & nodemon app.js --ignore public/ --ignore dist/ --ignore src/",
-    "start": "webpack & node-sass scss/ -o public/ & node app.js",
+    "start": "webpack -w & node-sass -w scss/ -o public/ & node app.js",
     "seed": "node db/seed.js",
     "reset": "node db/reset.js"
   },
