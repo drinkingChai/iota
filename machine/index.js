@@ -1,4 +1,4 @@
-const natural = require('natural')
-const classifier = new natural.BayesClassifier()
+// const natural = require('natural')
+// const classifier = new natural.BayesClassifier()
 
-module.exports = classifier
+// module.exports = classifier

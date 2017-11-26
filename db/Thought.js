@@ -14,7 +14,7 @@ const Thought = conn.define('thought', {
 }, {
   hooks: {
     afterCreate(instance, options) {
-      models.category.classifyThought(instance)
+      return models.category.classifyThought(instance)
         .then(() => instance)
       // return instance
     },
