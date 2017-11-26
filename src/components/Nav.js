@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { withRouter, Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { signOut } from '../store'
+import { version } from '../../package.json'
+
 
 class Nav extends Component {
   state = { menuActive: false }
@@ -34,8 +36,8 @@ class Nav extends Component {
           {/*<i className="im im-book"></i>
           <span>jot</span>
           <i onClick={ displayMenu } className="im im-menu"></i>*/}
-          <span className='top-bar-left'>iota</span>
-          <span className='top-bar-mid'>iota</span>
+          <span className='top-bar-left'>iota <span className='version'>(v{ version })</span></span>
+          <span className='top-bar-mid'>iota <span className='version'>(v{ version })</span></span>
           <span className='top-bar-right'>
           { isAuthenticated && links.map(link =>
             <Link
