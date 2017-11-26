@@ -23,6 +23,7 @@ passport.use(
       .then(user => {
         done(null, user)
       })
+      .catch(err => done(null, false))
   }
 ))
 
