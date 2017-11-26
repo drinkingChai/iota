@@ -76,3 +76,16 @@ main {
     align-self: start;
   }
 }
+
+.login-container {
+  display: grid;
+  align-items: center;
+
+  @media only screen and (min-width: 768px) {
+    justify-items: center;
+
+    & > .login {
+      width: 500px;
+    }
+  }
+}

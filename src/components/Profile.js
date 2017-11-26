@@ -48,45 +48,47 @@ class Profile extends Component {
 
   render = () => {
     return (
-      <div>
-        <h3>Your profile</h3>
+      <div className='login-container'>
+        <div className='login'>
+          <h3>Your profile</h3>
 
-        { this.state.inProgress && !this.state.confirmDisplayed ? 
-          <Loading message='saving...' /> : null }
+          { this.state.inProgress && !this.state.confirmDisplayed ? 
+            <Loading message='saving...' /> : null }
 
-        { this.state.confirmDisplayed ?
-          <ConfirmedSubmitted
-            message='Your profile has been updated.'
-            confirm={ () => { this.setState({ confirmDisplayed: false }) } } /> : null }
+          { this.state.confirmDisplayed ?
+            <ConfirmedSubmitted
+              message='Your profile has been updated.'
+              confirm={ () => { this.setState({ confirmDisplayed: false }) } } /> : null }
 
-        <div className='form'>
-          <Textbox
-            label='Change email'
-            type='email'
-            value={ this.state.email }
-            onChange={ this.changeHandler('email') } />
+          <div className='form'>
+            <Textbox
+              label='Change email'
+              type='email'
+              value={ this.state.email }
+              onChange={ this.changeHandler('email') } />
 
-          <Button
-            label='Update profile'
-            onClick={ this.profileUpdate } />
+            <Button
+              label='Update profile'
+              onClick={ this.profileUpdate } />
 
-          <Textbox
-            label='Change password'
-            type='password'
-            value={ this.state.password }
-            onChange={ this.changeHandler('password') } />
+            <Textbox
+              label='Change password'
+              type='password'
+              value={ this.state.password }
+              onChange={ this.changeHandler('password') } />
 
-          <Button
-            label='Update password'
-            onClick={ this.passwordChange } />
+            <Button
+              label='Update password'
+              onClick={ this.passwordChange } />
+          </div>
+
+          <br/>
+          <Link
+              to='/login'
+              className='btn btn-red'
+              style={{ width: '50%' }}
+              onClick={ this.props.signOut }>Sign out</Link>
         </div>
-
-        <br/>
-        <Link
-            to='/login'
-            className='btn btn-red'
-            style={{ width: '50%' }}
-            onClick={ this.props.signOut }>Sign out</Link>
       </div>
     )
   }
