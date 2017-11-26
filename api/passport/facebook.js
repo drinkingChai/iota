@@ -11,11 +11,13 @@ passport.use(
   new FacebookStrategy({
     clientID: env.FACEBOOK_APP_ID,
     clientSecret: env.FACEBOOK_APP_SECRET,
-    callbackURL: env.FACEBOOK_CALLBACK_URL
+    callbackURL: env.FACEBOOK_CALLBACK_URL,
+    profileFields: ['id', 'emails', 'name']
   },
   (accessToken, refreshToken, profile, done) => {
     // function used to verify
     let query = {
+      email: profile.emails[0].value,
       facebookId: `${profile.id}`
     }
 
@@ -28,7 +30,7 @@ passport.use(
 ))
 
 router.get('/',
-  passport.authenticate('facebook'))
+  passport.authenticate('facebook', { scope: ['email'] }))
 
 router.get('/verify',
   passport.authenticate('facebook', { session: false }),
