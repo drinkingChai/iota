@@ -1,0 +1,10 @@
+{
+  "apps": [{
+    "name": "iota",
+    "script": "app.js",
+    "env": {
+      "PORT": "80",
+      "DATABASE_URL": "postgres://localhost/introspect"
+    }
+  }]
+}
