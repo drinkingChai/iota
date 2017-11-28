@@ -13,8 +13,8 @@ html {
   font-family: 'Lato', sans-serif;
 }
 
-body { 
-  background-color: $white;
+body {
+  font-size: 100%;
   line-height: 1.5em;
 }
 
@@ -54,7 +54,7 @@ svg { z-index: -1; }
 
 main {
   padding: 65px 30px;
-  background-color: #E3E6F5;
+  background-color: #F5F5F7;
   min-height: 100vh;
 }
 

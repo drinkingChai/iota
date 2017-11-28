@@ -117,11 +117,11 @@ nav {
     text-align: right;
     visibility: hidden;
     font-family: 'Lato', sans-serif;
-    font-size: 1.1em;
+    font-size: 1em;
 
     & > * {
       // margin-left: 25px;
-      padding: 11px 20px;
+      padding: 12px 20px;
       &.active { background-color: darken($brandpink, 20%); }
     }
 

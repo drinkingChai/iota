@@ -64,7 +64,8 @@ span.select {
   display: inline-block;
   position: relative;
   vertical-align: middle;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  border: solid 1px $gray;
+  // box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   &:before, &:after {
     content: "";
     position: absolute;

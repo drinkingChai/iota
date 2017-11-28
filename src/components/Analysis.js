@@ -64,9 +64,10 @@ class Analysis extends Component {
     topicsOptions.sort((a, b) => a.label > b.label)
 
     return (
-      <div className=''>
+      <div className='Analysis'>
         <h3>Analysis</h3>
 
+        <br/>
         <div className='charts'>
           <div className='chart-container'>
             <h4>Your topics by popularity</h4>
