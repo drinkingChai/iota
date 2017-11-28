@@ -32,10 +32,9 @@ class Jot extends Component {
 
           <h3>Write</h3>
           <Textarea
-            autoFocus={ true }
             value={ text }
             onChange={ onChange('text') }
-            className={ inputDisabled ? 'red' : null } />
+            placeHolder='Tap or click to get started...' />
           <div className='btn-group'>
             <Button
               label='Jot it down'

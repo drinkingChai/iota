@@ -4,13 +4,16 @@ export default class Textarea extends Component {
   state = {
     placeHolder: '',
     focused: false,
-    style: {
+    styles: {
       span: {
         display: 'flex',
         flexDirection: 'column'
       },
       label: {
         marginBottom: '10px'
+      },
+      placeHolder: {
+        color: '#BDBDBD'
       }
     }
   }
@@ -39,12 +42,13 @@ export default class Textarea extends Component {
       type,
       className,
       autoFocus,
+      style,
       value } = this.props
 
     const {
       placeHolder,
       focused,
-      style } = this.state
+      styles } = this.state
 
     const {
       onChange,
@@ -52,8 +56,8 @@ export default class Textarea extends Component {
       onFocus } = this
 
     return (
-      <span style={ style.span }>
-        { label ? <label style={ style.label }>{ label }</label> : null }
+      <span style={ styles.span }>
+        { label ? <label style={ styles.label }>{ label }</label> : null }
         <textarea
           rows='15'
           className={ className || '' }
@@ -61,6 +65,7 @@ export default class Textarea extends Component {
           disabled={ disabled }
           value={ !focused && !value ? placeHolder : value }
           type={ !focused && !value ? 'text' : type }
+          style={ !focused && !value ? styles.placeHolder : style }
           onChange={ onChange }
           onFocus={ onFocus }
           onBlur={ onBlur } ></textarea>

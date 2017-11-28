@@ -5,13 +5,13 @@
     justify-items: center;
 
     & > .jot-form {
-      width: 60%;
+      width: 80%;
     }
   }
 
   @media only screen and (min-width: 1024px) {
     & > .jot-form {
-      width: 40%;
+      // width: 40%;
     }
   }
 }
