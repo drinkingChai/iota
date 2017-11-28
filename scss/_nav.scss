@@ -79,6 +79,16 @@ nav {
   font-family: 'Sofia', cursive;
   background-color: $whitesmoke;
 
+
+  &:after {
+    content: '';
+    border-bottom: solid 2px $jet;
+    position: absolute;
+    bottom: -2px;
+    width: calc(100% - 20px);
+    margin-left: 10px;
+  }
+
   & span {
     font-size: 1.1875em;
     line-height: .4em;
@@ -117,7 +127,7 @@ nav {
     & > * {
       // margin-left: 25px;
       padding: 12px 20px;
-      border-bottom: solid 2px transparent;
+      // border-bottom: solid 2px transparent;
       &.active { border-color: $jet; }
     }
 
@@ -141,16 +151,26 @@ nav {
   font-family: 'Sofia', cursive;
   background-color: $whitesmoke;
 
+  // border-top: solid 2px $jet;
   padding: 0px 30px 0 30px;
 
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
 
+  &:before {
+    content: '';
+    border-top: solid 2px $jet;
+    position: absolute;
+    top: -2px;
+    width: calc(100% - 20px);
+    margin-left: 10px;
+  }
+
   & > span, & i {
     text-align: center; font-size: 1.2em;
   }
   & a {
-    border-top: solid 2px $jet;
+    // border-top: solid 2px $jet;
     text-align: center;
     padding-top: 14px;
     &.active {
