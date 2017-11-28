@@ -9,8 +9,7 @@
     "start": "webpack & node-sass scss/ -o public/ & node app.js",
     "seed": "node db/seed.js",
     "reset": "node db/reset.js",
-    "webpack": "webpack",
-    "build:css": "node-sass scss/ -o public/"
+    "post:pull": "webpack & node-sass scss/ -o public/"
   },
   "keywords": [],
   "author": "",

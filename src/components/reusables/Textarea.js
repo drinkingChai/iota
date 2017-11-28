@@ -59,7 +59,7 @@ export default class Textarea extends Component {
       <span style={ styles.span }>
         { label ? <label style={ styles.label }>{ label }</label> : null }
         <textarea
-          rows='15'
+          rows='12'
           className={ className || '' }
           autoFocus={ autoFocus }
           disabled={ disabled }
