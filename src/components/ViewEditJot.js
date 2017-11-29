@@ -98,7 +98,7 @@ class ViewEditJot extends Component {
             null }
 
         <Textarea
-          label='Thought (tap or click to edit..)'
+          label='Thought (tap or click to edit)'
           value={ text }
           onChange={ onChange('text') }
           className={ inputDisabled ? 'red' : null } />
