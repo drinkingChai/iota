@@ -127,7 +127,7 @@ nav {
     & > * {
       // margin-left: 25px;
       padding: 12px 20px;
-      border-bottom: solid 2px transparent;
+      border-bottom: solid 4px transparent;
       &.active { border-color: $selected; }
     }
 
@@ -161,7 +161,7 @@ nav {
     content: '';
     border-top: solid 2px $jet;
     position: absolute;
-    top: -2px;
+    top: 1px;
     width: calc(100% - 20px);
     margin-left: 10px;
   }
@@ -173,9 +173,8 @@ nav {
     // border-top: solid 2px $jet;
     text-align: center;
     padding-top: 14px;
-    &.active {
-      border-color: lighten($selected, 20%);
-    }
+    border-top: solid 4px transparent;
+    &.active { border-color: $selected; }
   }
 
   @media only screen and (min-width: 768px) {
