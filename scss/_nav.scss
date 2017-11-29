@@ -121,14 +121,14 @@ nav {
   & .top-bar-right {
     text-align: right;
     visibility: hidden;
-    font-family: 'Lato', sans-serif;
+    font-family: $basefont;
     font-size: 1em;
 
     & > * {
       // margin-left: 25px;
       padding: 12px 20px;
-      // border-bottom: solid 2px transparent;
-      &.active { border-color: $jet; }
+      border-bottom: solid 2px transparent;
+      &.active { border-color: $selected; }
     }
 
     @media only screen and (min-width: 768px) {
@@ -138,7 +138,7 @@ nav {
 
   .version {
     font-size: .8em;
-    font-family: 'Lato', sans-serif;
+    font-family: $basefont;
   }
 }
 

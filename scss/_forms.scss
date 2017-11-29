@@ -39,7 +39,7 @@ textarea:focus, input:focus, button:focus, select:focus {
 }
 
 .search {
-  border-bottom: solid 1px $nicegray;
+  border-bottom: solid 2px $jet;
   display: grid;
   grid-template-columns: 9fr 1fr;
   align-items: center;
@@ -54,7 +54,7 @@ textarea:focus, input:focus, button:focus, select:focus {
   
   & i {
     padding-right: 10px;
-    color: $nicegray;
+    color: $jet;
     text-align: right;
   }
 }

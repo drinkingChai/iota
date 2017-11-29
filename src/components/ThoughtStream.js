@@ -57,8 +57,8 @@ class ThoughtStream extends Component {
 
     return (
       <div className='thought-stream'>
-        <h3>Thought stream</h3>
 
+        <br/>
         <div>
           <label htmlFor='search'>Search</label>
           <div className='search'>

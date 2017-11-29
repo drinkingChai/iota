@@ -37,8 +37,16 @@ Category._findOrCreate = function(mlcat) {
 }
 
 Category.classifyThought = function(thought) {
+  const timeOutActive = true 
+  setTimeout(() => {
+    // if (timeOutActive)
+  }, 10000)
+
   return ml.classifiers.classify(module_id, [thought.text], false)
-    .then(res => Promise.all(res.result[0].map(cat => Category._findOrCreate(cat))))
+    .then(res => {
+      timeOutActive = false
+      return Promise.all(res.result[0].map(cat => Category._findOrCreate(cat)))
+    })
     .then(cats => Promise.all(cats.map(cat => cat.addThoughts(thought))))
 }
 

@@ -97,9 +97,8 @@ class ViewEditJot extends Component {
             confirm={ onConfirmDelete } /> :
             null }
 
-        <h3>Edit a thought</h3>
         <Textarea
-          label='Thought'
+          label='Thought (tap or click to edit..)'
           value={ text }
           onChange={ onChange('text') }
           className={ inputDisabled ? 'red' : null } />
