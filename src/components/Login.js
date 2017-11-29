@@ -1,22 +1,32 @@
 import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { signIn, googleSignIn, facebookSignIn } from '../store'
+import { signIn, googleSignIn, facebookSignIn, register } from '../store'
 import Textbox from './reusables/Textbox'
 import Button from './reusables/Button'
 import FullScreenMessage from './messages/FullScreenMessage'
 
 class UserLogin extends Component {
-  state = { email: '', password: '', welcomeShown: false }
+  state = {
+    email: '',
+    password: '',
+    welcomeShown: false
+  }
 
   onChange = name => ev => {
     this.setState({ [name]: ev.target.value })
   }
 
-  onSubmit = () => {
+  handleLogin = () => {
     this.setState({ welcomeShown: true })
     this.props.signIn(this.state)
       .then(() => this.props.history.push('/jot'))
+  }
+
+  handleRegister = () => {
+    this.setState({ welcomeShown: true })
+    this.props.register(this.state)
+      .then(() => this.props.history.push('/welcome'))
   }
 
   handleGoogleLogin = () => {
@@ -29,7 +39,7 @@ class UserLogin extends Component {
 
   render = () => {
     const { email, password, welcomeShown } = this.state
-    const { onChange, onSubmit, handleGoogleLogin, handleFacebookLogin } = this
+    const { onChange, handleLogin, handleRegister, handleGoogleLogin, handleFacebookLogin } = this
 
     return (
       <div className='login-container'>
@@ -51,8 +61,11 @@ class UserLogin extends Component {
             <div className='btn-group'>
               <Button
                 label='Login'
-                onClick={ onSubmit } />
-              <Link to='/register' className='btn'>Register</Link>
+                onClick={ handleLogin } />
+              Or Register
+              <Button
+                label='Register'
+                onClick={ handleRegister } />
 
               <h3>Login with:</h3>
               <div className='btn-group-horiz'>
@@ -71,5 +84,5 @@ class UserLogin extends Component {
   }
 }
 
-const mapDispatch = { signIn, googleSignIn, facebookSignIn }
+const mapDispatch = { signIn, googleSignIn, facebookSignIn, register }
 export default withRouter(connect(null, mapDispatch)(UserLogin))

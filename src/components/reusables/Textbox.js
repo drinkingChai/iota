@@ -52,6 +52,7 @@ export default class Textbox extends Component {
       <span style={ styles.span }>
         { label ? <label>{ label }</label> : null }
         <input
+          autoCapitalize='off'
           autoFocus={ focused }
           disabled={ disabled }
           value={ !focused && !value ? placeHolder : value }
