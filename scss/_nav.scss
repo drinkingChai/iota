@@ -145,7 +145,7 @@ nav {
 .bottom-bar {
   position: fixed;
   bottom: 0;
-  height: 2.7em;
+  height: 2.9em;
   width: 100%;
   z-index: 9;
   font-family: 'Sofia', cursive;
@@ -172,7 +172,7 @@ nav {
   & a {
     // border-top: solid 2px $jet;
     text-align: center;
-    padding-top: 14px;
+    padding-top: 12px;
     border-top: solid 4px transparent;
     &.active { border-color: $selected; }
   }
