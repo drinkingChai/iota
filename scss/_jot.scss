@@ -1,21 +1,36 @@
 .jot-container {
   display: flex;
   width: auto;
-  max-width: 600px;
+  max-width: 650px;
   margin: 0 auto;
   height: calc(100vh - 170px);
+  margin-top: 30px;
+
+  @media only screen and (max-width: 768px) {
+    margin-top: 10px;
+  }
+  @media only screen and (max-height: 620px) {
+    margin-top: auto;
+  }
 
   & .jot-form {
-    align-self: flex-start;
-    margin-top: 10%;
+    // align-self: flex-start;
+    align-self: center;
+    // margin-top: 10%;
     width: 100%;
     background-color: $whitesmoke;
     padding: 45px 30px 30px 30px;
     border-radius: 3px;
+    height: calc(100vh - 170px);
+
+    & .btn-group {
+      align-self: end;
+    }
 
     @media only screen and (max-height: 620px) {
       margin-top: auto;
       align-self: center;
+      height: auto;
     }
   }
 }
