@@ -12,5 +12,10 @@
     background-color: $whitesmoke;
     padding: 45px 30px 30px 30px;
     border-radius: 3px;
+
+    @media only screen and (max-height: 620px) {
+      margin-top: auto;
+      align-self: center;
+    }
   }
 }
