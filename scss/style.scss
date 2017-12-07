@@ -33,6 +33,7 @@ h3 { font-size: 1.4em; line-height: 2em; }
   -moz-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
+@import '_animations.scss';
 @import '_header.scss';
 @import '_forms.scss';
 @import '_buttons.scss';
@@ -59,7 +60,16 @@ main {
   padding: 65px 30px;
   background-color: $whitesmoke;
   min-height: 100vh;
+  transition: background-color 1000ms cubic-bezier(.51,.19,.27,.81);
+  &.jot {
+    animation: focus 1000ms;
+    background-color: $jet;
+  }
+  @media only screen and (max-width: 375px) {
+    padding: 65px 20px;
+  }
 }
+
 
 .welcome {
   text-align: center;

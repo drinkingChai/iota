@@ -79,6 +79,12 @@ nav {
   font-family: 'Sofia', cursive;
   background-color: $whitesmoke;
 
+  transition: background-color 1000ms cubic-bezier(.51,.19,.27,.81);
+  &.jot {
+    animation: focus 1000ms;
+    background-color: $jet;
+    & * { color: $whitesmoke; }
+  }
 
   &:after {
     content: '';
@@ -87,6 +93,9 @@ nav {
     bottom: -2px;
     width: calc(100% - 20px);
     margin-left: 10px;
+  }
+  &.jot:after {
+    border-color: $whitesmoke;
   }
 
   & span {
@@ -135,6 +144,9 @@ nav {
       visibility: visible;
     }
   }
+  &.jot .active {
+    border-color: $whitesmoke;
+  }
 
   .version {
     font-size: .8em;
@@ -157,6 +169,13 @@ nav {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
 
+  transition: background-color 1000ms cubic-bezier(.51,.19,.27,.81);
+  &.jot {
+    animation: focus 1000ms;
+    background-color: $jet;
+    & * { color: $whitesmoke; }
+  }
+
   &:before {
     content: '';
     border-top: solid 2px $jet;
@@ -164,6 +183,9 @@ nav {
     top: 1px;
     width: calc(100% - 20px);
     margin-left: 10px;
+  }
+  &.jot:before {
+    border-color: $whitesmoke;
   }
 
   & > span, & i {
@@ -176,6 +198,9 @@ nav {
     border-top: solid 4px transparent;
     &.active { border-color: $selected; }
   }
+  &.jot .active {
+    border-color: $whitesmoke;
+  } 
 
   @media only screen and (min-width: 768px) {
     visibility: hidden;

@@ -30,7 +30,6 @@ class Jot extends Component {
         <div className='form jot-form'>
           { submittedDisplayed ? <Loading message='Your jot has been recorded.' /> : null }
 
-          <br/>
           <Textarea
             value={ text }
             onChange={ onChange('text') }

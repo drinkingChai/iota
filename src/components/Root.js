@@ -18,7 +18,7 @@ class Root extends Component {
       <div>
         <Nav />
 
-        <main>
+        <main className={ this.props.location.pathname == '/jot' ? 'jot' : '' }>
          { this.props.isAuthenticated ?
            <Routes /> :
            <AuthRoutes /> }

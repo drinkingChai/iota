@@ -32,7 +32,7 @@ class Nav extends Component {
 
     return (
       <div>
-        <div className='top-bar'>
+        <div className={ `top-bar ${ this.props.location.pathname == '/jot' ? 'jot' : '' }` }>
           {/*<i className="im im-book"></i>
           <span>jot</span>
           <i onClick={ displayMenu } className="im im-menu"></i>*/}
@@ -77,7 +77,7 @@ class Nav extends Component {
         </nav>
 
         { isAuthenticated ?
-          <div className='bottom-bar'>
+          <div className={ `bottom-bar ${ this.props.location.pathname == '/jot' ? 'jot' : '' }` }>
           { links.map(link =>
             <Link
               key={ link.path }
