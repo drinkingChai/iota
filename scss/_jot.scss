@@ -1,17 +1,13 @@
 .jot-container {
-  display: grid;
+  display: flex;
+  width: auto;
+  max-width: 600px;
+  margin: 0 auto;
+  height: calc(100vh - 170px);
 
-  @media only screen and (min-width: 768px) {
-    justify-items: center;
-
-    & > .jot-form {
-      width: 80%;
-    }
-  }
-
-  @media only screen and (min-width: 1024px) {
-    & > .jot-form {
-      // width: 40%;
-    }
+  & .jot-form {
+    align-self: flex-start;
+    margin-top: 10%;
+    width: 100%;
   }
 }
