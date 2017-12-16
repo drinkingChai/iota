@@ -88,7 +88,7 @@ nav {
 
   &:after {
     content: '';
-    border-bottom: solid 2px $jet;
+    // border-bottom: solid 2px $jet;
     position: absolute;
     bottom: -2px;
     width: calc(100% - 20px);
@@ -136,7 +136,7 @@ nav {
     & > * {
       // margin-left: 25px;
       padding: 12px 20px;
-      border-bottom: solid 4px transparent;
+      border-bottom: solid 1px transparent;
       &.active { border-color: $selected; }
     }
 
@@ -178,7 +178,7 @@ nav {
 
   &:before {
     content: '';
-    border-top: solid 2px $jet;
+    // border-top: solid 2px $jet;
     position: absolute;
     top: 1px;
     width: calc(100% - 20px);
@@ -192,10 +192,10 @@ nav {
     text-align: center; font-size: 1.2em;
   }
   & a {
-    // border-top: solid 2px $jet;
+    border-top: solid 2px;
     text-align: center;
     padding-top: 12px;
-    border-top: solid 4px transparent;
+    border-top: solid 1px transparent;
     &.active { border-color: $selected; }
   }
   &.jot .active {
